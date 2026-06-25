@@ -967,9 +967,9 @@ function doLocalLogin(){
   setTimeout(()=>{CU=email;localStorage.setItem('cb_ses',email);setLoading('l-btn-local-txt','l-spin-local',false);bootApp();},600);
 }
 
-function doLogout(){
+async function doLogout(){
   localStorage.removeItem('cb_ses');
-  if(sb) sb.auth.signOut();
+  if(sb){ try{ await sb.auth.signOut(); }catch(e){} }
   location.reload();
 }
 
