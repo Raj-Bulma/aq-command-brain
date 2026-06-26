@@ -527,6 +527,46 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   .rating-wrap{flex-wrap:wrap}
   .rating-opt{min-width:80px}
 }
+
+/* Enhanced mobile: touch targets, safe areas, banner layout */
+@media(max-width:768px){
+/* Enhanced mobile: touch targets, safe areas, banner layout */
+.btn{min-height:44px}
+.btn-sm{min-height:36px;font-size:11px}
+.topbar{height:52px;padding:0 16px}
+.mod-banner{flex-wrap:wrap;gap:8px}
+.mod-banner>.mb-space{display:none}
+.mod-banner>.btn{flex:1;min-width:120px;justify-content:center;font-size:11px}
+.mod-banner>.mb-icon{width:40px;height:40px;font-size:20px}
+.lc-body{padding:0 20px 24px}
+#app{padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-item{min-height:44px}
+.tbl-bar{flex-wrap:wrap}
+.tbl-search-wrap{min-width:100%}
+.kpi-card{padding:16px 14px}
+.kpi-val{font-size:22px}
+
+}
+
+@media(max-width:480px){
+
+.content{padding:12px 8px}
+.mod-grid,.kpi-grid{gap:8px}
+.mod-card{padding:16px 14px}
+.topbar{padding:0 12px}
+.tb-brand{font-size:11px !important}
+.ph-title{font-size:15px}
+.ph{gap:6px}
+.mod-banner{padding:14px 12px}
+.mb-name{font-size:13px}
+.mb-desc{font-size:11px}
+.modal-box{width:98vw;border-radius:12px}
+.dr-head{padding:12px 14px}
+.dr-body{padding:14px}
+.dr-foot{padding:10px 14px}
+
+}
+
 </style>
 </head>
 <body>
