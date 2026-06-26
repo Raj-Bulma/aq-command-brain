@@ -1327,10 +1327,11 @@ function renderBrand(d){
     <td style="font-size:12px">${r.owner||'—'}</td>
     <td>${acts('brand',r.id)}</td></tr>`).join('');
 }
+function forceDownload(url){if(!url)return '#';try{var u=new URL(url);u.searchParams.set('download','1');return u.toString();}catch(e){return url;}}
 function renderTdocs(d){
   showEmpty('tdocs',d);
   document.getElementById('tb-tdocs').innerHTML=d.map(r=>`<tr>
-    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong></td>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong>${r.attachment?'<br><a href="'+forceDownload(r.attachment)+'" target="_blank" rel="noopener" style="font-size:10px;color:var(--blue)">⬇ Download</a>':''}</td>
     <td style="font-size:11px">${r.docType||'—'}</td><td style="font-size:11px">${r.service||'—'}</td><td style="font-size:11px">${r.region||'—'}</td>
     <td>${r.reuse==='High'?'<span class="bdg bdg-g">🟢 High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">🟡 Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
     <td style="font-size:11px">${r.version||'—'}</td><td style="font-size:11px">${r.author||'—'}</td>
