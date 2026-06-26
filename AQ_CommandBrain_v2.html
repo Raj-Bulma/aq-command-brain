@@ -386,8 +386,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .dr-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;background:rgba(8,16,32,.6)}
 
 /* FORMS */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.f{display:flex;flex-direction:column;gap:6px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0;overflow:hidden}
 .f.fw{grid-column:1/-1}
 .f-sec{grid-column:1/-1;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--gold);text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--border);margin-top:8px}
 .f-lbl{font-size:11px;font-weight:600;color:rgba(226,232,248,0.7);letter-spacing:.3px}
@@ -1365,7 +1365,8 @@ function openDr(type,record){
   const cfg=F[type];
   document.getElementById('dr-title').textContent=record?'Edit Record':cfg.title;
   document.getElementById('dr-sub').textContent=cfg.sub;
-  document.getElementById('dr-body').innerHTML='<div class="fg">'+cfg.fields.map(f=>renderField(f,record)).join('')+'</div>';
+  const mob=window.innerWidth<=768;
+  document.getElementById('dr-body').innerHTML='<div class="fg" style="'+(mob?'grid-template-columns:1fr;width:100%;':'')+'">'+ cfg.fields.map(f=>renderField(f,record)).join('')+'</div>';
   if(record?.rating){
     const map={Green:'g',Amber:'a',Red:'r'};
     document.querySelector(`.rating-opt[data-v="${record.rating}"]`)?.classList.add('sel-'+map[record.rating]);
