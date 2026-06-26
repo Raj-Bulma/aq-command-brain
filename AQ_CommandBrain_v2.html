@@ -791,7 +791,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 
       <div class="page" id="m3">
         <div class="mod-banner sa"><div class="mb-icon">📚</div><div><div class="mb-num">Module 03</div><div class="mb-name">Technical Document Library</div><div class="mb-desc">Proposals, SOWs, method statements — rated for reusability on future bids</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('tdoc')">+ Add Document</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search documents…" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search documents…" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div><button class="tbl-act" onclick="exportCSV('tdocs')" style="margin-left:8px;padding:4px 12px;height:30px;font-size:11px">⬇ Export</button></div>
         <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Service</th><th>Region</th><th>Reusability</th><th>Version</th><th>Author</th><th></th></tr></thead><tbody id="tb-tdocs"></tbody></table><div class="empty-st" id="em-tdocs"><div class="ico">📚</div><div class="t">No documents yet</div><div class="s">File technical documents to power future proposals</div></div></div>
       </div>
 
@@ -1190,6 +1190,24 @@ function cpars(r){const m={'Exceptional':5,'Very Good':4,'Satisfactory':3,'Margi
 function stB(s){const m={Active:'bdg-g',Completed:'bdg-gd','Terminated':'bdg-r','Terminated for Convenience':'bdg-gr','Active — Client Accepted':'bdg-g',Expired:'bdg-r','Under Review':'bdg-a',Approved:'bdg-b',Deprecated:'bdg-r',Probationary:'bdg-a',Blacklisted:'bdg-r',Audited:'bdg-g','Unaudited Draft':'bdg-a','Under Audit':'bdg-a','Management Accounts':'bdg-gr'};return `<span class="bdg ${m[s]||'bdg-gr'}">${s||'—'}</span>`}
 function rtB(r){if(!r) return '<span class="bdg bdg-gr">Unknown</span>';if(r==='Green') return '<span class="bdg bdg-g">🟢 Trusted</span>';if(r==='Amber') return '<span class="bdg bdg-a">🟡 Caution</span>';if(r==='Red') return '<span class="bdg bdg-r">🔴 Do Not Engage</span>';return `<span class="bdg bdg-gr">${r}</span>`}
 function vfB(v){return v==='Yes'?'<span class="bdg bdg-g">✓ Verified</span>':v==='No'?'<span class="bdg bdg-r">✗ Not Verified</span>':'<span class="bdg bdg-a">Pending</span>'}
+function exportCSV(k){
+  const d=RD[k];
+  if(!d||!d.length){alert('No records to export');return;}
+  const keys=Object.keys(d[0]).filter(x=>x!=='id'&&x!=='isFounder');
+  const header=keys.join(',');
+  const rows=d.map(r=>keys.map(x=>{
+    const v=(r[x]||'').toString().replace(/"/g,'""');
+    return '"'+v+'"';
+  }).join(','));
+  const csv=[header,...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=k+'_export_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 function acts(key,id){return `<button class="tbl-act" onclick="editR('${key}',${id})">Edit</button> <button class="tbl-act d" onclick="delR('${key}',${id})">Del</button>`}
 function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
 
@@ -1221,7 +1239,7 @@ function renderBrand(d){
 function renderTdocs(d){
   showEmpty('tdocs',d);
   document.getElementById('tb-tdocs').innerHTML=d.map(r=>`<tr>
-    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong></td>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong>${r.attachment?'<br><a href="'+r.attachment+'" target="_blank" rel="noopener" style="font-size:10px;color:var(--blue)">📎 Open</a>':''}</td>
     <td style="font-size:11px">${r.docType||'—'}</td><td style="font-size:11px">${r.service||'—'}</td><td style="font-size:11px">${r.region||'—'}</td>
     <td>${r.reuse==='High'?'<span class="bdg bdg-g">🟢 High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">🟡 Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
     <td style="font-size:11px">${r.version||'—'}</td><td style="font-size:11px">${r.author||'—'}</td>
