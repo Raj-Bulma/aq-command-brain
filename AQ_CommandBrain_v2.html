@@ -1582,6 +1582,183 @@ gsap.from('.login-card',{y:60,opacity:0,duration:.9,delay:.2,ease:'power3.out'})
 gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'});
 
 // (session handling is above in initSession)
+
+
+// ═══════════════════════════════════════════════════════════════
+//  ACCESS CONTROL PATCH — injected by PUSH_ACCESS_CONTROL.html
+// ═══════════════════════════════════════════════════════════════
+const ACL = {
+  'raj@aqglobal.net':             {name:'Raj Verma',           role:'full'},
+  'ram@aqglobal.net':             {name:'Ram Mohan T',         role:'full'},
+  'sreekala@aqglobal.net':        {name:'Sreekala Vijayan',    role:'full'},
+  'accountssupport@aqglobal.net': {name:'Haarishh Ghodkke',   role:'full'},
+  'vin@aqglobal.net':             {name:'Vinesh Nair',         role:'full'},
+  'sirish@aqglobal.net':          {name:'Sirish RamKumar',     role:'full'},
+  'malgorzata@aqglobal.net':      {name:'Malgorzata Sobolewska', regions:['EU'],      accounts:true},
+  'maryna@aqglobal.net':          {name:'Maryna Ishchukova',    regions:['EU'],      accounts:false},
+  'thomas@aqglobal.net':          {name:'Thomas Mathulla',      regions:['CENTCOM'], accounts:true},
+  'karthik@aqglobal.net':         {name:'Karthik Kumaran',      regions:['CENTCOM'], accounts:false},
+  'ashwan@aqglobal.net':          {name:'Ashwan Sirish',        regions:['CENTCOM'], accounts:true},
+  'akaar@aqglobal.net':           {name:'Akaar Sirish',         regions:['CENTCOM'], accounts:true}
+};
+const REGION_MAP = {
+  EU:      ['Poland','Europe-Other'],
+  CENTCOM: ['Kuwait','UAE','KSA','Bahrain','Kenya','CENTCOM-Other','CONUS']
+};
+function getU(){return ACL[(CU||'').toLowerCase()]||null;}
+function canView(r,mod){
+  const u=getU(); if(!u)return false; if(u.role==='full')return true;
+  if(mod==='fins')return !!u.accounts;
+  const rg=(r.region||r.theater||'').trim();
+  if(!rg||rg==='Multi-Region')return true;
+  return (u.regions||[]).some(ur=>(REGION_MAP[ur]||[]).includes(rg));
+}
+function canEdit(r,mod){
+  const u=getU(); if(!u)return false; if(u.role==='full')return true;
+  return (r.by||'').toLowerCase()===(CU||'').toLowerCase();
+}
+function forceDownload(url){
+  if(!url)return '#';
+  try{const u=new URL(url);u.searchParams.set('download','1');return u.toString();}
+  catch(e){return url;}
+}
+function reqAccess(mod,id){
+  const s=encodeURIComponent('Access Request — AQ Command Brain');
+  const b=encodeURIComponent('Hi,\n\nI would like to request access to a record in the ['+mod+'] module (Record ID: '+id+').\n\nUser: '+CU+'\n\nPlease review and grant access.\n\nThank you.');
+  window.open('mailto:raj@aqglobal.net,vin@aqglobal.net?subject='+s+'&body='+b);
+}
+function reqAccessModule(mod){
+  const s=encodeURIComponent('Module Access Request — AQ Command Brain ['+mod+']');
+  const b=encodeURIComponent('Hi,\n\nI believe some records in the ['+mod+'] module are restricted from my view.\n\nUser: '+CU+'\n\nCould you please grant broader access?\n\nThank you.');
+  window.open('mailto:raj@aqglobal.net,vin@aqglobal.net?subject='+s+'&body='+b);
+}
+function showRestricted(key, visible, total){
+  const hidden=total-visible;
+  const ct=document.getElementById('ct-'+key);
+  if(!ct)return;
+  if(hidden>0){
+    ct.innerHTML=visible+' record'+(visible!==1?'s':'')+
+      ' <span style="color:var(--tx3);font-size:10px">('+hidden+' restricted — <a href="#" onclick="reqAccessModule(''+key+'')" style="color:var(--blue)">request access</a>)</span>';
+  } else {
+    ct.textContent=visible+' record'+(visible!==1?'s':'');
+  }
+}
+function dlLink(url){
+  if(!url)return '';
+  return '<a href="'+forceDownload(url)+'" target="_blank" rel="noopener" style="font-size:10px;color:var(--blue);display:block;margin-bottom:3px">⬇ Download</a>';
+}
+
+// ── Override acts() ──────────────────────────────────────────────────────────
+function acts(key,r){
+  const id=r.id, ed=canEdit(r,key);
+  if(ed) return `<button class="tbl-act" onclick="editR('${key}',${id})">Edit</button> <button class="tbl-act d" onclick="delR('${key}',${id})">Del</button>`;
+  return `<span style="font-size:10px;color:var(--tx3);vertical-align:middle">🔒</span> <button class="tbl-act" onclick="reqAccess('${key}',${id})" style="font-size:9px;padding:2px 6px;opacity:.75">Request</button>`;
+}
+
+// ── Override renderContracts() ───────────────────────────────────────────────
+function renderContracts(d){
+  const vd=d.filter(r=>canView(r,'contracts'));
+  showEmpty('contracts',vd);
+  showRestricted('contracts',vd.length,d.length);
+  document.getElementById('tb-contracts').innerHTML=vd.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${r.contractNo||'—'}</strong>${r.taskOrder?('<div style="font-size:10px;color:var(--tx3)">'+r.taskOrder+'</div>'):''}</td>
+    <td style="font-size:12px">${r.entity||'—'}</td>
+    <td><div style="font-size:12px">${r.customer||'—'}</div>${r.prime?('<div style="font-size:10px;color:var(--tx3)">via '+r.prime+'</div>'):''}</td>
+    <td><span class="bdg bdg-gd">${r.role||'—'}</span></td>
+    <td style="font-size:12px">${r.region||'—'}</td>
+    <td style="font-size:11px">${r.service||'—'}</td>
+    <td style="font-family:monospace">${fmtUSD(r.totalValue)}</td>
+    <td>${cpars(r.cpars)}</td>
+    <td>${stB(r.status)}</td>
+    <td style="white-space:nowrap">${dlLink(r.attachment)}${acts('contracts',r)}</td></tr>`).join('');
+}
+
+// ── Override renderBrand() ───────────────────────────────────────────────────
+function renderBrand(d){
+  const vd=d.filter(r=>canView(r,'brand'));
+  showEmpty('brand',vd);
+  showRestricted('brand',vd.length,d.length);
+  document.getElementById('tb-brand').innerHTML=vd.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.fileName||'—'}</strong></td>
+    <td style="font-size:12px">${r.category||'—'}</td>
+    <td style="font-size:12px">${r.entity||'—'}</td>
+    <td><span class="bdg bdg-gr">${r.format||'—'}</span></td>
+    <td style="font-size:12px">${r.version||'—'}</td>
+    <td>${r.approvalStatus==='Approved'||r.approvalStatus==='Active — Client Accepted'?'<span class="bdg bdg-g">Approved</span>':r.approvalStatus==='Deprecated'?'<span class="bdg bdg-r">Deprecated</span>':stB(r.approvalStatus)}</td>
+    <td style="font-size:12px">${r.owner||'—'}</td>
+    <td>${dlLink(r.attachment)}${acts('brand',r)}</td></tr>`).join('');
+}
+
+// ── Override renderTdocs() ───────────────────────────────────────────────────
+function renderTdocs(d){
+  const vd=d.filter(r=>canView(r,'tdocs'));
+  showEmpty('tdocs',vd);
+  showRestricted('tdocs',vd.length,d.length);
+  document.getElementById('tb-tdocs').innerHTML=vd.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong>${r.attachment?('<br>'+dlLink(r.attachment)):''}</td>
+    <td style="font-size:11px">${r.docType||'—'}</td>
+    <td style="font-size:11px">${r.service||'—'}</td>
+    <td style="font-size:11px">${r.region||'—'}</td>
+    <td>${r.reuse==='High'?'<span class="bdg bdg-g">🟢 High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">🟡 Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
+    <td style="font-size:11px">${r.version||'—'}</td>
+    <td style="font-size:11px">${r.author||'—'}</td>
+    <td>${acts('tdocs',r)}</td></tr>`).join('');
+}
+
+// ── Override renderCompliance() ──────────────────────────────────────────────
+function renderCompliance(d){
+  const vd=d.filter(r=>canView(r,'compliance'));
+  showEmpty('compliance',vd);
+  showRestricted('compliance',vd.length,d.length);
+  document.getElementById('tb-compliance').innerHTML=vd.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong></td>
+    <td style="font-size:11px">${r.docType||'—'}</td>
+    <td style="font-size:11px">${r.standard||'—'}</td>
+    <td style="font-size:11px">${r.region||'—'}</td>
+    <td style="font-size:11px">${r.approvalDate||'—'}</td>
+    <td style="font-size:11px;color:${r.status==='Expired'?'var(--red)':'var(--tx)'};font-weight:${r.status==='Expired'?700:400}">${r.expiryDate||'—'}</td>
+    <td>${stB(r.status)}</td>
+    <td>${dlLink(r.attachment)}${acts('compliance',r)}</td></tr>`).join('');
+}
+
+// ── Override renderFins() ────────────────────────────────────────────────────
+function renderFins(d){
+  const vd=d.filter(r=>canView(r,'fins'));
+  showEmpty('fins',vd);
+  showRestricted('fins',vd.length,d.length);
+  document.getElementById('tb-fins').innerHTML=vd.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${r.entity||'—'}</strong></td>
+    <td><span class="bdg bdg-gd">${r.fy||'—'}</span></td>
+    <td style="font-family:monospace">${fmtUSD(r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.grossProfit)}</td>
+    <td style="font-family:monospace">${pct(r.grossProfit,r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.ebitda)}</td>
+    <td style="font-family:monospace;color:${parseFloat(r.netProfit)<0?'var(--red)':'var(--green)'}">${fmtUSD(r.netProfit)}</td>
+    <td>${stB(r.auditStatus)}</td>
+    <td>${dlLink(r.attachment)}${acts('fins',r)}</td></tr>`).join('');
+}
+
+// ── Override renderSuppliers() ───────────────────────────────────────────────
+function renderSuppliers(d){
+  const vd=d.filter(r=>canView(r,'suppliers'));
+  const hasData=vd.length>0;
+  document.getElementById('em-suppliers').style.display=hasData?'none':'';
+  showRestricted('suppliers',vd.length,d.length);
+  document.getElementById('tb-suppliers').innerHTML=vd.map(r=>`<tr class="${r.rating==='Red'?'danger':''}">
+    <td>${r.isFounder?'<div class="founding-tag">FOUNDING ENTRY</div>':''}<strong style="font-size:12px;color:var(--tx)">${r.name||'—'}</strong>${r.tradingName&&r.tradingName!==r.name?('<div style="font-size:10px;color:var(--tx3)">'+r.tradingName+'</div>'):''}</td>
+    <td style="font-size:11px">${r.category||'—'}</td>
+    <td style="font-size:11px">${r.region||'—'}</td>
+    <td>${rtB(r.rating)}</td>
+    <td>${stB(r.status)}</td>
+    <td>${vfB(r.tradeLicenseVerified)}</td>
+    <td style="font-family:monospace;font-size:11px;color:${parseFloat(r.exposure)>0?'var(--red)':'var(--tx)'}">${fmtUSD(r.exposure)}</td>
+    <td style="font-size:11px">${r.contact?r.contact.split(' ').slice(0,2).join(' '):'—'}</td>
+    <td style="white-space:nowrap">${acts('suppliers',r)}</td></tr>`).join('');
+}
+// ═══════════════════════════════════════════════════════════════
+//  END ACCESS CONTROL PATCH
+// ═══════════════════════════════════════════════════════════════
+
 </script>
 </body>
 </html>
