@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AQ Global â Command Brain</title>
+<title>AQ Global Ã¢ÂÂ Command Brain</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-/* ââ TOKENS ââââââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ TOKENS Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 :root{
   --bg:     #020817;
   --bg2:    #0a1628;
@@ -43,7 +43,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 
-/* ââ BACKGROUND ââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ BACKGROUND Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 .bg-mesh{
   position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -59,7 +59,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   background-size:64px 64px;
 }
 
-/* ââ LOGIN âââââââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ LOGIN Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 #login{
   position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
   overflow:hidden;
@@ -115,7 +115,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .lc-foot{font-size:10px;color:var(--tx3);text-align:center;letter-spacing:.3px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ââ APP SHELL âââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ APP SHELL Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 #app{display:none;height:100vh;flex-direction:column;position:relative;z-index:1}
 #app.on{display:flex}
 
@@ -185,16 +185,16 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 /* CONTENT */
 .content{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
 
-/* ââ PAGES âââââââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ PAGES Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .page{display:none;flex-direction:column;gap:24px}
 .page.on{display:flex}
 
-/* ââ PAGE HEADER âââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ PAGE HEADER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .ph-title{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
 .ph-sub{font-size:13px;color:var(--tx3);margin-top:3px}
 
-/* ââ DASHBOARD âââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ DASHBOARD Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .dash-hero{
   background:linear-gradient(135deg,rgba(8,16,32,.9) 0%,rgba(12,24,48,.9) 100%);
   border:1px solid var(--border);border-radius:var(--r2);padding:32px;
@@ -267,7 +267,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .at{font-size:12px;color:var(--tx)}
 .atm{font-size:10px;color:var(--tx3);margin-top:2px}
 
-/* ââ MODULE PAGES ââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ MODULE PAGES Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .mod-banner{
   border-radius:var(--r2);padding:28px 32px;display:flex;align-items:center;gap:20px;
   background:linear-gradient(135deg,var(--bg3) 0%,rgba(12,24,48,.95) 100%);
@@ -358,7 +358,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .empty-st .t{font-size:14px;font-weight:600;color:var(--tx3)}
 .empty-st .s{font-size:12px;color:var(--tx3);opacity:.6;margin-top:4px}
 
-/* ââ DRAWER ââââââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ DRAWER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(4px)}
 .overlay.on{display:block}
 .drawer{
@@ -468,21 +468,21 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .sa-d4{transition-delay:.4s}.sa-d5{transition-delay:.5s}
 
 /* RESPONSIVE */
-/* ââ HAMBURGER BUTTON âââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ HAMBURGER BUTTON Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .tb-hamburger{
   display:none;flex-direction:column;justify-content:center;gap:5px;
   background:transparent;border:none;cursor:pointer;padding:6px;margin-right:4px;
 }
 .tb-hamburger span{display:block;width:20px;height:2px;background:#cdd6f4;border-radius:2px;transition:var(--trans)}
 
-/* ââ SIDEBAR OVERLAY (mobile) ââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ SIDEBAR OVERLAY (mobile) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 .sb-overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;
   backdrop-filter:blur(2px);
 }
 .sb-overlay.on{display:block}
 
-/* ââ RESPONSIVE ââââââââââââââââââââââââââââââââââââââââ */
+/* Ã¢ÂÂÃ¢ÂÂ RESPONSIVE Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ */
 @media(max-width:1100px){
   .kpi-grid,.mod-grid{grid-template-columns:repeat(2,1fr)}
   .content{padding:20px 16px}
@@ -539,9 +539,9 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 <!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
 <!--  LOGIN                                              -->
-<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
 <div id="login">
   <div class="login-bg-text">AQ</div>
   <div class="login-card" id="lcard">
@@ -560,7 +560,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 </svg></div>
       <div class="lc-tag">AQ Global Group</div>
       <div class="lc-title">Command Brain</div>
-      <div class="lc-sub">Central Intelligence Repository â Restricted Access</div>
+      <div class="lc-sub">Central Intelligence Repository Ã¢ÂÂ Restricted Access</div>
     </div>
     <div class="lc-body">
 
@@ -572,7 +572,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
           <div class="lc-error" id="l-eerr">Must be an @aqglobal.net email address.</div>
         </div>
         <button class="lc-btn" id="l-btn1" onclick="authStep1()">
-          <span id="l-btn1-txt">Continue â</span>
+          <span id="l-btn1-txt">Continue Ã¢ÂÂ</span>
           <span class="spinner" id="l-spin1"></span>
         </button>
       </div>
@@ -582,17 +582,17 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <div class="lc-field">
           <div id="l-email-disp2" style="font-size:11px;color:var(--tx2);margin-bottom:12px"></div>
           <label>Password</label>
-          <input class="lc-input" id="l-pass" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢â¢â¢" autocomplete="current-password">
+          <input class="lc-input" id="l-pass" type="password" placeholder="Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢" autocomplete="current-password">
           <div class="lc-error" id="l-perr">Incorrect password.</div>
         </div>
         <button class="lc-btn" id="l-btn2" onclick="authStep2()">
-          <span id="l-btn2-txt">Sign In â</span>
+          <span id="l-btn2-txt">Sign In Ã¢ÂÂ</span>
           <span class="spinner" id="l-spin2"></span>
         </button>
         <div style="text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:8px">
-          <a href="#" onclick="sendPasswordReset();return false" style="font-size:11px;color:var(--gold);text-decoration:none">Forgot password? â</a>
-          <a href="#" onclick="goStep(3);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">New here? Create your account â</a>
-          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">â Different email</a>
+          <a href="#" onclick="sendPasswordReset();return false" style="font-size:11px;color:var(--gold);text-decoration:none">Forgot password? Ã¢ÂÂ</a>
+          <a href="#" onclick="goStep(3);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">New here? Create your account Ã¢ÂÂ</a>
+          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">Ã¢ÂÂ Different email</a>
         </div>
       </div>
 
@@ -609,33 +609,33 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
           <div class="lc-error" id="l-cperr">Passwords do not match.</div>
         </div>
         <button class="lc-btn" id="l-btn3" onclick="authStep3()">
-          <span id="l-btn3-txt">Create Account & Access â</span>
+          <span id="l-btn3-txt">Create Account & Access Ã¢ÂÂ</span>
           <span class="spinner" id="l-spin3"></span>
         </button>
         <div style="text-align:center;margin-top:10px">
-          <a href="#" onclick="goStep(2);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">â Already have a password? Sign in</a>
+          <a href="#" onclick="goStep(2);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">Ã¢ÂÂ Already have a password? Sign in</a>
         </div>
       </div>
 
       <!-- STEP 4: Check email (reset link sent) -->
       <div id="auth-step4" style="display:none">
         <div style="text-align:center;padding:10px 0 18px">
-          <div style="font-size:36px;margin-bottom:12px">ð§</div>
+          <div style="font-size:36px;margin-bottom:12px">Ã°ÂÂÂ§</div>
           <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:8px">Check your email</div>
           <div id="auth-reset-msg" style="font-size:12px;color:var(--tx2);line-height:1.7"></div>
         </div>
         <div style="background:rgba(248,87,0,0.06);border:1px solid rgba(248,87,0,0.2);border-radius:10px;padding:12px 14px;font-size:11px;color:var(--tx2);line-height:1.6;text-align:center;margin-bottom:16px">
-          Click the link in your email â you'll be taken back here to set your password.
+          Click the link in your email Ã¢ÂÂ you'll be taken back here to set your password.
         </div>
         <div style="text-align:center;margin-top:10px">
-          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">â Back to login</a>
+          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">Ã¢ÂÂ Back to login</a>
         </div>
       </div>
 
       <!-- STEP 5: Set new password (after reset link click) -->
       <div id="auth-step5" style="display:none">
         <div style="font-size:12px;color:var(--tx2);text-align:center;margin-bottom:14px;line-height:1.6">
-          ð Set your new password below.
+          Ã°ÂÂÂ Set your new password below.
         </div>
         <div class="lc-field">
           <label>New Password</label>
@@ -647,7 +647,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
           <div class="lc-error" id="l-rperr">Passwords do not match.</div>
         </div>
         <button class="lc-btn" id="l-btn5" onclick="authStep5()">
-          <span id="l-btn5-txt">Set Password & Access â</span>
+          <span id="l-btn5-txt">Set Password & Access Ã¢ÂÂ</span>
           <span class="spinner" id="l-spin5"></span>
         </button>
       </div>
@@ -660,22 +660,22 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
           <div class="lc-error" id="l-eerr-local">Must be an @aqglobal.net email address.</div>
         </div>
         <div class="lc-info" style="font-size:11px;color:var(--amber);text-align:center;margin:8px 0;padding:8px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;line-height:1.5">
-          â ï¸ Local mode â data saved to this device only.<br>Connect Supabase to enable email verification &amp; team sync.
+          Ã¢ÂÂ Ã¯Â¸Â Local mode Ã¢ÂÂ data saved to this device only.<br>Connect Supabase to enable email verification &amp; team sync.
         </div>
         <button class="lc-btn" id="l-btn-local" onclick="doLocalLogin()">
-          <span id="l-btn-local-txt">Access (Local Mode) â</span>
+          <span id="l-btn-local-txt">Access (Local Mode) Ã¢ÂÂ</span>
           <span class="spinner" id="l-spin-local"></span>
         </button>
       </div>
 
-      <div class="lc-foot">ð Encrypted Â· Authorised Personnel Only Â· AQ Global Â© 2026</div>
+      <div class="lc-foot">Ã°ÂÂÂ Encrypted ÃÂ· Authorised Personnel Only ÃÂ· AQ Global ÃÂ© 2026</div>
     </div>
   </div>
 </div>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
 <!--  APP                                                -->
-<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+<!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
 <div id="app">
   <!-- TOPBAR -->
   <div class="topbar">
@@ -696,7 +696,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="tb-pipe"></div>
     <div class="tb-title">Command Brain</div>
     <div class="tb-space"></div>
-    <div class="tb-badge">INTERNAL â RESTRICTED</div>
+    <div class="tb-badge">INTERNAL Ã¢ÂÂ RESTRICTED</div>
     <div class="tb-name" id="tb-name"></div>
     <div class="tb-avatar" id="tb-av"></div>
     <button class="tb-logout" onclick="doLogout()">Sign Out</button>
@@ -741,8 +741,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <span class="nb" id="snb" style="display:none">!</span>
       </div>
       <div class="sb-foot">
-        <div class="sb-ver">Command Brain v2.0 Â· June 2026</div>
-        <button onclick="doLogout()" style="margin-top:10px;width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:8px;color:#ef4444;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.3px">â» Sign Out</button>
+        <div class="sb-ver">Command Brain v2.0 ÃÂ· June 2026</div>
+        <button onclick="doLogout()" style="margin-top:10px;width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:8px;color:#ef4444;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.3px">Ã¢ÂÂ» Sign Out</button>
       </div>
     </nav>
 
@@ -752,7 +752,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
       <!-- DASHBOARD -->
       <div class="page on" id="dash">
         <div class="dash-hero sa">
-          <div class="dh-tag">AQ Global Group Â· GovCon Intelligence</div>
+          <div class="dh-tag">AQ Global Group ÃÂ· GovCon Intelligence</div>
           <div class="dh-title" id="dh-greet">Command Brain</div>
           <div class="dh-sub" id="dh-sub">25 years of institutional knowledge. Centralised. Secured. Live.</div>
           <div class="dh-pills">
@@ -768,48 +768,48 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         <div style="font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.8px;text-transform:uppercase">All Modules</div>
         <div class="mod-grid" id="mod-grid"></div>
         <div class="panel sa">
-          <div class="panel-head"><div class="panel-title">â¡ Active Alerts</div></div>
+          <div class="panel-head"><div class="panel-title">Ã¢ÂÂ¡ Active Alerts</div></div>
           <div id="alerts"></div>
         </div>
       </div>
 
       <!-- MODULE PAGES -->
       <div class="page" id="m1">
-        <div class="mod-banner sa"><div class="mb-icon">ð</div><div><div class="mb-num">Module 01</div><div class="mb-name">Contract &amp; Task Order Registry</div><div class="mb-desc">Historical and active record of every contract the Group has executed over 25+ years</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('contracts')">â Export</button><button class="btn btn-gold btn-sm" onclick="openDr('contract')">+ Add Contract</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search contracts, entities, regionsâ¦" oninput="filt('contracts',this.value)"></div><select class="tbl-sel" onchange="filtF('contracts','region',this.value)"><option value="">All Regions</option><option>Kuwait</option><option>UAE</option><option>KSA</option><option>Bahrain</option><option>Poland</option><option>Kenya</option></select><select class="tbl-sel" onchange="filtF('contracts','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Completed</option><option>Terminated</option></select><div class="tbl-ct" id="ct-contracts">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Contract No.</th><th>AQ Entity</th><th>Customer</th><th>Role</th><th>Region</th><th>Service</th><th>Total Value</th><th>CPARS</th><th>Status</th><th></th></tr></thead><tbody id="tb-contracts"></tbody></table><div class="empty-st" id="em-contracts"><div class="ico">ð</div><div class="t">No contracts yet</div><div class="s">Click "Add Contract" to begin building the registry</div></div></div>
+        <div class="mod-banner sa"><div class="mb-icon">Ã°ÂÂÂ</div><div><div class="mb-num">Module 01</div><div class="mb-name">Contract &amp; Task Order Registry</div><div class="mb-desc">Historical and active record of every contract the Group has executed over 25+ years</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('contracts')">Ã¢ÂÂ Export</button><button class="btn btn-gold btn-sm" onclick="openDr('contract')">+ Add Contract</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search contracts, entities, regionsÃ¢ÂÂ¦" oninput="filt('contracts',this.value)"></div><select class="tbl-sel" onchange="filtF('contracts','region',this.value)"><option value="">All Regions</option><option>Kuwait</option><option>UAE</option><option>KSA</option><option>Bahrain</option><option>Poland</option><option>Kenya</option></select><select class="tbl-sel" onchange="filtF('contracts','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Completed</option><option>Terminated</option></select><div class="tbl-ct" id="ct-contracts">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Contract No.</th><th>AQ Entity</th><th>Customer</th><th>Role</th><th>Region</th><th>Service</th><th>Total Value</th><th>CPARS</th><th>Status</th><th></th></tr></thead><tbody id="tb-contracts"></tbody></table><div class="empty-st" id="em-contracts"><div class="ico">Ã°ÂÂÂ</div><div class="t">No contracts yet</div><div class="s">Click "Add Contract" to begin building the registry</div></div></div>
       </div>
 
       <div class="page" id="m2">
-        <div class="mod-banner sa"><div class="mb-icon">ð¨</div><div><div class="mb-num">Module 02</div><div class="mb-name">Brand &amp; Creative Repository</div><div class="mb-desc">All approved logos, templates, and collateral â single source of truth for all proposal teams</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('brand')">+ Add Asset</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search assetsâ¦" oninput="filt('brand',this.value)"></div><select class="tbl-sel" onchange="filtF('brand','category',this.value)"><option value="">All Categories</option><option>Logos</option><option>Presentation Templates</option><option>Capability Statements</option><option>Letterheads</option></select><div class="tbl-ct" id="ct-brand">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>File Name</th><th>Category</th><th>Entity</th><th>Format</th><th>Version</th><th>Status</th><th>Owner</th><th></th></tr></thead><tbody id="tb-brand"></tbody></table><div class="empty-st" id="em-brand"><div class="ico">ð¨</div><div class="t">No brand assets yet</div><div class="s">Add assets to build the Group brand library</div></div></div>
+        <div class="mod-banner sa"><div class="mb-icon">Ã°ÂÂÂ¨</div><div><div class="mb-num">Module 02</div><div class="mb-name">Brand &amp; Creative Repository</div><div class="mb-desc">All approved logos, templates, and collateral Ã¢ÂÂ single source of truth for all proposal teams</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('brand')">+ Add Asset</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search assetsÃ¢ÂÂ¦" oninput="filt('brand',this.value)"></div><select class="tbl-sel" onchange="filtF('brand','category',this.value)"><option value="">All Categories</option><option>Logos</option><option>Presentation Templates</option><option>Capability Statements</option><option>Letterheads</option></select><div class="tbl-ct" id="ct-brand">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>File Name</th><th>Category</th><th>Entity</th><th>Format</th><th>Version</th><th>Status</th><th>Owner</th><th></th></tr></thead><tbody id="tb-brand"></tbody></table><div class="empty-st" id="em-brand"><div class="ico">Ã°ÂÂÂ¨</div><div class="t">No brand assets yet</div><div class="s">Add assets to build the Group brand library</div></div></div>
       </div>
 
       <div class="page" id="m3">
-        <div class="mod-banner sa"><div class="mb-icon">ð</div><div><div class="mb-num">Module 03</div><div class="mb-name">Technical Document Library</div><div class="mb-desc">Proposals, SOWs, method statements â rated for reusability on future bids</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('tdoc')">+ Add Document</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search documentsâ¦" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Service</th><th>Region</th><th>Reusability</th><th>Version</th><th>Author</th><th></th></tr></thead><tbody id="tb-tdocs"></tbody></table><div class="empty-st" id="em-tdocs"><div class="ico">ð</div><div class="t">No documents yet</div><div class="s">File technical documents to power future proposals</div></div></div>
+        <div class="mod-banner sa"><div class="mb-icon">Ã°ÂÂÂ</div><div><div class="mb-num">Module 03</div><div class="mb-name">Technical Document Library</div><div class="mb-desc">Proposals, SOWs, method statements Ã¢ÂÂ rated for reusability on future bids</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('tdoc')">+ Add Document</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search documentsÃ¢ÂÂ¦" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Service</th><th>Region</th><th>Reusability</th><th>Version</th><th>Author</th><th></th></tr></thead><tbody id="tb-tdocs"></tbody></table><div class="empty-st" id="em-tdocs"><div class="ico">Ã°ÂÂÂ</div><div class="t">No documents yet</div><div class="s">File technical documents to power future proposals</div></div></div>
       </div>
 
       <div class="page" id="m4">
-        <div class="mod-banner sa"><div class="mb-icon">ð¡ï¸</div><div><div class="mb-num">Module 04</div><div class="mb-name">Compliance &amp; Safety Library</div><div class="mb-desc">Safety plans, OSHA documents, and quality frameworks â with expiry monitoring</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('comp')">+ Add Document</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search compliance docsâ¦" oninput="filt('compliance',this.value)"></div><select class="tbl-sel" onchange="filtF('compliance','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Under Review</option><option>Expired</option></select><div class="tbl-ct" id="ct-compliance">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Standard</th><th>Region</th><th>Approved</th><th>Expiry</th><th>Status</th><th></th></tr></thead><tbody id="tb-compliance"></tbody></table><div class="empty-st" id="em-compliance"><div class="ico">ð¡ï¸</div><div class="t">No compliance docs yet</div></div></div>
+        <div class="mod-banner sa"><div class="mb-icon">Ã°ÂÂÂ¡Ã¯Â¸Â</div><div><div class="mb-num">Module 04</div><div class="mb-name">Compliance &amp; Safety Library</div><div class="mb-desc">Safety plans, OSHA documents, and quality frameworks Ã¢ÂÂ with expiry monitoring</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('comp')">+ Add Document</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search compliance docsÃ¢ÂÂ¦" oninput="filt('compliance',this.value)"></div><select class="tbl-sel" onchange="filtF('compliance','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Under Review</option><option>Expired</option></select><div class="tbl-ct" id="ct-compliance">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Standard</th><th>Region</th><th>Approved</th><th>Expiry</th><th>Status</th><th></th></tr></thead><tbody id="tb-compliance"></tbody></table><div class="empty-st" id="em-compliance"><div class="ico">Ã°ÂÂÂ¡Ã¯Â¸Â</div><div class="t">No compliance docs yet</div></div></div>
       </div>
 
       <div class="page" id="m5">
-        <div class="mod-banner sa" style="background:linear-gradient(135deg,rgba(60,8,8,.9) 0%,rgba(120,20,20,.7) 100%)"><div class="mb-icon">ð°</div><div><div class="mb-num">Module 05 â RESTRICTED</div><div class="mb-name">Group Financial Repository</div><div class="mb-desc">Audited results for all entities Â· Chairman, Vin Nair, CFO and named Finance leads only</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('fin')">+ Add Record</button></div>
-        <div class="restricted sa">ð RESTRICTED â Do not share, screenshot, or print without CFO written approval. Authorised: Chairman Â· Vin Nair (CEO D&amp;G) Â· Group CFO Â· Named Finance Leads.</div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search entity, yearâ¦" oninput="filt('fins',this.value)"></div><div class="tbl-ct" id="ct-fins">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Entity</th><th>FY</th><th>Revenue (USD)</th><th>Gross Profit</th><th>GM %</th><th>EBITDA</th><th>Net Profit</th><th>Audit Status</th><th></th></tr></thead><tbody id="tb-fins"></tbody></table><div class="empty-st" id="em-fins"><div class="ico">ð°</div><div class="t">No financial records yet</div><div class="s">Add audited financials per entity per year</div></div></div>
+        <div class="mod-banner sa" style="background:linear-gradient(135deg,rgba(60,8,8,.9) 0%,rgba(120,20,20,.7) 100%)"><div class="mb-icon">Ã°ÂÂÂ°</div><div><div class="mb-num">Module 05 Ã¢ÂÂ RESTRICTED</div><div class="mb-name">Group Financial Repository</div><div class="mb-desc">Audited results for all entities ÃÂ· Chairman, Vin Nair, CFO and named Finance leads only</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('fin')">+ Add Record</button></div>
+        <div class="restricted sa">Ã°ÂÂÂ RESTRICTED Ã¢ÂÂ Do not share, screenshot, or print without CFO written approval. Authorised: Chairman ÃÂ· Vin Nair (CEO D&amp;G) ÃÂ· Group CFO ÃÂ· Named Finance Leads.</div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search entity, yearÃ¢ÂÂ¦" oninput="filt('fins',this.value)"></div><div class="tbl-ct" id="ct-fins">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Entity</th><th>FY</th><th>Revenue (USD)</th><th>Gross Profit</th><th>GM %</th><th>EBITDA</th><th>Net Profit</th><th>Audit Status</th><th></th></tr></thead><tbody id="tb-fins"></tbody></table><div class="empty-st" id="em-fins"><div class="ico">Ã°ÂÂÂ°</div><div class="t">No financial records yet</div><div class="s">Add audited financials per entity per year</div></div></div>
       </div>
 
       <div class="page" id="m6">
-        <div class="mod-banner sa"><div class="mb-icon">ð</div><div><div class="mb-num">Module 06</div><div class="mb-name">Supplier Intelligence Registry</div><div class="mb-desc">Every supplier rated Green / Amber / Red. Red = Do Not Engage without Vin Nair written clearance.</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('suppliers')">â Export</button><button class="btn btn-gold btn-sm" onclick="openDr('supplier')">+ Add Supplier</button></div>
-        <div class="restricted sa" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2)">â  FOUNDING PURPOSE: AQ Global lost AED 50,000 to an unvetted supplier. Every supplier must be registered here. Red-rated entries require CEO sign-off before engagement. Ram Mohan independently verifies all records.</div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">ð</span><input class="tbl-search" placeholder="Search suppliers, categoriesâ¦" oninput="filt('suppliers',this.value)"></div><select class="tbl-sel" onchange="filtF('suppliers','rating',this.value)"><option value="">All Ratings</option><option value="Green">ð¢ Green</option><option value="Amber">ð¡ Amber</option><option value="Red">ð´ Red</option></select><select class="tbl-sel" onchange="filtF('suppliers','category',this.value)"><option value="">All Categories</option><option>Labour Supply</option><option>Catering</option><option>Construction</option><option>Transport</option><option>Security</option></select><div class="tbl-ct" id="ct-suppliers">0 records</div></div>
-        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Supplier</th><th>Category</th><th>Region</th><th>Rating</th><th>Status</th><th>Verified</th><th>Exposure</th><th>Contact</th><th></th></tr></thead><tbody id="tb-suppliers"></tbody></table><div class="empty-st" id="em-suppliers" style="display:none"><div class="ico">ð</div><div class="t">No suppliers yet</div></div></div>
+        <div class="mod-banner sa"><div class="mb-icon">Ã°ÂÂÂ</div><div><div class="mb-num">Module 06</div><div class="mb-name">Supplier Intelligence Registry</div><div class="mb-desc">Every supplier rated Green / Amber / Red. Red = Do Not Engage without Vin Nair written clearance.</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('suppliers')">Ã¢ÂÂ Export</button><button class="btn btn-gold btn-sm" onclick="openDr('supplier')">+ Add Supplier</button></div>
+        <div class="restricted sa" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2)">Ã¢ÂÂ  FOUNDING PURPOSE: AQ Global lost AED 50,000 to an unvetted supplier. Every supplier must be registered here. Red-rated entries require CEO sign-off before engagement. Ram Mohan independently verifies all records.</div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">Ã°ÂÂÂ</span><input class="tbl-search" placeholder="Search suppliers, categoriesÃ¢ÂÂ¦" oninput="filt('suppliers',this.value)"></div><select class="tbl-sel" onchange="filtF('suppliers','rating',this.value)"><option value="">All Ratings</option><option value="Green">Ã°ÂÂÂ¢ Green</option><option value="Amber">Ã°ÂÂÂ¡ Amber</option><option value="Red">Ã°ÂÂÂ´ Red</option></select><select class="tbl-sel" onchange="filtF('suppliers','category',this.value)"><option value="">All Categories</option><option>Labour Supply</option><option>Catering</option><option>Construction</option><option>Transport</option><option>Security</option></select><div class="tbl-ct" id="ct-suppliers">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Supplier</th><th>Category</th><th>Region</th><th>Rating</th><th>Status</th><th>Verified</th><th>Exposure</th><th>Contact</th><th></th></tr></thead><tbody id="tb-suppliers"></tbody></table><div class="empty-st" id="em-suppliers" style="display:none"><div class="ico">Ã°ÂÂÂ</div><div class="t">No suppliers yet</div></div></div>
       </div>
 
     </main>
@@ -820,25 +820,25 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 <div class="overlay" id="ov" onclick="closeDr()"></div>
 <div class="drawer" id="drawer">
   <div class="dr-head">
-    <div><div class="dr-title" id="dr-title">Add Record</div><div class="dr-sub" id="dr-sub">Fill all required fields (â)</div></div>
-    <button class="dr-close" onclick="closeDr()">â</button>
+    <div><div class="dr-title" id="dr-title">Add Record</div><div class="dr-sub" id="dr-sub">Fill all required fields (Ã¢ÂÂ)</div></div>
+    <button class="dr-close" onclick="closeDr()">Ã¢ÂÂ</button>
   </div>
   <div class="dr-body" id="dr-body"></div>
   <div class="dr-foot">
     <button class="btn btn-ghost btn-sm" onclick="closeDr()">Cancel</button>
-    <button class="btn btn-gold btn-sm" onclick="saveDr()">Save Record â</button>
+    <button class="btn btn-gold btn-sm" onclick="saveDr()">Save Record Ã¢ÂÂ</button>
   </div>
 </div>
 
 <script>
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-//  CONFIG â paste Supabase credentials to enable shared
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+//  CONFIG Ã¢ÂÂ paste Supabase credentials to enable shared
 //  multi-user mode. Leave blank to use localStorage.
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const SB_URL = 'https://gavwwznxxuhhgtlvxwvu.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdhdnd3em54eHVoaGd0bHZ4d3Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODAzMDksImV4cCI6MjA5Nzk1NjMwOX0.FTE6KLHOJrOa5aHIUEnkCeqdU86VaAYb-Ipu2lOY3WY';
 
-// âââ DATA LAYER âââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ DATA LAYER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let sb = null;
 if (SB_URL && SB_KEY && window.supabase) sb = window.supabase.createClient(SB_URL, SB_KEY);
 
@@ -850,7 +850,7 @@ const DB = {
   upd(k,id,up) { const a=DB.get(k); const i=a.findIndex(r=>r.id==id); if(i>-1){a[i]={...a[i],...up};DB.set(k,a)} }
 };
 
-// âââ AUTH ââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ AUTH Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 async function sbPush(k, arr) {
   try {
@@ -887,7 +887,7 @@ function setLoading(btnId,spinId,on){
   document.getElementById(spinId).style.display=on?'block':'none';
 }
 
-// STEP 1 â Email submitted
+// STEP 1 Ã¢ÂÂ Email submitted
 function authStep1(){
   const email=document.getElementById('l-email').value.trim().toLowerCase();
   document.getElementById('l-eerr').style.display='none';
@@ -900,7 +900,7 @@ function authStep1(){
   setTimeout(()=>document.getElementById('l-pass').focus(),50);
 }
 
-// STEP 2 â Password login
+// STEP 2 Ã¢ÂÂ Password login
 async function authStep2(){
   const pass=document.getElementById('l-pass').value;
   const errEl=document.getElementById('l-perr');
@@ -921,7 +921,7 @@ async function authStep2(){
   finally{ setLoading('l-btn2-txt','l-spin2',false); }
 }
 
-// STEP 3 â Create account (new user sets password)
+// STEP 3 Ã¢ÂÂ Create account (new user sets password)
 async function authStep3(){
   const p1=document.getElementById('l-newpass').value;
   const p2=document.getElementById('l-confpass').value;
@@ -933,7 +933,7 @@ async function authStep3(){
   try{
     const {data,error}=await sb.auth.signUp({email:_authEmail,password:p1,options:{emailRedirectTo:window.location.href}});
     if(error){
-      // User already exists â send them to reset flow to set their password
+      // User already exists Ã¢ÂÂ send them to reset flow to set their password
       if(error.message.toLowerCase().includes('already')){
         toast('Account exists. Use "Forgot password?" on the previous screen to set your password.','er');
         goStep(2);
@@ -943,7 +943,7 @@ async function authStep3(){
       return;
     }
     if(data.session){
-      // Email confirmation not required â log straight in
+      // Email confirmation not required Ã¢ÂÂ log straight in
       CU=data.user.email;
       localStorage.setItem('cb_ses',CU);
       bootApp();
@@ -956,19 +956,19 @@ async function authStep3(){
   finally{ setLoading('l-btn3-txt','l-spin3',false); }
 }
 
-// Forgot password â send reset email
+// Forgot password Ã¢ÂÂ send reset email
 async function sendPasswordReset(){
   if(!_authEmail){goStep(1);return}
   if(!sb){toast('Requires Supabase connection.','er');return}
-  toast('Sending reset link to '+_authEmail+'â¦','in');
+  toast('Sending reset link to '+_authEmail+'Ã¢ÂÂ¦','in');
   const {error}=await sb.auth.resetPasswordForEmail(_authEmail,{redirectTo:window.location.href});
   if(error){ toast('Error: '+error.message,'er'); return; }
   document.getElementById('auth-reset-msg').innerHTML='A password reset link has been sent to <strong>'+_authEmail+'</strong>.<br>Check your inbox.';
   goStep(4);
-  toast('Reset link sent â check your email','ok');
+  toast('Reset link sent Ã¢ÂÂ check your email','ok');
 }
 
-// STEP 5 â Set new password (arrived via reset link)
+// STEP 5 Ã¢ÂÂ Set new password (arrived via reset link)
 async function authStep5(){
   const p1=document.getElementById('l-resetpass').value;
   const p2=document.getElementById('l-resetconfpass').value;
@@ -987,7 +987,7 @@ async function authStep5(){
   finally{ setLoading('l-btn5-txt','l-spin5',false); }
 }
 
-// LOCAL MODE â no Supabase
+// LOCAL MODE Ã¢ÂÂ no Supabase
 function doLocalLogin(){
   const email=document.getElementById('l-email-local').value.trim().toLowerCase();
   document.getElementById('l-eerr-local').style.display='none';
@@ -1002,7 +1002,7 @@ async function doLogout(){
   location.reload();
 }
 
-// ââ MOBILE SIDEBAR TOGGLE ââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ MOBILE SIDEBAR TOGGLE Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function toggleSidebar(){
   const s=document.getElementById('sidebar');
   const o=document.getElementById('sb-overlay');
@@ -1032,14 +1032,14 @@ document.addEventListener('keydown',e=>{
   else goStep(1);
 })();
 
-// âââ SESSION RESTORE & AUTH STATE ââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ SESSION RESTORE & AUTH STATE Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 (async function initSession(){
   if(!sb){ const s=localStorage.getItem('cb_ses'); if(s&&s.endsWith('@aqglobal.net')){CU=s;bootApp();} return; }
 
   // Listen for auth events
   sb.auth.onAuthStateChange((event,session)=>{
     if(event==='PASSWORD_RECOVERY'){
-      // User arrived via password reset link â show set-password form
+      // User arrived via password reset link Ã¢ÂÂ show set-password form
       window.history.replaceState(null,'',window.location.pathname+window.location.search);
       goStep(5);
       setTimeout(()=>document.getElementById('l-resetpass').focus(),50);
@@ -1061,7 +1061,7 @@ document.addEventListener('keydown',e=>{
   }
 })();
 
-// âââ BOOT ââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ BOOT Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 async function bootApp(){
   await sbPull();
   seedSupplier();
@@ -1072,7 +1072,7 @@ async function bootApp(){
   const h=new Date().getHours();
   const greet=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
   document.getElementById('dh-greet').textContent=greet+', '+name.split(' ')[0];
-  document.getElementById('dh-sub').textContent='25 years of AQ Global institutional knowledge â now centralised.';
+  document.getElementById('dh-sub').textContent='25 years of AQ Global institutional knowledge Ã¢ÂÂ now centralised.';
   gsap.to('#login',{opacity:0,duration:.5,ease:'power2.in',onComplete:()=>{
     document.getElementById('login').style.display='none';
     document.getElementById('app').classList.add('on');
@@ -1085,28 +1085,28 @@ function initApp(){
   initParticles();
   initScrollAnim();
   init3DTilt();
-  // topbar and sidebar appear instantly â no clip/overflow issues
+  // topbar and sidebar appear instantly Ã¢ÂÂ no clip/overflow issues
 }
 
-// âââ SEED FOUNDING ENTRY âââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ SEED FOUNDING ENTRY Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function seedSupplier(){
   if(DB.get('suppliers').length>0) return;
   const f={
-    id:1000000001,name:'UNCONFIRMED â Pending Ram Mohan Verification',tradingName:'Confirm trading name',
+    id:1000000001,name:'UNCONFIRMED Ã¢ÂÂ Pending Ram Mohan Verification',tradingName:'Confirm trading name',
     category:'Labour Supply',region:'UAE',status:'Blacklisted',rating:'Red',
     exposure:'13600',exposureAED:'50000',
-    disputeDetail:'AED 50,000 financial loss â supplier engaged without prior vetting. Active fraud case as at June 2026. Ram Mohan to confirm all details and complete this record.',
+    disputeDetail:'AED 50,000 financial loss Ã¢ÂÂ supplier engaged without prior vetting. Active fraud case as at June 2026. Ram Mohan to confirm all details and complete this record.',
     tradeLicenseVerified:'No',bankVerified:'No',referencesChecked:'No',
-    contact:'Unknown â not verified at time of engagement',phone:'Unknown',email:'Unknown',
+    contact:'Unknown Ã¢ÂÂ not verified at time of engagement',phone:'Unknown',email:'Unknown',
     notes:'FOUNDING ENTRY: This registry was created because AQ Global lost AED 50,000 to this unvetted supplier. No documentation was obtained before engagement. Ram Mohan to investigate.',
     redFlags:'No trade license. No bank verification. No references. AED 50,000 exposure.',
-    legalAction:'Active â as at June 2026',ratingJustification:'AED 50,000 fraud/financial loss. Zero pre-engagement vetting.',
+    legalAction:'Active Ã¢ÂÂ as at June 2026',ratingJustification:'AED 50,000 fraud/financial loss. Zero pre-engagement vetting.',
     by:'Raj Verma',at:'25-Jun-2026',isFounder:true
   };
   DB.set('suppliers',[f]);
 }
 
-// âââ NAVIGATION ââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ NAVIGATION Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let CP='dash';
 function nav(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
@@ -1124,7 +1124,7 @@ function nav(id){
   refreshAll();
 }
 
-// âââ REFRESH ALL âââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ REFRESH ALL Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let RD={};
 function refreshAll(){
   RD.contracts =DB.get('contracts');
@@ -1142,7 +1142,7 @@ function refreshAll(){
   renderDash();
 }
 
-// âââ DASHBOARD âââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ DASHBOARD Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function renderDash(){
   const {contracts,brand,tdocs,compliance,fins,suppliers}=RD;
   const red=suppliers.filter(s=>s.rating==='Red').length;
@@ -1158,12 +1158,12 @@ function renderDash(){
   },300);
   // Module cards
   const mods=[
-    {id:'m1',num:'01',name:'Contract Registry',desc:'Historical contract execution record',icon:'ð',count:contracts.length,lbl:'contracts',c:'#F85700'},
-    {id:'m2',num:'02',name:'Brand Repository',desc:'Logos, templates, and collateral',icon:'ð¨',count:brand.length,lbl:'assets',c:'#8B5CF6'},
-    {id:'m3',num:'03',name:'Technical Docs',desc:'Proposals, SOWs â reusability-rated',icon:'ð',count:tdocs.length,lbl:'documents',c:'#3B82F6'},
-    {id:'m4',num:'04',name:'Compliance',desc:'Safety plans and quality frameworks',icon:'ð¡ï¸',count:compliance.length,lbl:'documents',c:'#22C55E'},
-    {id:'m5',num:'05',name:'Financials',desc:'Restricted â audited per entity per year',icon:'ð°',count:fins.length,lbl:'records',c:'#EF4444'},
-    {id:'m6',num:'06',name:'Supplier Registry',desc:'Green / Amber / Red risk rated',icon:'ð',count:suppliers.length,lbl:'suppliers',c:'#F59E0B'},
+    {id:'m1',num:'01',name:'Contract Registry',desc:'Historical contract execution record',icon:'Ã°ÂÂÂ',count:contracts.length,lbl:'contracts',c:'#F85700'},
+    {id:'m2',num:'02',name:'Brand Repository',desc:'Logos, templates, and collateral',icon:'Ã°ÂÂÂ¨',count:brand.length,lbl:'assets',c:'#8B5CF6'},
+    {id:'m3',num:'03',name:'Technical Docs',desc:'Proposals, SOWs Ã¢ÂÂ reusability-rated',icon:'Ã°ÂÂÂ',count:tdocs.length,lbl:'documents',c:'#3B82F6'},
+    {id:'m4',num:'04',name:'Compliance',desc:'Safety plans and quality frameworks',icon:'Ã°ÂÂÂ¡Ã¯Â¸Â',count:compliance.length,lbl:'documents',c:'#22C55E'},
+    {id:'m5',num:'05',name:'Financials',desc:'Restricted Ã¢ÂÂ audited per entity per year',icon:'Ã°ÂÂÂ°',count:fins.length,lbl:'records',c:'#EF4444'},
+    {id:'m6',num:'06',name:'Supplier Registry',desc:'Green / Amber / Red risk rated',icon:'Ã°ÂÂÂ',count:suppliers.length,lbl:'suppliers',c:'#F59E0B'},
   ];
   document.getElementById('mod-grid').innerHTML=mods.map((m,i)=>`
     <div class="mod-card sa sa-d${i+1}" onclick="nav('${m.id}')">
@@ -1174,42 +1174,42 @@ function renderDash(){
         <div class="mc-desc">${m.desc}</div>
         <div class="mc-foot">
           <div><div class="mc-count">${m.count}</div><div class="mc-count-l">${m.lbl}</div></div>
-          <div class="mc-arrow">â</div>
+          <div class="mc-arrow">Ã¢ÂÂ</div>
         </div>
       </div>
     </div>`).join('');
   // Alerts
   const as=[];
-  as.push({c:'r',t:'â  FOUNDING ENTRY: AED 50,000 fraud case active â Ram Mohan to verify and complete supplier record in Module 06',m:'June 2026 Â· Active'});
-  if(red>1) as.push({c:'r',t:`${red} Red-rated suppliers flagged â CEO sign-off required before any engagement`,m:'Pending Vin Nair review'});
-  compliance.filter(c=>c.status==='Expired').forEach(c=>as.push({c:'r',t:`EXPIRED: ${c.title} â immediate renewal required`,m:'Action now'}));
-  if(!contracts.length) as.push({c:'a',t:'Module 01 Contract Registry is empty â entity leads to submit data by Day 15',m:'Deadline: Day 15'});
+  as.push({c:'r',t:'Ã¢ÂÂ  FOUNDING ENTRY: AED 50,000 fraud case active Ã¢ÂÂ Ram Mohan to verify and complete supplier record in Module 06',m:'June 2026 ÃÂ· Active'});
+  if(red>1) as.push({c:'r',t:`${red} Red-rated suppliers flagged Ã¢ÂÂ CEO sign-off required before any engagement`,m:'Pending Vin Nair review'});
+  compliance.filter(c=>c.status==='Expired').forEach(c=>as.push({c:'r',t:`EXPIRED: ${c.title} Ã¢ÂÂ immediate renewal required`,m:'Action now'}));
+  if(!contracts.length) as.push({c:'a',t:'Module 01 Contract Registry is empty Ã¢ÂÂ entity leads to submit data by Day 15',m:'Deadline: Day 15'});
   as.push({c:'a',t:'Day 5 milestone: Intake templates to be distributed to all entity leads (Raj Verma)',m:'Day 5'});
-  as.push({c:'g',t:'Command Brain v2.0 is live â all modules open for data intake',m:'Now'});
+  as.push({c:'g',t:'Command Brain v2.0 is live Ã¢ÂÂ all modules open for data intake',m:'Now'});
   document.getElementById('alerts').innerHTML=as.map(a=>`
     <div class="alert-row"><div class="adot ${a.c}"></div><div><div class="at">${a.t}</div><div class="atm">${a.m}</div></div></div>`).join('');
   setTimeout(()=>init3DTilt(),100);
 }
 
-// âââ RENDERERS âââââââââââââââââââââââââââââââââââââââââââ
-function fmtUSD(v){return v?'$'+parseFloat(v).toLocaleString('en-US',{maximumFractionDigits:0}):'â'}
-function pct(a,b){return a&&b?((parseFloat(a)/parseFloat(b))*100).toFixed(1)+'%':'â'}
-function cpars(r){const m={'Exceptional':5,'Very Good':4,'Satisfactory':3,'Marginal':2,'Unsatisfactory':1};const n=m[r]||0;return n?`<div class="stars">${'x'.repeat(n).split('').map(()=>'<span class="star f">â</span>').join('')}${'x'.repeat(5-n).split('').map(()=>'<span class="star e">â</span>').join('')}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">${r}</div>`:r?`<span style="font-size:11px;color:var(--tx3)">${r}</span>`:'â'}
-function stB(s){const m={Active:'bdg-g',Completed:'bdg-gd','Terminated':'bdg-r','Terminated for Convenience':'bdg-gr','Active â Client Accepted':'bdg-g',Expired:'bdg-r','Under Review':'bdg-a',Approved:'bdg-b',Deprecated:'bdg-r',Probationary:'bdg-a',Blacklisted:'bdg-r',Audited:'bdg-g','Unaudited Draft':'bdg-a','Under Audit':'bdg-a','Management Accounts':'bdg-gr'};return `<span class="bdg ${m[s]||'bdg-gr'}">${s||'â'}</span>`}
-function rtB(r){if(!r) return '<span class="bdg bdg-gr">Unknown</span>';if(r==='Green') return '<span class="bdg bdg-g">ð¢ Trusted</span>';if(r==='Amber') return '<span class="bdg bdg-a">ð¡ Caution</span>';if(r==='Red') return '<span class="bdg bdg-r">ð´ Do Not Engage</span>';return `<span class="bdg bdg-gr">${r}</span>`}
-function vfB(v){return v==='Yes'?'<span class="bdg bdg-g">â Verified</span>':v==='No'?'<span class="bdg bdg-r">â Not Verified</span>':'<span class="bdg bdg-a">Pending</span>'}
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ RENDERERS Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+function fmtUSD(v){return v?'$'+parseFloat(v).toLocaleString('en-US',{maximumFractionDigits:0}):'Ã¢ÂÂ'}
+function pct(a,b){return a&&b?((parseFloat(a)/parseFloat(b))*100).toFixed(1)+'%':'Ã¢ÂÂ'}
+function cpars(r){const m={'Exceptional':5,'Very Good':4,'Satisfactory':3,'Marginal':2,'Unsatisfactory':1};const n=m[r]||0;return n?`<div class="stars">${'x'.repeat(n).split('').map(()=>'<span class="star f">Ã¢ÂÂ</span>').join('')}${'x'.repeat(5-n).split('').map(()=>'<span class="star e">Ã¢ÂÂ</span>').join('')}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">${r}</div>`:r?`<span style="font-size:11px;color:var(--tx3)">${r}</span>`:'Ã¢ÂÂ'}
+function stB(s){const m={Active:'bdg-g',Completed:'bdg-gd','Terminated':'bdg-r','Terminated for Convenience':'bdg-gr','Active Ã¢ÂÂ Client Accepted':'bdg-g',Expired:'bdg-r','Under Review':'bdg-a',Approved:'bdg-b',Deprecated:'bdg-r',Probationary:'bdg-a',Blacklisted:'bdg-r',Audited:'bdg-g','Unaudited Draft':'bdg-a','Under Audit':'bdg-a','Management Accounts':'bdg-gr'};return `<span class="bdg ${m[s]||'bdg-gr'}">${s||'Ã¢ÂÂ'}</span>`}
+function rtB(r){if(!r) return '<span class="bdg bdg-gr">Unknown</span>';if(r==='Green') return '<span class="bdg bdg-g">Ã°ÂÂÂ¢ Trusted</span>';if(r==='Amber') return '<span class="bdg bdg-a">Ã°ÂÂÂ¡ Caution</span>';if(r==='Red') return '<span class="bdg bdg-r">Ã°ÂÂÂ´ Do Not Engage</span>';return `<span class="bdg bdg-gr">${r}</span>`}
+function vfB(v){return v==='Yes'?'<span class="bdg bdg-g">Ã¢ÂÂ Verified</span>':v==='No'?'<span class="bdg bdg-r">Ã¢ÂÂ Not Verified</span>':'<span class="bdg bdg-a">Pending</span>'}
 function acts(key,id){return `<button class="tbl-act" onclick="editR('${key}',${id})">Edit</button> <button class="tbl-act d" onclick="delR('${key}',${id})">Del</button>`}
 function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
 
 function renderContracts(d){
   showEmpty('contracts',d);
   document.getElementById('tb-contracts').innerHTML=d.map(r=>`<tr>
-    <td><strong style="color:var(--tx)">${r.contractNo||'â'}</strong>${r.taskOrder?`<div style="font-size:10px;color:var(--tx3)">${r.taskOrder}</div>`:''}</td>
-    <td style="font-size:12px">${r.entity||'â'}</td>
-    <td><div style="font-size:12px">${r.customer||'â'}</div>${r.prime?`<div style="font-size:10px;color:var(--tx3)">via ${r.prime}</div>`:''}</td>
-    <td><span class="bdg bdg-gd">${r.role||'â'}</span></td>
-    <td style="font-size:12px">${r.region||'â'}</td>
-    <td style="font-size:11px">${r.service||'â'}</td>
+    <td><strong style="color:var(--tx)">${r.contractNo||'Ã¢ÂÂ'}</strong>${r.taskOrder?`<div style="font-size:10px;color:var(--tx3)">${r.taskOrder}</div>`:''}</td>
+    <td style="font-size:12px">${r.entity||'Ã¢ÂÂ'}</td>
+    <td><div style="font-size:12px">${r.customer||'Ã¢ÂÂ'}</div>${r.prime?`<div style="font-size:10px;color:var(--tx3)">via ${r.prime}</div>`:''}</td>
+    <td><span class="bdg bdg-gd">${r.role||'Ã¢ÂÂ'}</span></td>
+    <td style="font-size:12px">${r.region||'Ã¢ÂÂ'}</td>
+    <td style="font-size:11px">${r.service||'Ã¢ÂÂ'}</td>
     <td style="font-family:monospace">${fmtUSD(r.totalValue)}</td>
     <td>${cpars(r.cpars)}</td>
     <td>${stB(r.status)}</td>
@@ -1218,38 +1218,38 @@ function renderContracts(d){
 function renderBrand(d){
   showEmpty('brand',d);
   document.getElementById('tb-brand').innerHTML=d.map(r=>`<tr>
-    <td><strong style="font-size:12px;color:var(--tx)">${r.fileName||'â'}</strong></td>
-    <td style="font-size:12px">${r.category||'â'}</td><td style="font-size:12px">${r.entity||'â'}</td>
-    <td><span class="bdg bdg-gr">${r.format||'â'}</span></td>
-    <td style="font-size:12px">${r.version||'â'}</td>
-    <td>${r.approvalStatus==='Approved'||r.approvalStatus==='Active â Client Accepted'?'<span class="bdg bdg-g">Approved</span>':r.approvalStatus==='Deprecated'?'<span class="bdg bdg-r">Deprecated</span>':stB(r.approvalStatus)}</td>
-    <td style="font-size:12px">${r.owner||'â'}</td>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.fileName||'Ã¢ÂÂ'}</strong></td>
+    <td style="font-size:12px">${r.category||'Ã¢ÂÂ'}</td><td style="font-size:12px">${r.entity||'Ã¢ÂÂ'}</td>
+    <td><span class="bdg bdg-gr">${r.format||'Ã¢ÂÂ'}</span></td>
+    <td style="font-size:12px">${r.version||'Ã¢ÂÂ'}</td>
+    <td>${r.approvalStatus==='Approved'||r.approvalStatus==='Active Ã¢ÂÂ Client Accepted'?'<span class="bdg bdg-g">Approved</span>':r.approvalStatus==='Deprecated'?'<span class="bdg bdg-r">Deprecated</span>':stB(r.approvalStatus)}</td>
+    <td style="font-size:12px">${r.owner||'Ã¢ÂÂ'}</td>
     <td>${acts('brand',r.id)}</td></tr>`).join('');
 }
 function renderTdocs(d){
   showEmpty('tdocs',d);
   document.getElementById('tb-tdocs').innerHTML=d.map(r=>`<tr>
-    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'â'}</strong></td>
-    <td style="font-size:11px">${r.docType||'â'}</td><td style="font-size:11px">${r.service||'â'}</td><td style="font-size:11px">${r.region||'â'}</td>
-    <td>${r.reuse==='High'?'<span class="bdg bdg-g">ð¢ High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">ð¡ Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
-    <td style="font-size:11px">${r.version||'â'}</td><td style="font-size:11px">${r.author||'â'}</td>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'Ã¢ÂÂ'}</strong></td>
+    <td style="font-size:11px">${r.docType||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.service||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.region||'Ã¢ÂÂ'}</td>
+    <td>${r.reuse==='High'?'<span class="bdg bdg-g">Ã°ÂÂÂ¢ High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">Ã°ÂÂÂ¡ Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
+    <td style="font-size:11px">${r.version||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.author||'Ã¢ÂÂ'}</td>
     <td>${acts('tdocs',r.id)}</td></tr>`).join('');
 }
 function renderCompliance(d){
   showEmpty('compliance',d);
   document.getElementById('tb-compliance').innerHTML=d.map(r=>`<tr>
-    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'â'}</strong></td>
-    <td style="font-size:11px">${r.docType||'â'}</td><td style="font-size:11px">${r.standard||'â'}</td><td style="font-size:11px">${r.region||'â'}</td>
-    <td style="font-size:11px">${r.approvalDate||'â'}</td>
-    <td style="font-size:11px;color:${r.status==='Expired'?'var(--red)':'var(--tx)'};font-weight:${r.status==='Expired'?700:400}">${r.expiryDate||'â'}</td>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'Ã¢ÂÂ'}</strong></td>
+    <td style="font-size:11px">${r.docType||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.standard||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.region||'Ã¢ÂÂ'}</td>
+    <td style="font-size:11px">${r.approvalDate||'Ã¢ÂÂ'}</td>
+    <td style="font-size:11px;color:${r.status==='Expired'?'var(--red)':'var(--tx)'};font-weight:${r.status==='Expired'?700:400}">${r.expiryDate||'Ã¢ÂÂ'}</td>
     <td>${stB(r.status)}</td>
     <td>${acts('compliance',r.id)}</td></tr>`).join('');
 }
 function renderFins(d){
   showEmpty('fins',d);
   document.getElementById('tb-fins').innerHTML=d.map(r=>`<tr>
-    <td><strong style="color:var(--tx)">${r.entity||'â'}</strong></td>
-    <td><span class="bdg bdg-gd">${r.fy||'â'}</span></td>
+    <td><strong style="color:var(--tx)">${r.entity||'Ã¢ÂÂ'}</strong></td>
+    <td><span class="bdg bdg-gd">${r.fy||'Ã¢ÂÂ'}</span></td>
     <td style="font-family:monospace">${fmtUSD(r.revenue)}</td>
     <td style="font-family:monospace">${fmtUSD(r.grossProfit)}</td>
     <td style="font-family:monospace">${pct(r.grossProfit,r.revenue)}</td>
@@ -1263,15 +1263,15 @@ function renderSuppliers(d){
   document.getElementById('em-suppliers').style.display=hasData?'none':'';
   document.getElementById('ct-suppliers').textContent=d.length+' records';
   document.getElementById('tb-suppliers').innerHTML=d.map(r=>`<tr class="${r.rating==='Red'?'danger':''}">
-    <td>${r.isFounder?'<div class="founding-tag">FOUNDING ENTRY</div>':''}<strong style="font-size:12px;color:var(--tx)">${r.name||'â'}</strong>${r.tradingName&&r.tradingName!==r.name?`<div style="font-size:10px;color:var(--tx3)">${r.tradingName}</div>`:''}</td>
-    <td style="font-size:11px">${r.category||'â'}</td><td style="font-size:11px">${r.region||'â'}</td>
+    <td>${r.isFounder?'<div class="founding-tag">FOUNDING ENTRY</div>':''}<strong style="font-size:12px;color:var(--tx)">${r.name||'Ã¢ÂÂ'}</strong>${r.tradingName&&r.tradingName!==r.name?`<div style="font-size:10px;color:var(--tx3)">${r.tradingName}</div>`:''}</td>
+    <td style="font-size:11px">${r.category||'Ã¢ÂÂ'}</td><td style="font-size:11px">${r.region||'Ã¢ÂÂ'}</td>
     <td>${rtB(r.rating)}</td><td>${stB(r.status)}</td><td>${vfB(r.tradeLicenseVerified)}</td>
     <td style="font-family:monospace;font-size:11px;color:${parseFloat(r.exposure)>0?'var(--red)':'var(--tx)'}">${fmtUSD(r.exposure)}</td>
-    <td style="font-size:11px">${r.contact?r.contact.split(' ').slice(0,2).join(' '):'â'}</td>
+    <td style="font-size:11px">${r.contact?r.contact.split(' ').slice(0,2).join(' '):'Ã¢ÂÂ'}</td>
     <td style="white-space:nowrap">${acts('suppliers',r.id)}</td></tr>`).join('');
 }
 
-// âââ FILTER ââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ FILTER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function filt(k,q){const d=RD[k].filter(r=>JSON.stringify(r).toLowerCase().includes(q.toLowerCase()));render(k,d)}
 function filtF(k,f,v){const d=v?RD[k].filter(r=>(r[f]||'').toLowerCase().includes(v.toLowerCase())):RD[k];render(k,d)}
 function render(k,d){
@@ -1283,103 +1283,103 @@ function render(k,d){
   if(k==='suppliers')  renderSuppliers(d);
 }
 
-// âââ FORMS DEFINITION ââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ FORMS DEFINITION Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const F={
-  contract:{title:'Add Contract',sub:'Module 01 â Contract Registry',fields:[
-    {n:'contractNo',l:'Contract Number â',p:'e.g. W52P1J-22-C-0001'},
+  contract:{title:'Add Contract',sub:'Module 01 Ã¢ÂÂ Contract Registry',fields:[
+    {n:'contractNo',l:'Contract Number Ã¢ÂÂ',p:'e.g. W52P1J-22-C-0001'},
     {n:'taskOrder',l:'Task / Delivery Order',p:'e.g. TO-0042'},
-    {n:'entity',l:'AQ Entity â',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Other']},
-    {n:'customer',l:'Buying Entity â',t:'sel',o:['USG â Navy','USG â Army','USG â Air Force','USG â Marines','USG â State Dept','KBR','V2X','Fluor','Amentum','Leidos','ADF','Italian Air Force','Canadian Forces','NGO','Commercial','Other']},
+    {n:'entity',l:'AQ Entity Ã¢ÂÂ',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Other']},
+    {n:'customer',l:'Buying Entity Ã¢ÂÂ',t:'sel',o:['USG Ã¢ÂÂ Navy','USG Ã¢ÂÂ Army','USG Ã¢ÂÂ Air Force','USG Ã¢ÂÂ Marines','USG Ã¢ÂÂ State Dept','KBR','V2X','Fluor','Amentum','Leidos','ADF','Italian Air Force','Canadian Forces','NGO','Commercial','Other']},
     {n:'prime',l:'Prime Contractor (if sub)',p:'e.g. KBR Government Services'},
-    {n:'role',l:'AQ Role â',t:'sel',o:['Prime','Subcontractor','Teaming Partner','Supplier']},
-    {n:'region',l:'Theater / Region â',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CENTCOM-Other','Europe-Other','Africa-Other','CONUS','Multi-Region']},
-    {n:'service',l:'Service Category â',t:'sel',o:['BLS / BASOPS','Construction','Logistics','Security','NTV / Transport','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
-    {n:'startDate',l:'Period Start â',p:'e.g. 01-Mar-2018'},{n:'endDate',l:'Period End (Base) â',p:'e.g. 28-Feb-2019'},
-    {n:'baseValue',l:'Base Value (USD) â',p:'e.g. 4200000'},{n:'totalValue',l:'Total Value incl. Options (USD) â',p:'e.g. 21000000'},
+    {n:'role',l:'AQ Role Ã¢ÂÂ',t:'sel',o:['Prime','Subcontractor','Teaming Partner','Supplier']},
+    {n:'region',l:'Theater / Region Ã¢ÂÂ',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CENTCOM-Other','Europe-Other','Africa-Other','CONUS','Multi-Region']},
+    {n:'service',l:'Service Category Ã¢ÂÂ',t:'sel',o:['BLS / BASOPS','Construction','Logistics','Security','NTV / Transport','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'startDate',l:'Period Start Ã¢ÂÂ',p:'e.g. 01-Mar-2018'},{n:'endDate',l:'Period End (Base) Ã¢ÂÂ',p:'e.g. 28-Feb-2019'},
+    {n:'baseValue',l:'Base Value (USD) Ã¢ÂÂ',p:'e.g. 4200000'},{n:'totalValue',l:'Total Value incl. Options (USD) Ã¢ÂÂ',p:'e.g. 21000000'},
     {n:'aqRevenue',l:'AQ Revenue (USD)',p:'e.g. 18750000'},{n:'co',l:'Contracting Officer',p:'Full name'},
-    {n:'cpars',l:'CPARS Rating â',t:'sel',o:['Exceptional','Very Good','Satisfactory','Marginal','Unsatisfactory','N/A â No CPARS','Pending']},
-    {n:'status',l:'Status â',t:'sel',o:['Active','Completed','Terminated','Terminated for Convenience','Option Not Exercised']},
-    {n:'deliverables',l:'Key Deliverables â',t:'ta',p:'Summarise what was delivered',fw:true},
-    {n:'notes',l:'Lessons Learned',t:'ta',p:'Issues, disputes, lessons â be specific',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Contract Document',t:'link',fw:true}
+    {n:'cpars',l:'CPARS Rating Ã¢ÂÂ',t:'sel',o:['Exceptional','Very Good','Satisfactory','Marginal','Unsatisfactory','N/A Ã¢ÂÂ No CPARS','Pending']},
+    {n:'status',l:'Status Ã¢ÂÂ',t:'sel',o:['Active','Completed','Terminated','Terminated for Convenience','Option Not Exercised']},
+    {n:'deliverables',l:'Key Deliverables Ã¢ÂÂ',t:'ta',p:'Summarise what was delivered',fw:true},
+    {n:'notes',l:'Lessons Learned',t:'ta',p:'Issues, disputes, lessons Ã¢ÂÂ be specific',fw:true},
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Contract Document',t:'link',fw:true}
   ]},
-  brand:{title:'Add Brand Asset',sub:'Module 02 â Brand Repository',fields:[
-    {n:'fileName',l:'File Name â',p:'e.g. AQG_Logo_Primary_v3.ai',fw:true},
-    {n:'category',l:'Category â',t:'sel',o:['Logos','Presentation Templates','Brochures','Capability Statements','Letterheads','Signage','Social Media','Proposal Templates','Other']},
-    {n:'entity',l:'Entity â',t:'sel',o:['AQ Global Group','Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','Multi-Entity','Other']},
-    {n:'format',l:'Format â',t:'sel',o:['AI','EPS','PNG','PDF','PPTX','DOCX','JPG','SVG','ZIP','Other']},
-    {n:'version',l:'Version â',p:'e.g. v3.0'},{n:'versionDate',l:'Version Date â',p:'DD-MMM-YYYY'},
-    {n:'approvalStatus',l:'Approval Status â',t:'sel',o:['Approved','Under Revision','Pending Approval','Deprecated â Do Not Use']},
-    {n:'approvedBy',l:'Approved By',p:'Name'},{n:'owner',l:'Owner / Custodian â',p:'Person or team'},
+  brand:{title:'Add Brand Asset',sub:'Module 02 Ã¢ÂÂ Brand Repository',fields:[
+    {n:'fileName',l:'File Name Ã¢ÂÂ',p:'e.g. AQG_Logo_Primary_v3.ai',fw:true},
+    {n:'category',l:'Category Ã¢ÂÂ',t:'sel',o:['Logos','Presentation Templates','Brochures','Capability Statements','Letterheads','Signage','Social Media','Proposal Templates','Other']},
+    {n:'entity',l:'Entity Ã¢ÂÂ',t:'sel',o:['AQ Global Group','Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','Multi-Entity','Other']},
+    {n:'format',l:'Format Ã¢ÂÂ',t:'sel',o:['AI','EPS','PNG','PDF','PPTX','DOCX','JPG','SVG','ZIP','Other']},
+    {n:'version',l:'Version Ã¢ÂÂ',p:'e.g. v3.0'},{n:'versionDate',l:'Version Date Ã¢ÂÂ',p:'DD-MMM-YYYY'},
+    {n:'approvalStatus',l:'Approval Status Ã¢ÂÂ',t:'sel',o:['Approved','Under Revision','Pending Approval','Deprecated Ã¢ÂÂ Do Not Use']},
+    {n:'approvedBy',l:'Approved By',p:'Name'},{n:'owner',l:'Owner / Custodian Ã¢ÂÂ',p:'Person or team'},
     {n:'filePath',l:'SharePoint / File Path',p:'SharePoint > 02 Brand > ...',fw:true},
     {n:'notes',l:'Notes / Restrictions',t:'ta',p:'Any restrictions or notes',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Brand Asset File',t:'link',fw:true}
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Brand Asset File',t:'link',fw:true}
   ]},
-  tdoc:{title:'Add Technical Document',sub:'Module 03 â Technical Doc Library',fields:[
-    {n:'title',l:'Document Title â',p:'Full title as it appears',fw:true},
-    {n:'docType',l:'Document Type â',t:'sel',o:['Technical Proposal','Method Statement','SOW / Scope of Work','Work Plan','Manning Chart','Equipment List','Quality Plan','Training Plan','Transition Plan','Project Management Plan','Other']},
-    {n:'service',l:'Service Category â',t:'sel',o:['BLS / BASOPS','Construction','NTV / Transport','Logistics','Security','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
-    {n:'region',l:'Region â',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+  tdoc:{title:'Add Technical Document',sub:'Module 03 Ã¢ÂÂ Technical Doc Library',fields:[
+    {n:'title',l:'Document Title Ã¢ÂÂ',p:'Full title as it appears',fw:true},
+    {n:'docType',l:'Document Type Ã¢ÂÂ',t:'sel',o:['Technical Proposal','Method Statement','SOW / Scope of Work','Work Plan','Manning Chart','Equipment List','Quality Plan','Training Plan','Transition Plan','Project Management Plan','Other']},
+    {n:'service',l:'Service Category Ã¢ÂÂ',t:'sel',o:['BLS / BASOPS','Construction','NTV / Transport','Logistics','Security','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'region',l:'Region Ã¢ÂÂ',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
     {n:'contract',l:'Related Contract No.',p:'Contract this was produced under'},
-    {n:'classification',l:'Classification â',t:'sel',o:['Unclassified','Controlled','Client Sensitive','Proprietary']},
-    {n:'reuse',l:'Reusability Rating â',t:'sel',o:['High','Medium','Low']},
-    {n:'version',l:'Version â',p:'e.g. v1.0'},{n:'author',l:'Author â',p:'Name'},
+    {n:'classification',l:'Classification Ã¢ÂÂ',t:'sel',o:['Unclassified','Controlled','Client Sensitive','Proprietary']},
+    {n:'reuse',l:'Reusability Rating Ã¢ÂÂ',t:'sel',o:['High','Medium','Low']},
+    {n:'version',l:'Version Ã¢ÂÂ',p:'e.g. v1.0'},{n:'author',l:'Author Ã¢ÂÂ',p:'Name'},
     {n:'reviewedBy',l:'Reviewed By',p:'Name'},
     {n:'keywords',l:'Keywords / Tags',p:'Comma-separated',fw:true},
     {n:'reuseNotes',l:'Reuse Notes',t:'ta',p:'What sections are reusable vs. what needs updating',fw:true},
     {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 03 Technical > ...',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Technical Document',t:'link',fw:true}
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Technical Document',t:'link',fw:true}
   ]},
-  comp:{title:'Add Compliance Document',sub:'Module 04 â Compliance & Safety',fields:[
-    {n:'title',l:'Document Title â',p:'Full title',fw:true},
-    {n:'docType',l:'Document Type â',t:'sel',o:['Safety Plan','OSHA Plan','Emergency Response Plan','Quality Management Plan','Environmental Plan','Site-Specific Safety Plan','Food Safety Plan','Health Surveillance Plan','Other']},
-    {n:'standard',l:'Applicable Standard â',t:'sel',o:['EM 385-1-1','AR 385-10','TB MED 577','TB MED 530','OSHA 29 CFR 1910','OSHA 29 CFR 1926','ISO 9001','ISO 14001','ISO 45001','HACCP','Other']},
-    {n:'region',l:'Region â',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
-    {n:'approvingAuth',l:'Approving Authority â',p:'Client or internal role'},
-    {n:'approvalDate',l:'Approval Date â',p:'DD-MMM-YYYY'},{n:'expiryDate',l:'Expiry / Review Date â',p:'DD-MMM-YYYY â mandatory!'},
-    {n:'status',l:'Status â',t:'sel',o:['Active','Under Review','Expired â Renewal Required','Superseded','Withdrawn']},
-    {n:'version',l:'Version â',p:'e.g. v3.2'},{n:'author',l:'Author',p:'Name'},
+  comp:{title:'Add Compliance Document',sub:'Module 04 Ã¢ÂÂ Compliance & Safety',fields:[
+    {n:'title',l:'Document Title Ã¢ÂÂ',p:'Full title',fw:true},
+    {n:'docType',l:'Document Type Ã¢ÂÂ',t:'sel',o:['Safety Plan','OSHA Plan','Emergency Response Plan','Quality Management Plan','Environmental Plan','Site-Specific Safety Plan','Food Safety Plan','Health Surveillance Plan','Other']},
+    {n:'standard',l:'Applicable Standard Ã¢ÂÂ',t:'sel',o:['EM 385-1-1','AR 385-10','TB MED 577','TB MED 530','OSHA 29 CFR 1910','OSHA 29 CFR 1926','ISO 9001','ISO 14001','ISO 45001','HACCP','Other']},
+    {n:'region',l:'Region Ã¢ÂÂ',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+    {n:'approvingAuth',l:'Approving Authority Ã¢ÂÂ',p:'Client or internal role'},
+    {n:'approvalDate',l:'Approval Date Ã¢ÂÂ',p:'DD-MMM-YYYY'},{n:'expiryDate',l:'Expiry / Review Date Ã¢ÂÂ',p:'DD-MMM-YYYY Ã¢ÂÂ mandatory!'},
+    {n:'status',l:'Status Ã¢ÂÂ',t:'sel',o:['Active','Under Review','Expired Ã¢ÂÂ Renewal Required','Superseded','Withdrawn']},
+    {n:'version',l:'Version Ã¢ÂÂ',p:'e.g. v3.2'},{n:'author',l:'Author',p:'Name'},
     {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 04 Compliance > ...',fw:true},
     {n:'notes',l:'Notes',t:'ta',p:'Context, linked contracts, renewal reminders',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Compliance Document',t:'link',fw:true}
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Compliance Document',t:'link',fw:true}
   ]},
-  fin:{title:'Add Financial Record',sub:'Module 05 â RESTRICTED',fields:[
-    {n:'entity',l:'Entity â',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Group Consolidated']},
-    {n:'fy',l:'Financial Year â',t:'sel',o:['FY2001','FY2002','FY2003','FY2004','FY2005','FY2006','FY2007','FY2008','FY2009','FY2010','FY2011','FY2012','FY2013','FY2014','FY2015','FY2016','FY2017','FY2018','FY2019','FY2020','FY2021','FY2022','FY2023','FY2024','FY2025']},
-    {n:'reportingCurrency',l:'Reporting Currency â',t:'sel',o:['AED','USD','GBP','PLN','KWD','SAR','BHD','KES','EUR']},
-    {n:'fxRate',l:'USD FX Rate Used â',p:'e.g. 3.67 for AED'},
-    {n:'revenue',l:'Revenue (USD equiv.) â',p:'e.g. 18250000'},{n:'grossProfit',l:'Gross Profit (USD) â',p:'e.g. 5150000'},
-    {n:'ebitda',l:'EBITDA (USD) â',p:'e.g. 3800000'},{n:'netProfit',l:'Net Profit / (Loss) (USD) â',p:'e.g. 2900000'},
-    {n:'auditStatus',l:'Audit Status â',t:'sel',o:['Audited','Management Accounts','Unaudited Draft','Under Audit']},
+  fin:{title:'Add Financial Record',sub:'Module 05 Ã¢ÂÂ RESTRICTED',fields:[
+    {n:'entity',l:'Entity Ã¢ÂÂ',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Group Consolidated']},
+    {n:'fy',l:'Financial Year Ã¢ÂÂ',t:'sel',o:['FY2001','FY2002','FY2003','FY2004','FY2005','FY2006','FY2007','FY2008','FY2009','FY2010','FY2011','FY2012','FY2013','FY2014','FY2015','FY2016','FY2017','FY2018','FY2019','FY2020','FY2021','FY2022','FY2023','FY2024','FY2025']},
+    {n:'reportingCurrency',l:'Reporting Currency Ã¢ÂÂ',t:'sel',o:['AED','USD','GBP','PLN','KWD','SAR','BHD','KES','EUR']},
+    {n:'fxRate',l:'USD FX Rate Used Ã¢ÂÂ',p:'e.g. 3.67 for AED'},
+    {n:'revenue',l:'Revenue (USD equiv.) Ã¢ÂÂ',p:'e.g. 18250000'},{n:'grossProfit',l:'Gross Profit (USD) Ã¢ÂÂ',p:'e.g. 5150000'},
+    {n:'ebitda',l:'EBITDA (USD) Ã¢ÂÂ',p:'e.g. 3800000'},{n:'netProfit',l:'Net Profit / (Loss) (USD) Ã¢ÂÂ',p:'e.g. 2900000'},
+    {n:'auditStatus',l:'Audit Status Ã¢ÂÂ',t:'sel',o:['Audited','Management Accounts','Unaudited Draft','Under Audit']},
     {n:'auditFirm',l:'Audit Firm',p:'e.g. Ernst & Young UAE'},{n:'signOffDate',l:'Audit Sign-Off Date',p:'DD-MMM-YYYY'},
     {n:'majorContracts',l:'Major Revenue Contracts',p:'Top revenue-driving contracts this year',fw:true},
     {n:'notes',l:'Key Events / Notes',t:'ta',p:'Restatements, M&A, large contract starts/ends',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Financial Report (Audited Accounts / P&L / Balance Sheet)',t:'link',fw:true}
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Financial Report (Audited Accounts / P&L / Balance Sheet)',t:'link',fw:true}
   ]},
-  supplier:{title:'Add Supplier Record',sub:'Module 06 â Supplier Intelligence Registry',fields:[
-    {n:'name',l:'Supplier Legal Name â',p:'Full registered legal name'},
+  supplier:{title:'Add Supplier Record',sub:'Module 06 Ã¢ÂÂ Supplier Intelligence Registry',fields:[
+    {n:'name',l:'Supplier Legal Name Ã¢ÂÂ',p:'Full registered legal name'},
     {n:'tradingName',l:'Trading Name',p:'If different from legal name'},
-    {n:'category',l:'Supply Category â',t:'sel',o:['Labour Supply','Catering / Food','Construction Materials','Transport / Fleet','Security Services','Equipment / Plant','Facilities Services','Professional Services','IT / Comms','Fuel / Utilities','Other']},
-    {n:'region',l:'Country of Registration â',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','USA','UK','Germany','Italy','Other-MENA','Other-Europe','Other-Africa','Global']},
-    {n:'territory',l:'Territory of Operation â',p:'Countries / regions they actually operate in',fw:true},
-    {n:'status',l:'Status â',t:'sel',o:['Active','Approved','Probationary','Blacklisted','Under Review','Inactive']},
-    {n:'rating',l:'Risk Rating â',t:'rating'},
-    {n:'ratingJustification',l:'Rating Justification â',t:'ta',p:'Specific reason â required for Amber and Red. Be factual.',fw:true},
-    {n:'exposure',l:'Financial Exposure (USD) â',p:'Enter 0 if none'},{n:'exposureAED',l:'Financial Exposure (AED)',p:'If applicable'},
+    {n:'category',l:'Supply Category Ã¢ÂÂ',t:'sel',o:['Labour Supply','Catering / Food','Construction Materials','Transport / Fleet','Security Services','Equipment / Plant','Facilities Services','Professional Services','IT / Comms','Fuel / Utilities','Other']},
+    {n:'region',l:'Country of Registration Ã¢ÂÂ',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','USA','UK','Germany','Italy','Other-MENA','Other-Europe','Other-Africa','Global']},
+    {n:'territory',l:'Territory of Operation Ã¢ÂÂ',p:'Countries / regions they actually operate in',fw:true},
+    {n:'status',l:'Status Ã¢ÂÂ',t:'sel',o:['Active','Approved','Probationary','Blacklisted','Under Review','Inactive']},
+    {n:'rating',l:'Risk Rating Ã¢ÂÂ',t:'rating'},
+    {n:'ratingJustification',l:'Rating Justification Ã¢ÂÂ',t:'ta',p:'Specific reason Ã¢ÂÂ required for Amber and Red. Be factual.',fw:true},
+    {n:'exposure',l:'Financial Exposure (USD) Ã¢ÂÂ',p:'Enter 0 if none'},{n:'exposureAED',l:'Financial Exposure (AED)',p:'If applicable'},
     {n:'disputeDetail',l:'Dispute / Loss Detail',t:'ta',p:'Full description of any financial dispute or loss',fw:true},
     {n:'tradeLicenseNo',l:'Trade License No.',p:'License number'},{n:'tradeLicenseExpiry',l:'Trade License Expiry',p:'DD-MMM-YYYY'},
-    {n:'tradeLicenseVerified',l:'Trade License Verified â',t:'sel',o:['Yes','No','Pending','Expired']},
-    {n:'bankVerified',l:'Bank Details Verified â',t:'sel',o:['Yes','No','Pending']},
-    {n:'referencesChecked',l:'References Checked â',t:'sel',o:['Yes','No','Partial']},
-    {n:'contact',l:'Key Contact Name â',p:'Primary contact name'},{n:'phone',l:'Contact Phone â',p:'+971 XX XXX XXXX'},{n:'email',l:'Contact Email â',p:'email@supplier.com'},
-    {n:'notes',l:'Performance Notes â',t:'ta',p:'Specific observations â factual and detailed',fw:true},
+    {n:'tradeLicenseVerified',l:'Trade License Verified Ã¢ÂÂ',t:'sel',o:['Yes','No','Pending','Expired']},
+    {n:'bankVerified',l:'Bank Details Verified Ã¢ÂÂ',t:'sel',o:['Yes','No','Pending']},
+    {n:'referencesChecked',l:'References Checked Ã¢ÂÂ',t:'sel',o:['Yes','No','Partial']},
+    {n:'contact',l:'Key Contact Name Ã¢ÂÂ',p:'Primary contact name'},{n:'phone',l:'Contact Phone Ã¢ÂÂ',p:'+971 XX XXX XXXX'},{n:'email',l:'Contact Email Ã¢ÂÂ',p:'email@supplier.com'},
+    {n:'notes',l:'Performance Notes Ã¢ÂÂ',t:'ta',p:'Specific observations Ã¢ÂÂ factual and detailed',fw:true},
     {n:'redFlags',l:'Red Flags',t:'ta',p:'Late delivery, fraud, misrepresentation, H&S failures',fw:true},
-    {n:'legalAction',l:'Legal Action',p:'Any proceedings â description and status',fw:true},
-    {n:'attachment',l:'ð SharePoint Link â Supporting Documents (Trade License, Bank Letter, References)',t:'link',fw:true}
+    {n:'legalAction',l:'Legal Action',p:'Any proceedings Ã¢ÂÂ description and status',fw:true},
+    {n:'attachment',l:'Ã°ÂÂÂ SharePoint Link Ã¢ÂÂ Supporting Documents (Trade License, Bank Letter, References)',t:'link',fw:true}
   ]}
 };
 
-// âââ DRAWER ââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ DRAWER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let DT='',DID=null;
 function openDr(type,record){
   DT=type; DID=record?record.id:null;
@@ -1400,23 +1400,23 @@ function openDr(type,record){
 function renderField(f,data){
   const v=data?(data[f.n]||''):'';
   const cls='f'+(f.fw?' fw':'');
-  if(f.t==='rating') return `<div class="${cls} fw"><div class="f-lbl">Risk Rating â</div><div class="rating-wrap">
-    <div class="rating-opt" data-v="Green" onclick="selRating(this,'g')"><div class="ro-ico">ð¢</div><div class="ro-lbl">Green</div><div class="ro-sub">Trusted</div></div>
-    <div class="rating-opt" data-v="Amber" onclick="selRating(this,'a')"><div class="ro-ico">ð¡</div><div class="ro-lbl">Amber</div><div class="ro-sub">Use With Caution</div></div>
-    <div class="rating-opt" data-v="Red" onclick="selRating(this,'r')"><div class="ro-ico">ð´</div><div class="ro-lbl">Red</div><div class="ro-sub">Do Not Engage</div></div>
+  if(f.t==='rating') return `<div class="${cls} fw"><div class="f-lbl">Risk Rating Ã¢ÂÂ</div><div class="rating-wrap">
+    <div class="rating-opt" data-v="Green" onclick="selRating(this,'g')"><div class="ro-ico">Ã°ÂÂÂ¢</div><div class="ro-lbl">Green</div><div class="ro-sub">Trusted</div></div>
+    <div class="rating-opt" data-v="Amber" onclick="selRating(this,'a')"><div class="ro-ico">Ã°ÂÂÂ¡</div><div class="ro-lbl">Amber</div><div class="ro-sub">Use With Caution</div></div>
+    <div class="rating-opt" data-v="Red" onclick="selRating(this,'r')"><div class="ro-ico">Ã°ÂÂÂ´</div><div class="ro-lbl">Red</div><div class="ro-sub">Do Not Engage</div></div>
     </div></div>`;
   if(f.t==='ta') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><textarea class="f-ta" name="${f.n}" placeholder="${f.p||''}">${v}</textarea></div>`;
-  if(f.t==='sel') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><select class="f-sel" name="${f.n}"><option value="">â Select â</option>${f.o.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+  if(f.t==='sel') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><select class="f-sel" name="${f.n}"><option value="">Ã¢ÂÂ Select Ã¢ÂÂ</option>${f.o.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
   if(f.t==='link'){
     return `<div class="${cls} fw"><div class="f-lbl">${f.l}</div>
       <input class="f-inp" type="url" name="${f.n}" placeholder="https://aqglobal.sharepoint.com/..." value="${v}">
-      ${v?`<a href="${v}" target="_blank" class="f-file-link" style="margin-top:6px">ð Open in SharePoint â</a>`:''}
+      ${v?`<a href="${v}" target="_blank" class="f-file-link" style="margin-top:6px">Ã°ÂÂÂ Open in SharePoint Ã¢ÂÂ</a>`:''}
     </div>`;
   }
   return `<div class="${cls}"><div class="f-lbl">${f.l}</div><input class="f-inp" type="text" name="${f.n}" placeholder="${f.p||''}" value="${v}"></div>`;
 }
 
-// âââ FILE UPLOAD ââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ FILE UPLOAD Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const _pendingFiles={};
 
 function handleFileSelect(input,field){
@@ -1461,9 +1461,9 @@ async function saveDr(){
   if(sel) obj.rating=sel.dataset.v;
   // Upload any attached files
   if(Object.keys(_pendingFiles).length){
-    if(!sb){toast('File upload requires Supabase â record saved without attachment','er')}
+    if(!sb){toast('File upload requires Supabase Ã¢ÂÂ record saved without attachment','er')}
     else{
-      toast('Uploading attachmentâ¦','in');
+      toast('Uploading attachmentÃ¢ÂÂ¦','in');
       const fileUrls=await uploadPendingFiles();
       Object.assign(obj,fileUrls);
     }
@@ -1479,7 +1479,7 @@ async function saveDr(){
 function editR(k,id){const r=DB.get(k).find(r=>r.id==id);if(!r)return;const m={contracts:'contract',brand:'brand',tdocs:'tdoc',compliance:'comp',fins:'fin',suppliers:'supplier'};openDr(m[k],r)}
 function delR(k,id){if(!confirm('Delete this record? Cannot be undone.'))return;DB.del(k,id);refreshAll();toast('Record deleted','er')}
 
-// âââ CSV EXPORT âââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ CSV EXPORT Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function csvExp(k){
   const d=DB.get(k);if(!d.length){toast('No data to export','er');return}
   const keys=Object.keys(d[0]);
@@ -1488,17 +1488,17 @@ function csvExp(k){
   a.download=`AQG_${k}_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV downloaded','ok');
 }
 
-// âââ TOAST ââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ TOAST Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 let toastTO;
 function toast(msg,type='in'){
   const t=document.getElementById('toast');
-  t.textContent=(type==='ok'?'â ':type==='er'?'â ':'')+msg;
+  t.textContent=(type==='ok'?'Ã¢ÂÂ ':type==='er'?'Ã¢ÂÂ ':'')+msg;
   t.className='on '+type;
   clearTimeout(toastTO);
   toastTO=setTimeout(()=>t.className='',3000);
 }
 
-// âââ COUNT UP ââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ COUNT UP Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function countUp(id,target){
   const el=document.getElementById(id);
   const start=parseInt(el.textContent)||0;
@@ -1509,7 +1509,7 @@ function countUp(id,target){
   const iv=setInterval(()=>{cur+=inc;steps--;if(steps<=0){el.textContent=target;clearInterval(iv)}else{el.textContent=Math.round(cur)}},step);
 }
 
-// âââ SCROLL ANIMATIONS âââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ SCROLL ANIMATIONS Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function initScrollAnim(){
   const io=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})
@@ -1517,7 +1517,7 @@ function initScrollAnim(){
   document.querySelectorAll('.sa').forEach(el=>{io.observe(el);if(el.getBoundingClientRect().top<window.innerHeight)el.classList.add('in')});
 }
 
-// âââ 3D CARD TILT ââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ 3D CARD TILT Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function init3DTilt(){
   document.querySelectorAll('.mod-card').forEach(card=>{
     card.addEventListener('mousemove',e=>{
@@ -1534,7 +1534,7 @@ function init3DTilt(){
   });
 }
 
-// âââ CANVAS PARTICLES ââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ CANVAS PARTICLES Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 function initParticles(){
   const canvas=document.getElementById('bg-canvas');
   const ctx=canvas.getContext('2d');
@@ -1558,7 +1558,7 @@ function initParticles(){
   draw();
 }
 
-// âââ GSAP ENTRANCE âââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ GSAP ENTRANCE Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 gsap.registerPlugin(ScrollTrigger);
 gsap.from('.login-card',{y:60,opacity:0,duration:.9,delay:.2,ease:'power3.out'});
 gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'});
