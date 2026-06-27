@@ -1047,6 +1047,110 @@ body{background:#020714!important}
 .alert-row{border-left:3px solid rgba(255,95,0,0.7)!important;background:rgba(255,95,0,0.05)!important}
 
 
+
+
+/* ═══ SPACE BOOST ═══ */
+
+html{
+  background:#010610!important;
+}
+body{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+#app,.app,.layout,.app-layout,.main,.main-content,#main,
+.content,.content-wrap,.page,.page.on{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+
+/* Nebula overlay — stronger now */
+body::before{
+  content:''!important;
+  position:fixed!important;inset:0!important;
+  pointer-events:none!important;z-index:1!important;
+  background:
+    radial-gradient(ellipse 70% 60% at 8% 8%, rgba(100,20,220,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 90% 88%, rgba(10,40,200,0.16) 0%, transparent 62%),
+    radial-gradient(ellipse 50% 45% at 62% 20%, rgba(255,60,0,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 45% at 22% 78%, rgba(0,100,240,0.13) 0%, transparent 55%),
+    radial-gradient(ellipse 35% 35% at 48% 55%, rgba(60,0,180,0.07) 0%, transparent 50%)!important;
+}
+
+/* Space canvas */
+#_aqSpace{
+  position:fixed!important;top:0!important;left:0!important;
+  width:100%!important;height:100%!important;
+  pointer-events:none!important;z-index:0!important;
+}
+
+/* Topbar + sidebar — more transparent for star bleed */
+.topbar{
+  background:rgba(1,4,12,0.80)!important;
+  backdrop-filter:blur(22px)!important;
+  -webkit-backdrop-filter:blur(22px)!important;
+  border-bottom:1px solid rgba(255,255,255,0.08)!important;
+  box-shadow:0 1px 0 rgba(255,95,0,0.2)!important;
+  position:relative!important;z-index:10!important;
+}
+.sidebar{
+  background:rgba(2,5,15,0.72)!important;
+  backdrop-filter:blur(18px)!important;
+  -webkit-backdrop-filter:blur(18px)!important;
+  border-right:1px solid rgba(255,255,255,0.06)!important;
+  position:relative!important;z-index:5!important;
+}
+
+/* Panels — translucent so stars show in gaps */
+.panel{
+  background:rgba(4,8,22,0.62)!important;
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+  border:1px solid rgba(255,255,255,0.09)!important;
+  position:relative!important;z-index:2!important;
+}
+.dash-hero{
+  background:rgba(4,8,20,0.75)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+  border:1px solid rgba(255,255,255,0.09)!important;
+  border-top:1px solid rgba(255,95,0,0.55)!important;
+  position:relative!important;z-index:2!important;
+}
+.mod-banner{
+  background:rgba(3,7,18,0.72)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  border-top:1px solid rgba(255,95,0,0.35)!important;
+  position:relative!important;z-index:2!important;
+}
+.tbl-wrap,.tbl-toolbar{
+  background:rgba(2,5,14,0.65)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  position:relative!important;z-index:2!important;
+}
+.mod-card{
+  background:
+    linear-gradient(rgba(5,10,24,0.78),rgba(3,7,16,0.78)) padding-box,
+    linear-gradient(150deg,rgba(255,255,255,0.13) 0%,rgba(255,255,255,0.03) 100%) border-box!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  position:relative!important;z-index:2!important;
+}
+.kpi{
+  background:rgba(4,8,20,0.68)!important;
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+  position:relative!important;z-index:2!important;
+}
+.drawer{
+  background:rgba(2,5,14,0.96)!important;
+  backdrop-filter:blur(24px)!important;
+  -webkit-backdrop-filter:blur(24px)!important;
+  z-index:20!important;
+}
+
 </style>
 </head>
 <body>
@@ -2243,6 +2347,159 @@ function _aqSpace(){
   window.addEventListener('resize',function(){resize();mkStars();});
 }
 
+
+function _aqSpaceV2(){
+  // Kill old canvas
+  var old=document.getElementById('_aqSpace');
+  if(old)old.remove();
+
+  var cv=document.createElement('canvas');
+  cv.id='_aqSpace';
+  document.body.insertBefore(cv,document.body.firstChild);
+
+  var ctx=cv.getContext('2d');
+  var stars=[],comets=[],nebulae=[],W=0,H=0;
+
+  function resize(){
+    W=cv.width=window.innerWidth;
+    H=cv.height=window.innerHeight;
+    buildNebulae();
+  }
+
+  function buildNebulae(){
+    nebulae=[
+      {x:W*0.10,y:H*0.12,rx:W*0.38,ry:H*0.32,c0:'rgba(110,20,230,0.22)',c1:'rgba(110,20,230,0)'},
+      {x:W*0.88,y:H*0.85,rx:W*0.35,ry:H*0.38,c0:'rgba(10,50,220,0.20)',c1:'rgba(10,50,220,0)'},
+      {x:W*0.60,y:H*0.18,rx:W*0.22,ry:H*0.20,c0:'rgba(255,70,0,0.12)',c1:'rgba(255,70,0,0)'},
+      {x:W*0.22,y:H*0.80,rx:W*0.25,ry:H*0.22,c0:'rgba(0,100,255,0.15)',c1:'rgba(0,100,255,0)'},
+      {x:W*0.50,y:H*0.50,rx:W*0.50,ry:H*0.50,c0:'rgba(40,0,120,0.07)',c1:'rgba(40,0,120,0)'}
+    ];
+  }
+
+  function mkStars(){
+    stars=[];
+    var total=300;
+    for(var i=0;i<total;i++){
+      var tier=Math.random();
+      var big=tier>0.9, med=tier>0.75&&tier<=0.9;
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r: big ? Math.random()*2.0+1.2 : med ? Math.random()*1.0+0.6 : Math.random()*0.6+0.15,
+        dx:(Math.random()-0.5)*(big?0.04:0.07),
+        dy:(Math.random()-0.5)*(big?0.03:0.05),
+        phase:Math.random()*6.28,
+        spd:big?0.008:Math.random()*0.014+0.007,
+        base: big ? Math.random()*0.3+0.7 : med ? Math.random()*0.35+0.45 : Math.random()*0.35+0.18,
+        blue:Math.random()>0.72,
+        gold:Math.random()>0.93
+      });
+    }
+  }
+
+  function mkComet(){
+    return{
+      x:-50, y:Math.random()*H*0.55,
+      len:Math.random()*160+90,
+      spd:Math.random()*4+3,
+      angle:Math.PI/5+Math.random()*0.35-0.18,
+      life:1,
+      decay:Math.random()*0.003+0.0015
+    };
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Draw nebula blobs
+    for(var n=0;n<nebulae.length;n++){
+      var nb=nebulae[n];
+      ctx.save();
+      ctx.translate(nb.x,nb.y);
+      ctx.scale(nb.rx/Math.min(nb.rx,nb.ry), nb.ry/Math.min(nb.rx,nb.ry));
+      var r=Math.min(nb.rx,nb.ry);
+      var g=ctx.createRadialGradient(0,0,0,0,0,r);
+      g.addColorStop(0,nb.c0);
+      g.addColorStop(1,nb.c1);
+      ctx.fillStyle=g;
+      ctx.beginPath();
+      ctx.arc(0,0,r,0,6.283);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Draw stars
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i];
+      s.x+=s.dx; s.y+=s.dy; s.phase+=s.spd;
+      if(s.x<-3)s.x=W+3; if(s.x>W+3)s.x=-3;
+      if(s.y<-3)s.y=H+3; if(s.y>H+3)s.y=-3;
+
+      var a=Math.max(0.05, s.base*(0.52+0.48*Math.sin(s.phase)));
+      var col;
+      if(s.gold) col='rgba(255,210,120,'+a+')';
+      else if(s.blue) col='rgba(140,200,255,'+a+')';
+      else col='rgba(255,252,245,'+a+')';
+
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,6.283);
+      ctx.fillStyle=col;
+      ctx.fill();
+
+      // Sparkle cross on large bright stars
+      if(s.r>1.2 && a>0.55){
+        ctx.save();
+        ctx.globalAlpha=a*0.3;
+        ctx.strokeStyle=s.gold?'rgba(255,220,140,1)':'rgba(255,255,255,1)';
+        ctx.lineWidth=0.6;
+        var arm=s.r*3.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x-arm,s.y);ctx.lineTo(s.x+arm,s.y);
+        ctx.moveTo(s.x,s.y-arm);ctx.lineTo(s.x,s.y+arm);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    // Draw comets
+    if(Math.random()<0.004 && comets.length<4) comets.push(mkComet());
+    for(var j=comets.length-1;j>=0;j--){
+      var cm=comets[j];
+      cm.x+=Math.cos(cm.angle)*cm.spd;
+      cm.y+=Math.sin(cm.angle)*cm.spd;
+      cm.life-=cm.decay;
+      if(cm.life<=0||cm.x>W+200){comets.splice(j,1);continue;}
+      var grd=ctx.createLinearGradient(
+        cm.x,cm.y,
+        cm.x-Math.cos(cm.angle)*cm.len,
+        cm.y-Math.sin(cm.angle)*cm.len
+      );
+      grd.addColorStop(0,'rgba(255,255,255,'+(cm.life)+')');
+      grd.addColorStop(0.15,'rgba(200,220,255,'+(cm.life*0.7)+')');
+      grd.addColorStop(0.5,'rgba(120,160,255,'+(cm.life*0.3)+')');
+      grd.addColorStop(1,'rgba(80,120,255,0)');
+      ctx.beginPath();
+      ctx.strokeStyle=grd;
+      ctx.lineWidth=Math.max(0.5,cm.life*2.5);
+      ctx.moveTo(cm.x,cm.y);
+      ctx.lineTo(cm.x-Math.cos(cm.angle)*cm.len,cm.y-Math.sin(cm.angle)*cm.len);
+      ctx.stroke();
+
+      // Comet head glow
+      ctx.beginPath();
+      ctx.arc(cm.x,cm.y,Math.max(0.5,cm.life*2.5),0,6.283);
+      ctx.fillStyle='rgba(255,255,255,'+(cm.life*0.9)+')';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  mkStars();
+  draw();
+  window.addEventListener('resize',function(){resize();mkStars();});
+}
+
 function acts(key,id){return `<button class="tbl-act" onclick="editR('${key}',${id})">Edit</button> <button class="tbl-act d" onclick="delR('${key}',${id})">Del</button>`}
 function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
 
@@ -2609,6 +2866,22 @@ gsap.from('.login-card',{y:60,opacity:0,duration:.9,delay:.2,ease:'power3.out'})
 gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'});
 
 // (session handling is above in initSession)
+</script>
+
+<script>
+(function(){
+  function run(){
+    if(typeof _aqSpaceV2==="function"){_aqSpaceV2();}
+    else{
+      var old=document.getElementById("_aqSpace");if(old)old.remove();
+      var cv=document.createElement("canvas");cv.id="_aqSpace";
+      cv.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0";
+      document.body.insertBefore(cv,document.body.firstChild);
+    }
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){setTimeout(run,150);});}
+  else{setTimeout(run,150);}
+})();
 </script>
 </body>
 </html>
