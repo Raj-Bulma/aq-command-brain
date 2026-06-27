@@ -965,9 +965,7 @@ document.addEventListener('keydown',e=>{
   // Check for existing session
   const {data:{session}}=await sb.auth.getSession();
   if(session&&session.user&&session.user.email.endsWith('@aqglobal.net')){
-    CU=session.user.email;
-    localStorage.setItem('cb_ses',CU);
-    if(!document.getElementById('app').classList.contains('on'))bootApp();
+    if(!CU){CU=session.user.email;localStorage.setItem('cb_ses',CU);bootApp();}else{CU=session.user.email;localStorage.setItem('cb_ses',CU);}
   }
 })();
 
@@ -996,6 +994,7 @@ function initApp(){
   initScrollAnim();
   init3DTilt();
   // topbar and sidebar appear instantly — no clip/overflow issues
+  setTimeout(function(){document.querySelectorAll('#dash .sa').forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*80);});},200);
 }
 
 // ─── SEED FOUNDING ENTRY ─────────────────────────────────
