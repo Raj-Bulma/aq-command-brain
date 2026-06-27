@@ -944,6 +944,7 @@ document.addEventListener('keydown',e=>{
 // ─── SESSION RESTORE & AUTH STATE ────────────────────────
 (async function initSession(){
   if(!sb){ const s=localStorage.getItem('cb_ses'); if(s&&s.endsWith('@aqglobal.net')){CU=s;bootApp();} return; }
+  var _sc=localStorage.getItem('cb_ses');if(_sc&&_sc.endsWith('@aqglobal.net')&&!CU){CU=_sc;bootApp();}
 
   // Listen for auth events
   sb.auth.onAuthStateChange((event,session)=>{
@@ -966,7 +967,7 @@ document.addEventListener('keydown',e=>{
   if(session&&session.user&&session.user.email.endsWith('@aqglobal.net')){
     CU=session.user.email;
     localStorage.setItem('cb_ses',CU);
-    bootApp();
+    if(!document.getElementById('app').classList.contains('on'))bootApp();
   }
 })();
 
@@ -1024,11 +1025,11 @@ function nav(id){
   document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')===`nav('${id}')`)n.classList.add('active')});
   CP=id;
   // Re-trigger scroll animations for new page
+  refreshAll();
   document.querySelectorAll(`#${id} .sa`).forEach((el,i)=>{
     el.classList.remove('in');
     setTimeout(()=>el.classList.add('in'),i*80);
   });
-  refreshAll();
 }
 
 // ─── REFRESH ALL ─────────────────────────────────────────
