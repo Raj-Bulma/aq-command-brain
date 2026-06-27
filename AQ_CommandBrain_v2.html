@@ -995,6 +995,7 @@ function initApp(){
   init3DTilt();
   // topbar and sidebar appear instantly — no clip/overflow issues
   setTimeout(function(){document.querySelectorAll('#dash .sa').forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*80);});},200);
+  setTimeout(_dashIn,300);
 }
 
 // ─── SEED FOUNDING ENTRY ─────────────────────────────────
@@ -1050,6 +1051,10 @@ function refreshAll(){
 }
 
 // ─── DASHBOARD ───────────────────────────────────────────
+function _dashIn(){
+  var els=document.querySelectorAll('#dash .sa');
+  els.forEach(function(el,i){setTimeout(function(){el.classList.add('in');},80+i*70);});
+}
 function renderDash(){
   const {contracts,brand,tdocs,compliance,fins,suppliers}=RD;
   const red=suppliers.filter(s=>s.rating==='Red').length;
@@ -1096,6 +1101,7 @@ function renderDash(){
   document.getElementById('alerts').innerHTML=as.map(a=>`
     <div class="alert-row"><div class="adot ${a.c}"></div><div><div class="at">${a.t}</div><div class="atm">${a.m}</div></div></div>`).join('');
   setTimeout(()=>init3DTilt(),100);
+  setTimeout(_dashIn,160);
 }
 
 // ─── RENDERERS ───────────────────────────────────────────
