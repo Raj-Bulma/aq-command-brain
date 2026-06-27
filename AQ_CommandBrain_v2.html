@@ -476,6 +476,34 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 ._glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;transition:opacity .4s;opacity:0}
 .mc-name,.mc-count,.mc-arrow{will-change:transform;display:inline-block}
 .mod-card{overflow:visible!important}
+
+/* ═══ AQ GLOBAL FX ═══ */
+.kpi-val{
+  background:linear-gradient(90deg,#E2E8F8 0%,#F85700 40%,#FF7A2A 55%,#E2E8F8 80%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:_aqShimmer 5s ease-in-out infinite;
+}
+.adot{animation:_aqDotPulse 2.2s ease-in-out infinite}
+.adot.a{animation-duration:2.8s}
+.adot.g{animation-duration:3.4s}
+@keyframes _aqDotPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.8) saturate(1.5)}}
+@keyframes _aqShimmer{0%,55%{background-position:100% 0}80%{background-position:0% 0}100%{background-position:-100% 0}}
+.nav-item{will-change:transform;border-left-width:3px;transition:background .2s,color .2s,border-color .2s}
+.btn-gold,.btn-ghost,.tbl-act{will-change:transform}
+.dtbl tbody tr{will-change:transform;position:relative}
+.dtbl tbody tr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
+.dtbl tbody tr:hover::before{opacity:0.7}
+.kpi{transform-style:preserve-3d;will-change:transform}
+.panel,.mod-banner,.dash-hero{will-change:transform;transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+.topbar{position:relative;overflow:hidden}
+.drawer.on{box-shadow:-40px 0 120px rgba(0,0,0,.9),0 0 60px rgba(248,87,0,0.06)}
+.bdg{transition:transform .15s,box-shadow .15s}
+.bdg:hover{transform:scale(1.08);box-shadow:0 0 12px currentColor}
+.tbl-act{transition:transform .1s,background .2s,color .2s,border-color .2s}
+
 </style>
 </head>
 <body>
@@ -999,6 +1027,7 @@ function initApp(){
   // topbar and sidebar appear instantly — no clip/overflow issues
   setTimeout(function(){document.querySelectorAll('#dash .sa').forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*80);});},200);
   setTimeout(_dashIn,300);
+  setTimeout(initGlobalFx,350);
 }
 
 // ─── SEED FOUNDING ENTRY ─────────────────────────────────
@@ -1373,6 +1402,120 @@ window.init3DTilt=function(){
     });
   });
 };
+
+function _aqGfx(){
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    if(el._gfx)return;el._gfx=true;
+    var ic=el.querySelector('.ni');
+    el.addEventListener('mouseenter',function(){
+      if(!el.classList.contains('active')){
+        gsap.to(el,{x:7,duration:.18,ease:'power3.out'});
+        if(ic)gsap.to(ic,{scale:1.25,rotate:8,duration:.2,ease:'back.out(3)'});
+      }
+    });
+    el.addEventListener('mouseleave',function(){
+      gsap.to(el,{x:0,duration:.55,ease:'elastic.out(1,.45)'});
+      if(ic)gsap.to(ic,{scale:1,rotate:0,duration:.4,ease:'elastic.out(1,.5)'});
+    });
+  });
+  document.querySelectorAll('.kpi').forEach(function(card){
+    if(card._gfx)return;card._gfx=true;
+    var val=card.querySelector('.kpi-val');
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height;
+      gsap.to(card,{rotateX:(ny-.5)*-14,rotateY:(nx-.5)*14,scale:1.04,duration:.18,ease:'power2.out',transformPerspective:700,overwrite:true});
+      if(val)val.style.animationPlayState='paused';
+    });
+    card.addEventListener('mouseleave',function(){
+      gsap.to(card,{rotateX:0,rotateY:0,scale:1,duration:.7,ease:'elastic.out(1,.5)',transformPerspective:700,overwrite:true});
+      if(val)val.style.animationPlayState='running';
+    });
+  });
+  document.querySelectorAll('.btn-gold,.btn-ghost').forEach(function(btn){
+    if(btn._gfx)return;btn._gfx=true;
+    btn.addEventListener('mousemove',function(e){
+      var r=btn.getBoundingClientRect();
+      var dx=(e.clientX-(r.left+r.width/2))*0.25;
+      var dy=(e.clientY-(r.top+r.height/2))*0.25;
+      gsap.to(btn,{x:dx,y:dy-3,duration:.2,ease:'power2.out',overwrite:true});
+    });
+    btn.addEventListener('mouseleave',function(){
+      gsap.to(btn,{x:0,y:0,duration:.5,ease:'elastic.out(1,.4)',overwrite:true});
+    });
+    btn.addEventListener('mousedown',function(){
+      gsap.to(btn,{y:2,scale:.96,duration:.08,ease:'power3.in',overwrite:true});
+    });
+    btn.addEventListener('mouseup',function(){
+      gsap.to(btn,{y:-3,scale:1.02,duration:.12,ease:'power2.out',overwrite:true});
+      setTimeout(function(){gsap.to(btn,{y:0,scale:1,duration:.4,ease:'elastic.out(1,.5)',overwrite:true});},120);
+    });
+  });
+  document.querySelectorAll('.dtbl tbody tr').forEach(function(tr){
+    if(tr._gfx)return;tr._gfx=true;
+    tr.addEventListener('mouseenter',function(){
+      gsap.to(tr,{x:5,duration:.18,ease:'power2.out'});
+    });
+    tr.addEventListener('mouseleave',function(){
+      gsap.to(tr,{x:0,duration:.5,ease:'elastic.out(1,.45)'});
+    });
+  });
+  (function(){
+    var tb=document.querySelector('.topbar');
+    if(!tb||tb._gfx)return;tb._gfx=true;
+    var gl=document.createElement('div');
+    gl.style.cssText='position:absolute;width:280px;height:280px;border-radius:50%;pointer-events:none;z-index:0;opacity:0;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(248,87,0,0.14) 0%,transparent 65%);transition:opacity .3s';
+    tb.appendChild(gl);
+    tb.addEventListener('mousemove',function(e){
+      var r=tb.getBoundingClientRect();
+      gl.style.left=(e.clientX-r.left)+'px';
+      gl.style.top=(e.clientY-r.top)+'px';
+      gl.style.opacity='1';
+    });
+    tb.addEventListener('mouseleave',function(){gl.style.opacity='0';});
+  })();
+  document.querySelectorAll('.panel,.mod-banner').forEach(function(el){
+    if(el._gfx)return;el._gfx=true;
+    el.addEventListener('mouseenter',function(){
+      gsap.to(el,{y:-4,duration:.28,ease:'power2.out'});
+    });
+    el.addEventListener('mouseleave',function(){
+      gsap.to(el,{y:0,duration:.55,ease:'elastic.out(1,.4)'});
+    });
+  });
+  (function(){
+    var mesh=document.querySelector('.bg-mesh');
+    if(!mesh||mesh._gfx)return;mesh._gfx=true;
+    mesh.style.inset='-30px';
+    var ticking=false;
+    document.addEventListener('mousemove',function(e){
+      if(ticking)return;ticking=true;
+      requestAnimationFrame(function(){
+        var nx=(e.clientX/window.innerWidth-.5)*22;
+        var ny=(e.clientY/window.innerHeight-.5)*14;
+        gsap.to(mesh,{x:nx,y:ny,duration:2.5,ease:'power1.out'});
+        ticking=false;
+      });
+    });
+  })();
+  document.querySelectorAll('.alert-row').forEach(function(row){
+    if(row._gfx)return;row._gfx=true;
+    row.style.borderLeft='3px solid transparent';
+    row.style.transition='background .2s,border-color .2s,padding-left .2s';
+    row.addEventListener('mouseenter',function(){
+      row.style.borderLeftColor='rgba(248,87,0,.5)';
+      row.style.paddingLeft='26px';
+    });
+    row.addEventListener('mouseleave',function(){
+      row.style.borderLeftColor='transparent';
+      row.style.paddingLeft='';
+    });
+  });
+  // Re-run on nav to pick up newly rendered elements
+  clearTimeout(window._aqGfxTimer);
+  window._aqGfxTimer=setTimeout(_aqGfx,500);
+}
+window.initGlobalFx=_aqGfx;
 function acts(key,id){return `<button class="tbl-act" onclick="editR('${key}',${id})">Edit</button> <button class="tbl-act d" onclick="delR('${key}',${id})">Del</button>`}
 function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
 
