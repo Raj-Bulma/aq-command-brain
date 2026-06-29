@@ -2028,6 +2028,8 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
 // AQ-FIX6-GLASS
 (function(){
@@ -2035,21 +2037,15 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
   var st=document.createElement('style');
   st.textContent=
     '.sa{opacity:1!important;transform:none!important;transition:none!important}'+
-    /* Glass cards — dark tinted so space canvas shows through */
-    '.mod-card{'+
-    'background:rgba(8,18,38,0.42)!important;'+
-    'border:1px solid rgba(255,255,255,0.10)!important;'+
-    'backdrop-filter:blur(22px) saturate(1.4)!important;'+
-    '-webkit-backdrop-filter:blur(22px) saturate(1.4)!important;'+
-    'box-shadow:0 8px 32px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.07),inset 0 -1px 0 rgba(0,0,0,0.2)!important;'+
-    'transform-style:preserve-3d!important;will-change:transform!important;}'+
-    '.mod-card:hover{'+
-    'background:rgba(12,24,52,0.5)!important;'+
-    'border-color:rgba(255,255,255,0.18)!important;'+
-    'box-shadow:0 20px 60px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.12),0 0 40px rgba(248,87,0,0.07)!important;}'+
-    /* Make content area transparent so canvas shows through cards */
-    '.content{background:transparent!important;}'+
-    '.layout{background:transparent!important;}';
+    '.mod-card{overflow:visible!important;background:rgba(255,255,255,0.06)!important;'+
+    'border:1px solid rgba(255,255,255,0.13)!important;'+
+    'backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;'+
+    'box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;'+
+    'transform-style:preserve-3d!important;will-change:transform!important;transition:box-shadow .22s!important;}'+
+    '.mod-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.12),0 0 30px rgba(248,87,0,0.08)!important;border-color:rgba(255,255,255,0.22)!important;}'+
+    /* Transparent parents so canvas shows through backdrop-filter */
+    '#app>.layout>.content,#app>.layout,.content,main,.main,.page.on>.inner,.page-body{background:transparent!important;}'+
+    '.mod-grid{background:transparent!important;overflow:visible!important;}';
   document.head.appendChild(st);
 
   new MutationObserver(function(ms){
