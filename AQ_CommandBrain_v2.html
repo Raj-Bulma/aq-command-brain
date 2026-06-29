@@ -2022,10 +2022,12 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
-// AQ-FIX4-FULL
+// AQ-FIX5-NAV
 (function(){
-  // ── Force all scroll-animate visible ─────────────────────────────────
+  // ── Force .sa visible ─────────────────────────────────────────────────
   var st=document.createElement('style');
   st.textContent='.sa{opacity:1!important;transform:none!important;transition:none!important}';
   document.head.appendChild(st);
@@ -2039,26 +2041,68 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
     });
   }).observe(document.body,{childList:true,subtree:true});
 
-  // ── Module definitions ────────────────────────────────────────────────
+  // ── Module definitions (m1–m6 matching original nav IDs) ─────────────
   var MODS=[
-    {num:'01',name:'Contract Registry',desc:'Track all active and expired contracts across CENTCOM, EUROPE, and AFRICA theaters.',page:'contracts',color:'#F85700'},
-    {num:'02',name:'Brand Repository',desc:'Centralised brand assets, guidelines, and approved collateral for all entities.',page:'brand',color:'#3B82F6'},
-    {num:'03',name:'Technical Docs',desc:'Engineering specs, SOPs, and technical documentation repository.',page:'techdocs',color:'#22C55E'},
-    {num:'04',name:'Compliance',desc:'Regulatory compliance tracking, audit trails, and certification status.',page:'compliance',color:'#F59E0B'},
-    {num:'05',name:'Financials',desc:'Budget tracking, P&L summaries, and financial reporting across entities.',page:'financials',color:'#A855F7'},
-    {num:'06',name:'Suppliers',desc:'Supplier registry, vetting status, and procurement relationships.',page:'suppliers',color:'#06B6D4'}
+    {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across CENTCOM, EUROPE, and AFRICA.',     id:'m1',color:'#F85700'},
+    {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral for all entities.',  id:'m2',color:'#3B82F6'},
+    {num:'03',name:'Technical Docs',     desc:'Engineering specs, SOPs, and technical documentation repository.',                id:'m3',color:'#22C55E'},
+    {num:'04',name:'Compliance',         desc:'Regulatory compliance tracking, audit trails, and certification status.',          id:'m4',color:'#F59E0B'},
+    {num:'05',name:'Financials',         desc:'Budget tracking, P&L summaries, and financial reporting across entities.',         id:'m5',color:'#A855F7'},
+    {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement relationships.',                id:'m6',color:'#06B6D4'}
   ];
 
-  // ── Render module cards into .mod-grid ────────────────────────────────
+  // ── nav(): ALWAYS override — finds page by multiple ID patterns ───────
+  window.nav = function(id) {
+    // Try every plausible page ID pattern
+    var pg = document.getElementById(id)
+          || document.getElementById('pg-'+id)
+          || document.getElementById('p-'+id)
+          || document.getElementById('sec-'+id)
+          || document.getElementById('page-'+id)
+          || document.querySelector('[data-page="'+id+'"]')
+          || document.querySelector('[data-id="'+id+'"]')
+          || document.querySelector('.page[id*="'+id+'"]');
+
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('on'); });
+    if(pg){
+      pg.classList.add('on');
+      pg.querySelectorAll('.sa').forEach(function(e){ e.classList.add('in'); });
+    } else {
+      // Fallback: search pages whose heading contains the module name
+      var name='';
+      if(id==='dash'){ var h=document.querySelector('.page'); if(h){ h.classList.add('on'); } }
+      MODS.forEach(function(m){ if(m.id===id) name=m.name; });
+      if(name){
+        document.querySelectorAll('.page').forEach(function(p){
+          if(p.textContent.indexOf(name)>=0){ p.classList.add('on'); }
+        });
+      }
+    }
+    // Update sidebar active state
+    document.querySelectorAll('.nav-item').forEach(function(ni){
+      ni.classList.remove('active');
+      var oc=ni.getAttribute('onclick')||'';
+      if(oc.indexOf("'"+id+"'")>=0||oc.indexOf('"'+id+'"')>=0) ni.classList.add('active');
+    });
+    // Navigating to dash — re-render mod cards
+    if(id==='dash'){ setTimeout(_renderModCards,100); }
+    console.log('[FIX5] nav('+id+') pg='+(pg?pg.id:'NOT FOUND'));
+  };
+
+  // Also keep navTo as alias for safety
+  window.navTo = window.nav;
+
+  // ── Render module cards ───────────────────────────────────────────────
   function _renderModCards(){
-    var grid=document.querySelector('.mod-grid');
-    if(!grid){console.warn('[FIX4] .mod-grid not found');return;}
-    if(grid.getAttribute('data-fix4'))return;
-    grid.setAttribute('data-fix4','1');
+    var grid=document.getElementById('mod-grid')||document.querySelector('.mod-grid');
+    if(!grid){ console.warn('[FIX5] mod-grid not found'); return; }
+    if(grid.getAttribute('data-fix5')) return;
+    grid.setAttribute('data-fix5','1');
     grid.innerHTML='';
     MODS.forEach(function(m){
       var card=document.createElement('div');
       card.className='mod-card';
+      card.setAttribute('data-nav',m.id);
       card.innerHTML=
         '<div class="mc-strip" style="height:3px;background:'+m.color+'"></div>'+
         '<div class="mc-body">'+
@@ -2066,92 +2110,52 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
           '<div class="mc-name">'+m.name+'</div>'+
           '<div class="mc-desc">'+m.desc+'</div>'+
           '<div class="mc-foot">'+
-            '<div><div class="mc-count" id="mc-cnt-'+m.page+'">—</div>'+
+            '<div><div class="mc-count" id="cnt-'+m.id+'">—</div>'+
             '<div class="mc-count-l">Records</div></div>'+
-            '<div class="mc-arrow">→</div>'+
+            '<div class="mc-arrow" style="font-size:18px">→</div>'+
           '</div>'+
         '</div>';
-      card.addEventListener('click',function(){window.navTo(m.page);});
+      card.addEventListener('click',function(e){ e.preventDefault(); window.nav(m.id); });
       grid.appendChild(card);
     });
-    // Try to load record counts from Supabase
-    if(window.sb){
-      var tables={contracts:'cb_contracts',brand:'cb_brand',techdocs:'cb_techdocs',compliance:'cb_compliance',financials:'cb_financials',suppliers:'cb_suppliers'};
-      MODS.forEach(function(m){
-        var tbl=tables[m.page]||('cb_'+m.page);
-        window.sb.from(tbl).select('*',{count:'exact',head:true})
-          .then(function(r){
-            var el=document.getElementById('mc-cnt-'+m.page);
-            if(el) el.textContent=(r&&r.count!=null)?r.count:'0';
-          }).catch(function(){});
-      });
-    }
+    console.log('[FIX5] Rendered '+MODS.length+' module cards');
   }
 
-  // ── navTo: ALWAYS override with working version ───────────────────────
-  window.navTo=function(id){
-    // Find the page — try multiple ID patterns
-    var pg=document.getElementById('pg-'+id)||
-           document.getElementById('page-'+id)||
-           document.querySelector('[data-page="'+id+'"]');
-    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
-    if(pg){
-      pg.classList.add('on');
-      pg.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});
-    } else {
-      console.warn('[FIX4] navTo: page not found for id='+id);
-    }
-    document.querySelectorAll('.nav-item').forEach(function(ni){
-      ni.classList.remove('active');
-      var oc=ni.getAttribute('onclick')||'';
-      var ds=ni.getAttribute('data-section')||'';
-      if(ds===id||oc.indexOf("'"+id+"'")>=0||oc.indexOf('"'+id+'"')>=0)ni.classList.add('active');
-    });
-    // If navigating to home/dashboard, re-render mod cards
-    if(id==='home'||id==='dashboard'){
-      setTimeout(_renderModCards,100);
-    }
-  };
-
-  // ── Re-wire all nav-item click handlers ──────────────────────────────
+  // ── Wire nav-items (their onclick already calls nav(), just ensure it fires) ──
   function _wireNav(){
-    document.querySelectorAll('.nav-item').forEach(function(ni){
-      if(ni._fix4)return; ni._fix4=true;
+    document.querySelectorAll('.nav-item[onclick]').forEach(function(ni){
+      if(ni._fix5)return; ni._fix5=true;
       var oc=ni.getAttribute('onclick')||'';
-      var ds=ni.getAttribute('data-section')||'';
-      var m=oc.match(/navTo\(['"]([^'"]+)['"]\)/);
-      var target=ds||(m&&m[1])||'';
-      if(target){
-        // Remove old onclick to avoid double-fire
-        ni.removeAttribute('onclick');
+      var m=oc.match(/nav\(['"]([^'"]+)['"]\)/);
+      if(m){
+        var target=m[1];
         ni.addEventListener('click',function(e){
           e.preventDefault(); e.stopPropagation();
-          window.navTo(target);
+          window.nav(target);
         });
       }
     });
   }
 
-  // ── Full apply ────────────────────────────────────────────────────────
   function _apply(){
     _wireNav();
     _renderModCards();
-    document.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});
+    document.querySelectorAll('.sa').forEach(function(e){ e.classList.add('in'); });
   }
 
   // Wrap bootApp
   var _ob=window.bootApp;
   window.bootApp=function(){
-    if(typeof _ob==='function')_ob.apply(this,arguments);
+    if(typeof _ob==='function') _ob.apply(this,arguments);
     setTimeout(_apply,700);
   };
   window.bootApp._m13=true;
 
-  // If app already on (session restore)
+  // If app already showing (session restore)
   if(document.getElementById('app')&&document.getElementById('app').classList.contains('on')){
     setTimeout(_apply,300);
   }
-  window.addEventListener('load',function(){setTimeout(_apply,800);});
+  window.addEventListener('load',function(){ setTimeout(_apply,900); });
 })();
 </script>
 </body>
