@@ -2013,5 +2013,77 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
   } else { _initUI(); _initSession(); }
 })();
 </script>
+
+<script>
+// AQ-FIX2-PATCH
+(function(){
+  function _showAll() {
+    document.querySelectorAll('.sa').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  function _patchNav() {
+    if(typeof window.navTo === 'function') return;
+    window.navTo = function(id) {
+      document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('on'); });
+      var pg = document.getElementById('pg-'+id);
+      if(pg) {
+        pg.classList.add('on');
+        pg.querySelectorAll('.sa').forEach(function(el){ el.classList.add('in'); });
+      }
+      document.querySelectorAll('.nav-item').forEach(function(ni){
+        ni.classList.remove('active');
+        var ds = ni.getAttribute('data-section')||'';
+        var oc = ni.getAttribute('onclick')||'';
+        if(ds===id || oc.indexOf("'"+id+"'")>=0 || oc.indexOf('"'+id+'"')>=0) ni.classList.add('active');
+      });
+    };
+  }
+
+  function _patchSidebar() {
+    document.querySelectorAll('.nav-item').forEach(function(ni){
+      if(ni._fix2) return;
+      ni._fix2 = true;
+      var ds = ni.getAttribute('data-section')||'';
+      var oc = ni.getAttribute('onclick')||'';
+      var m = oc.match(/navTo\(['"]([^'"]+)['"]\)/);
+      var target = ds || (m && m[1]) || '';
+      if(target) {
+        ni.addEventListener('click', function(e){
+          e.preventDefault();
+          window.navTo(target);
+        });
+      }
+    });
+  }
+
+  function _ensureModCards() {
+    var grid = document.getElementById('mod-grid');
+    if(!grid || grid.children.length > 0) return;
+    if(typeof window.initApp === 'function') {
+      try { window.initApp(); } catch(e) {}
+    }
+  }
+
+  function _applyFixes() {
+    _patchNav();
+    _patchSidebar();
+    _showAll();
+    _ensureModCards();
+  }
+
+  var _origBoot = window.bootApp;
+  window.bootApp = function() {
+    if(typeof _origBoot === 'function') _origBoot.apply(this, arguments);
+    setTimeout(_applyFixes, 600);
+  };
+  window.bootApp._m13 = true;
+
+  if(document.getElementById('app') && document.getElementById('app').classList.contains('on')) {
+    setTimeout(_applyFixes, 200);
+  }
+
+  window.addEventListener('load', function(){ setTimeout(_applyFixes, 900); });
+})();
+</script>
 </body>
 </html>
