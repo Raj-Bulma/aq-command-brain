@@ -2024,13 +2024,23 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
-// AQ-FIX5-NAV
+// AQ-FIX6-GLASS
 (function(){
   // ── Force .sa visible ─────────────────────────────────────────────────
   var st=document.createElement('style');
-  st.textContent='.sa{opacity:1!important;transform:none!important;transition:none!important}';
+  st.textContent=
+    '.sa{opacity:1!important;transform:none!important;transition:none!important}'+
+    '.mod-card{overflow:visible!important;background:rgba(255,255,255,0.06)!important;'+
+    'border:1px solid rgba(255,255,255,0.13)!important;'+
+    'backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;'+
+    'box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;'+
+    'transform-style:preserve-3d!important;will-change:transform!important;transition:box-shadow .22s!important;}'+
+    '.mod-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.12),0 0 30px rgba(248,87,0,0.08)!important;border-color:rgba(255,255,255,0.22)!important;}';
   document.head.appendChild(st);
+
   new MutationObserver(function(ms){
     ms.forEach(function(m){
       m.addedNodes.forEach(function(n){
@@ -2041,7 +2051,35 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
     });
   }).observe(document.body,{childList:true,subtree:true});
 
-  // ── Module definitions (m1–m6 matching original nav IDs) ─────────────
+  // ── 3D Tilt (matches original liquid glass feel) ──────────────────────
+  function _addTilt(card){
+    var glowEl=document.createElement('div');
+    glowEl.style.cssText='position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .2s;background:radial-gradient(circle at 50% 50%,rgba(248,87,0,0.15),transparent 70%);';
+    card.style.position='relative';
+    card.appendChild(glowEl);
+
+    card.addEventListener('mouseenter',function(){
+      card.style.transition='box-shadow .22s';
+    });
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width;
+      var y=(e.clientY-r.top)/r.height;
+      var rx=((0.5-y)*22).toFixed(2);
+      var ry=((x-0.5)*22).toFixed(2);
+      card.style.transition='none';
+      card.style.transform='perspective(700px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.03,1.03,1.03)';
+      glowEl.style.opacity='1';
+      glowEl.style.background='radial-gradient(circle at '+(x*100)+'% '+(y*100)+'%,rgba(248,87,0,0.18),transparent 65%)';
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transition='transform .55s cubic-bezier(.4,0,.2,1),box-shadow .22s';
+      card.style.transform='perspective(700px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      glowEl.style.opacity='0';
+    });
+  }
+
+  // ── Module definitions ────────────────────────────────────────────────
   var MODS=[
     {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across CENTCOM, EUROPE, and AFRICA.',     id:'m1',color:'#F85700'},
     {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral for all entities.',  id:'m2',color:'#3B82F6'},
@@ -2051,60 +2089,19 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
     {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement relationships.',                id:'m6',color:'#06B6D4'}
   ];
 
-  // ── nav(): ALWAYS override — finds page by multiple ID patterns ───────
-  window.nav = function(id) {
-    // Try every plausible page ID pattern
-    var pg = document.getElementById(id)
-          || document.getElementById('pg-'+id)
-          || document.getElementById('p-'+id)
-          || document.getElementById('sec-'+id)
-          || document.getElementById('page-'+id)
-          || document.querySelector('[data-page="'+id+'"]')
-          || document.querySelector('[data-id="'+id+'"]')
-          || document.querySelector('.page[id*="'+id+'"]');
-
-    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('on'); });
-    if(pg){
-      pg.classList.add('on');
-      pg.querySelectorAll('.sa').forEach(function(e){ e.classList.add('in'); });
-    } else {
-      // Fallback: search pages whose heading contains the module name
-      var name='';
-      if(id==='dash'){ var h=document.querySelector('.page'); if(h){ h.classList.add('on'); } }
-      MODS.forEach(function(m){ if(m.id===id) name=m.name; });
-      if(name){
-        document.querySelectorAll('.page').forEach(function(p){
-          if(p.textContent.indexOf(name)>=0){ p.classList.add('on'); }
-        });
-      }
-    }
-    // Update sidebar active state
-    document.querySelectorAll('.nav-item').forEach(function(ni){
-      ni.classList.remove('active');
-      var oc=ni.getAttribute('onclick')||'';
-      if(oc.indexOf("'"+id+"'")>=0||oc.indexOf('"'+id+'"')>=0) ni.classList.add('active');
-    });
-    // Navigating to dash — re-render mod cards
-    if(id==='dash'){ setTimeout(_renderModCards,100); }
-    console.log('[FIX5] nav('+id+') pg='+(pg?pg.id:'NOT FOUND'));
-  };
-
-  // Also keep navTo as alias for safety
-  window.navTo = window.nav;
-
   // ── Render module cards ───────────────────────────────────────────────
   function _renderModCards(){
     var grid=document.getElementById('mod-grid')||document.querySelector('.mod-grid');
-    if(!grid){ console.warn('[FIX5] mod-grid not found'); return; }
-    if(grid.getAttribute('data-fix5')) return;
-    grid.setAttribute('data-fix5','1');
+    if(!grid)return;
+    if(grid.getAttribute('data-fix6'))return;
+    grid.setAttribute('data-fix6','1');
     grid.innerHTML='';
     MODS.forEach(function(m){
       var card=document.createElement('div');
       card.className='mod-card';
-      card.setAttribute('data-nav',m.id);
+      card.style.cssText='cursor:pointer;';
       card.innerHTML=
-        '<div class="mc-strip" style="height:3px;background:'+m.color+'"></div>'+
+        '<div class="mc-strip" style="height:3px;background:'+m.color+';flex-shrink:0"></div>'+
         '<div class="mc-body">'+
           '<div class="mc-num">'+m.num+'</div>'+
           '<div class="mc-name">'+m.name+'</div>'+
@@ -2112,50 +2109,49 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
           '<div class="mc-foot">'+
             '<div><div class="mc-count" id="cnt-'+m.id+'">—</div>'+
             '<div class="mc-count-l">Records</div></div>'+
-            '<div class="mc-arrow" style="font-size:18px">→</div>'+
+            '<div class="mc-arrow">→</div>'+
           '</div>'+
         '</div>';
-      card.addEventListener('click',function(e){ e.preventDefault(); window.nav(m.id); });
+      card.addEventListener('click',function(e){e.preventDefault();window.nav(m.id);});
+      _addTilt(card);
       grid.appendChild(card);
     });
-    console.log('[FIX5] Rendered '+MODS.length+' module cards');
+    console.log('[FIX6] '+MODS.length+' cards rendered with tilt');
   }
 
-  // ── Wire nav-items (their onclick already calls nav(), just ensure it fires) ──
+  // ── nav() ─────────────────────────────────────────────────────────────
+  window.nav=function(id){
+    var pg=document.getElementById(id)||document.getElementById('pg-'+id)||document.getElementById('p-'+id)||document.getElementById('sec-'+id)||document.querySelector('[data-page="'+id+'"]');
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+    if(pg){pg.classList.add('on');pg.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});}
+    document.querySelectorAll('.nav-item').forEach(function(ni){
+      ni.classList.remove('active');
+      var oc=ni.getAttribute('onclick')||'';
+      if(oc.indexOf("'"+id+"'")>=0||oc.indexOf('"'+id+'"')>=0)ni.classList.add('active');
+    });
+    if(id==='dash')setTimeout(_renderModCards,100);
+    console.log('[FIX6] nav('+id+') pg='+(pg?pg.id:'NOT FOUND'));
+  };
+  window.navTo=window.nav;
+
+  // ── Wire nav-items ────────────────────────────────────────────────────
   function _wireNav(){
     document.querySelectorAll('.nav-item[onclick]').forEach(function(ni){
-      if(ni._fix5)return; ni._fix5=true;
+      if(ni._fix6)return;ni._fix6=true;
       var oc=ni.getAttribute('onclick')||'';
       var m=oc.match(/nav\(['"]([^'"]+)['"]\)/);
-      if(m){
-        var target=m[1];
-        ni.addEventListener('click',function(e){
-          e.preventDefault(); e.stopPropagation();
-          window.nav(target);
-        });
-      }
+      if(m){var t=m[1];ni.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.nav(t);});}
     });
   }
 
-  function _apply(){
-    _wireNav();
-    _renderModCards();
-    document.querySelectorAll('.sa').forEach(function(e){ e.classList.add('in'); });
-  }
+  function _apply(){_wireNav();_renderModCards();document.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});}
 
-  // Wrap bootApp
   var _ob=window.bootApp;
-  window.bootApp=function(){
-    if(typeof _ob==='function') _ob.apply(this,arguments);
-    setTimeout(_apply,700);
-  };
+  window.bootApp=function(){if(typeof _ob==='function')_ob.apply(this,arguments);setTimeout(_apply,700);};
   window.bootApp._m13=true;
 
-  // If app already showing (session restore)
-  if(document.getElementById('app')&&document.getElementById('app').classList.contains('on')){
-    setTimeout(_apply,300);
-  }
-  window.addEventListener('load',function(){ setTimeout(_apply,900); });
+  if(document.getElementById('app')&&document.getElementById('app').classList.contains('on')){setTimeout(_apply,300);}
+  window.addEventListener('load',function(){setTimeout(_apply,900);});
 })();
 </script>
 </body>
