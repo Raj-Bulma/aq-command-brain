@@ -2440,3 +2440,376 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 </script>
 </body>
 </html>
+
+<script>
+/* AQ CLOUD AUTH PATCH
+   Keeps original design/effects.
+   Removes local mode.
+   Keeps signup and forgot password.
+*/
+(function () {
+  'use strict';
+
+  var SB_URL = 'https://gavwwznxxuhhgtlvxwvu.supabase.co';
+  var SB_KEY = 'PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE';
+
+  function el(id) {
+    return document.getElementById(id);
+  }
+
+  function showMsg(message) {
+    alert(message);
+  }
+
+  function setBtn(id, text, disabled) {
+    var btn = el(id);
+    if (!btn) return;
+    btn.disabled = !!disabled;
+    btn.textContent = text;
+  }
+
+  function validAQEmail(email) {
+    return String(email || '').trim().toLowerCase().endsWith('@aqglobal.net');
+  }
+
+  function ensureSupabase() {
+    if (window.sb) return window.sb;
+
+    if (typeof window.supabase === 'undefined') {
+      showMsg('Cloud connection is required. Please refresh the page and try again.');
+      return null;
+    }
+
+    window.sb = window.supabase.createClient(SB_URL, SB_KEY);
+    return window.sb;
+  }
+
+  window.goStep = function (n) {
+    [1, 2, 3, 4, 5].forEach(function (i) {
+      var step = el('auth-step' + i);
+      if (step) step.style.display = 'none';
+    });
+
+    var local = el('auth-local');
+    if (local) local.style.display = 'none';
+
+    if (n === 'local') {
+      n = 1;
+    }
+
+    var target = el('auth-step' + n);
+    if (target) target.style.display = 'block';
+  };
+
+  window.doLocalLogin = function () {
+    showMsg('Local mode has been disabled. Please sign in with your AQ Global email and password.');
+    window.goStep(1);
+  };
+
+  window.authStep1 = function () {
+    var emailInput = el('l-email');
+    var email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+    var err = el('l-eerr');
+
+    if (err) err.style.display = 'none';
+
+    if (!validAQEmail(email)) {
+      if (err) err.style.display = 'block';
+      else showMsg('Must be an @aqglobal.net email address.');
+      return;
+    }
+
+    if (!ensureSupabase()) return;
+
+    window._aqAuthEmail = email;
+
+    var d2 = el('l-email-disp2');
+    var d3 = el('l-email-disp3');
+
+    if (d2) d2.textContent = email;
+    if (d3) d3.textContent = email;
+
+    window.goStep(2);
+
+    setTimeout(function () {
+      var p = el('l-pass');
+      if (p) p.focus();
+    }, 80);
+  };
+
+  window.authStep2 = async function () {
+    var sb = ensureSupabase();
+    if (!sb) return;
+
+    var passInput = el('l-pass');
+    var pass = passInput ? passInput.value : '';
+    var email = window._aqAuthEmail || (el('l-email') ? el('l-email').value.trim().toLowerCase() : '');
+    var err = el('l-perr');
+
+    if (err) err.style.display = 'none';
+
+    if (!validAQEmail(email)) {
+      showMsg('Please enter your AQ Global email again.');
+      window.goStep(1);
+      return;
+    }
+
+    if (!pass) {
+      if (err) {
+        err.textContent = 'Enter your password.';
+        err.style.display = 'block';
+      }
+      return;
+    }
+
+    setBtn('l-btn2', 'Signing in...', true);
+
+    try {
+      var res = await sb.auth.signInWithPassword({
+        email: email,
+        password: pass
+      });
+
+      setBtn('l-btn2', 'Sign In →', false);
+
+      if (res.error) {
+        if (err) {
+          err.textContent = res.error.message;
+          err.style.display = 'block';
+        } else {
+          showMsg(res.error.message);
+        }
+        return;
+      }
+
+      window.CU = email;
+
+      if (typeof window.bootApp === 'function') {
+        window.bootApp();
+      }
+    } catch (e) {
+      setBtn('l-btn2', 'Sign In →', false);
+      if (err) {
+        err.textContent = e.message || 'Sign in failed.';
+        err.style.display = 'block';
+      } else {
+        showMsg(e.message || 'Sign in failed.');
+      }
+    }
+  };
+
+  window.authStep3 = async function () {
+    var sb = ensureSupabase();
+    if (!sb) return;
+
+    var email = window._aqAuthEmail || (el('l-email') ? el('l-email').value.trim().toLowerCase() : '');
+    var p1 = el('l-newpass') ? el('l-newpass').value : '';
+    var p2 = el('l-confpass') ? el('l-confpass').value : '';
+    var err = el('l-cperr');
+
+    if (err) err.style.display = 'none';
+
+    if (!validAQEmail(email)) {
+      showMsg('Please enter your AQ Global email again.');
+      window.goStep(1);
+      return;
+    }
+
+    if (!p1 || p1.length < 8) {
+      if (err) {
+        err.textContent = 'Password must be at least 8 characters.';
+        err.style.display = 'block';
+      }
+      return;
+    }
+
+    if (p1 !== p2) {
+      if (err) {
+        err.textContent = 'Passwords do not match.';
+        err.style.display = 'block';
+      }
+      return;
+    }
+
+    setBtn('l-btn3', 'Creating account...', true);
+
+    try {
+      var res = await sb.auth.signUp({
+        email: email,
+        password: p1
+      });
+
+      setBtn('l-btn3', 'Create Account & Access →', false);
+
+      if (res.error) {
+        if (err) {
+          err.textContent = res.error.message;
+          err.style.display = 'block';
+        } else {
+          showMsg(res.error.message);
+        }
+        return;
+      }
+
+      showMsg('Account created. Please sign in using your email and password.');
+      window.goStep(2);
+    } catch (e) {
+      setBtn('l-btn3', 'Create Account & Access →', false);
+      showMsg(e.message || 'Signup failed.');
+    }
+  };
+
+  window.sendPasswordReset = async function () {
+    var sb = ensureSupabase();
+    if (!sb) return;
+
+    var email = window._aqAuthEmail || (el('l-email') ? el('l-email').value.trim().toLowerCase() : '');
+
+    if (!validAQEmail(email)) {
+      showMsg('Please enter your AQ Global email first.');
+      window.goStep(1);
+      return;
+    }
+
+    try {
+      var res = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.href
+      });
+
+      if (res.error) {
+        showMsg(res.error.message);
+        return;
+      }
+
+      var msg = el('auth-reset-msg');
+      if (msg) msg.textContent = 'Password reset link sent to ' + email + '.';
+      window.goStep(4);
+    } catch (e) {
+      showMsg(e.message || 'Password reset failed.');
+    }
+  };
+
+  window.forgotPass = window.sendPasswordReset;
+
+  window.authStep5 = async function () {
+    var sb = ensureSupabase();
+    if (!sb) return;
+
+    var p1 = el('l-resetpass') ? el('l-resetpass').value : '';
+    var p2 = el('l-resetconfpass') ? el('l-resetconfpass').value : '';
+    var err = el('l-rperr');
+
+    if (err) err.style.display = 'none';
+
+    if (!p1 || p1.length < 8) {
+      if (err) {
+        err.textContent = 'Password must be at least 8 characters.';
+        err.style.display = 'block';
+      }
+      return;
+    }
+
+    if (p1 !== p2) {
+      if (err) {
+        err.textContent = 'Passwords do not match.';
+        err.style.display = 'block';
+      }
+      return;
+    }
+
+    setBtn('l-btn5', 'Saving...', true);
+
+    try {
+      var res = await sb.auth.updateUser({
+        password: p1
+      });
+
+      setBtn('l-btn5', 'Set Password & Access →', false);
+
+      if (res.error) {
+        if (err) {
+          err.textContent = res.error.message;
+          err.style.display = 'block';
+        } else {
+          showMsg(res.error.message);
+        }
+        return;
+      }
+
+      window.CU = res.data && res.data.user && res.data.user.email ? res.data.user.email : '';
+      if (typeof window.bootApp === 'function') {
+        window.bootApp();
+      }
+    } catch (e) {
+      setBtn('l-btn5', 'Set Password & Access →', false);
+      showMsg(e.message || 'Password update failed.');
+    }
+  };
+
+  window.doLogout = async function () {
+    var sb = ensureSupabase();
+
+    try {
+      if (sb) await sb.auth.signOut();
+    } catch (e) {}
+
+    window.CU = '';
+
+    var app = el('app');
+    var login = el('login');
+
+    if (app) app.classList.remove('on');
+    if (login) {
+      login.style.display = '';
+      login.style.opacity = '1';
+    }
+
+    window.goStep(1);
+  };
+
+  async function initCloudSession() {
+    var sb = ensureSupabase();
+    if (!sb) return;
+
+    var local = el('auth-local');
+    if (local) local.style.display = 'none';
+
+    try {
+      var r = await sb.auth.getSession();
+
+      if (r.data && r.data.session && r.data.session.user) {
+        window.CU = r.data.session.user.email;
+        if (typeof window.bootApp === 'function') {
+          window.bootApp();
+        }
+        return;
+      }
+
+      sb.auth.onAuthStateChange(function (event, session) {
+        if (event === 'PASSWORD_RECOVERY') {
+          window.goStep(5);
+          return;
+        }
+
+        if (event === 'SIGNED_IN' && session && session.user) {
+          window.CU = session.user.email;
+          if (typeof window.bootApp === 'function') {
+            window.bootApp();
+          }
+        }
+      });
+
+      window.goStep(1);
+    } catch (e) {
+      console.error('Cloud session error:', e);
+      window.goStep(1);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCloudSession);
+  } else {
+    initCloudSession();
+  }
+})();
+</script>
