@@ -2161,6 +2161,8 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 })();
 </script>
 
+
+
 <script>
 // AQ-FIX7-DATA
 (function(){
@@ -2317,21 +2319,28 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
   }
 
   function _load(mid){
-    if(!window.sb)return;
+    if(!window.sb){console.warn('[FIX7] sb not ready, retry in 1s');setTimeout(function(){_load(mid);},1000);return;}
     var key=MOD_KEY[mid];
     if(!key)return;
     var panel=_panel(mid);
-    if(!panel)return;
+    if(!panel){console.warn('[FIX7] panel not found for '+mid);return;}
     panel.innerHTML='<div style="color:#334155;padding:20px;font-size:12px">Loading…</div>';
-    window.sb.from('cb_store').select('records').eq('module',key).maybeSingle()
+    console.log('[FIX7] loading '+key);
+    window.sb.from('cb_store').select('module,records').eq('module',key)
     .then(function(res){
-      var recs=(res.data&&Array.isArray(res.data.records))?res.data.records:[];
+      if(res.error)throw res.error;
+      var rows=res.data||[];
+      var recs=(rows.length>0&&Array.isArray(rows[0].records))?rows[0].records:[];
+      console.log('[FIX7] '+key+' → '+recs.length+' records');
       _cache[mid]=recs;
       var cnt=document.getElementById('cnt-'+mid);
       if(cnt)cnt.textContent=recs.length;
       _render(mid,key,recs,panel);
     })
-    .catch(function(e){panel.innerHTML='<div style="color:#ef4444;padding:20px;font-size:12px">Load error: '+(e.message||e)+'</div>';});
+    .catch(function(e){
+      console.error('[FIX7] load error:',e);
+      panel.innerHTML='<div style="color:#ef4444;padding:20px;font-size:12px">Load error: '+(e.message||e)+'<br><small>Check console for details</small></div>';
+    });
   }
 
   function _render(mid,key,recs,panel){
