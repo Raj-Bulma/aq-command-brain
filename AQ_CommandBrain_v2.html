@@ -2030,6 +2030,8 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
 // AQ-FIX6-GLASS
 (function(){
@@ -2065,9 +2067,6 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
     card.style.position='relative';
     card.appendChild(glowEl);
 
-    card.addEventListener('mouseenter',function(){
-      card.style.transition='box-shadow .22s';
-    });
     card.addEventListener('mousemove',function(e){
       var r=card.getBoundingClientRect();
       var x=(e.clientX-r.left)/r.width;
@@ -2080,8 +2079,8 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
       glowEl.style.background='radial-gradient(circle at '+(x*100)+'% '+(y*100)+'%,rgba(248,87,0,0.18),transparent 65%)';
     });
     card.addEventListener('mouseleave',function(){
-      card.style.transition='transform .55s cubic-bezier(.4,0,.2,1),box-shadow .22s';
-      card.style.transform='perspective(700px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      card.style.transition='transform .25s ease,box-shadow .22s';
+      card.style.transform='none';
       glowEl.style.opacity='0';
     });
   }
