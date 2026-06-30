@@ -1648,453 +1648,340 @@ html,body{background:#020817!important;background-image:none!important}
 </script>
 
 
+
+
 <script>
-// AQ-V5
+// AQ-V6
 (function(){
 'use strict';
-var _css=document.createElement('style');
-_css.textContent=[
-  '/* AQ-V5 */',
-  '.sa{opacity:1!important;transform:none!important}',
-  '.sa-d1,.sa-d2,.sa-d3,.sa-d4,.sa-d5{opacity:1!important;transform:none!important}',
-  '#aqv5-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%}',
-  '@media(max-width:1100px){#aqv5-grid{grid-template-columns:repeat(2,1fr)}}',
-  '@media(max-width:768px){#aqv5-grid{grid-template-columns:1fr}}',
-  '.aqv5-card{border:1px solid transparent;',
-    'background:linear-gradient(rgba(6,12,28,0.9),rgba(4,8,20,0.9)) padding-box,',
-    'linear-gradient(150deg,rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.03) 100%) border-box;',
-    'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);',
-    'border-radius:16px;overflow:hidden;cursor:pointer;',
-    'transition:all 0.25s cubic-bezier(.4,0,.2,1);',
-    'transform-style:preserve-3d;will-change:transform;}',
-  '.aqv5-card:hover{',
-    'background:linear-gradient(rgba(10,18,42,0.96),rgba(6,12,30,0.96)) padding-box,',
-    'linear-gradient(150deg,rgba(255,95,0,0.85) 0%,rgba(255,140,60,0.3) 50%,transparent 100%) border-box;',
-    'box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 60px rgba(255,95,0,.12);}',
-  '.aqv5-stripe{height:3px}',
-  '.aqv5-body{padding:20px}',
-  '.aqv5-num{font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase}',
-  '.aqv5-icon{font-size:28px;margin:8px 0 4px}',
-  '.aqv5-name{font-size:15px;font-weight:700;color:var(--tx);margin-top:4px}',
-  '.aqv5-desc{font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5}',
-  '.aqv5-foot{display:flex;align-items:flex-end;justify-content:space-between;',
-    'margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}',
-  '.aqv5-cnt{font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--tx)}',
-  '.aqv5-cnt-l{font-size:10px;color:var(--tx3)}',
-  '.aqv5-arrow{font-size:18px;color:var(--tx3);transition:var(--trans)}',
-  '.aqv5-card:hover .aqv5-arrow{color:var(--gold);transform:translateX(4px)}',
-  '#aqv5-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(4px)}',
-  '#aqv5-overlay.on{display:block}',
-  '#aqv5-drawer{position:fixed;right:-720px;top:0;bottom:0;width:min(720px,95vw);',
-    'background:#0a1628;border-left:1px solid rgba(255,255,255,.15);z-index:201;',
-    'display:flex;flex-direction:column;overflow:hidden;',
-    'transition:right .32s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 80px rgba(0,0,0,.8)}',
-  '#aqv5-drawer.on{right:0}',
-  '#aqv5-dr-head{padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0;',
-    'background:rgba(8,16,32,.9);display:flex;align-items:center;gap:14px}',
-  '#aqv5-dr-body{flex:1;overflow-y:auto;padding:24px}',
-  '#aqv5-dr-foot{padding:16px 24px;border-top:1px solid var(--border);',
-    'display:flex;gap:10px;justify-content:flex-end;background:rgba(8,16,32,.6)}',
-  '#aqv5-theaters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}',
-  '.aqv5-tab{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;',
-    'transition:.2s;background:var(--glass);border:1px solid var(--border);color:var(--tx2)}',
-  '.aqv5-tab.on{background:rgba(248,87,0,.12);border-color:rgba(248,87,0,.3);color:var(--gold)}',
-  '#aqv5-toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:10px;',
-    'font-size:13px;font-weight:600;box-shadow:0 24px 64px rgba(0,0,0,.6);z-index:999;',
-    'display:flex;align-items:center;gap:10px;max-width:360px;',
-    'transform:translateY(80px);opacity:0;transition:all .28s cubic-bezier(.4,0,.2,1)}',
-  '#aqv5-toast.on{transform:translateY(0);opacity:1}',
-  '#aqv5-toast.ok{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22C55E}',
-  '#aqv5-toast.er{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#EF4444}',
-  '#aqv5-toast.inf{background:rgba(8,16,32,.9);border:1px solid var(--border);color:var(--tx)}',
-  '.aqv5-fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}',
-  '.aqv5-f{display:flex;flex-direction:column;gap:6px}',
-  '.aqv5-f.fw{grid-column:1/-1}',
-  '.aqv5-lbl{font-size:11px;font-weight:600;color:rgba(226,232,248,.7);letter-spacing:.3px}',
-  '.aqv5-inp,.aqv5-sel,.aqv5-ta{padding:10px 14px;background:#0a1628;',
-    'border:1.5px solid rgba(255,255,255,.18);border-radius:var(--r);',
-    'color:#e2e8f8;font-size:13px;font-family:inherit;outline:none;transition:var(--trans)}',
-  '.aqv5-sel option{background:#0f1f3d;color:#e2e8f8}',
-  '.aqv5-inp:focus,.aqv5-sel:focus,.aqv5-ta:focus{border-color:var(--gold);',
-    'background:#0d1c38;box-shadow:0 0 0 3px var(--glow)}',
-  '.aqv5-inp::placeholder,.aqv5-ta::placeholder{color:rgba(226,232,248,.35)}',
-  '.aqv5-ta{resize:vertical;min-height:80px}',
-  '.aqv5-empty{padding:64px 20px;text-align:center}',
-  '.aqv5-empty .ico{font-size:40px;opacity:.2;margin-bottom:12px}',
-  '.aqv5-empty .t{font-size:14px;font-weight:600;color:var(--tx3)}',
-  '.aqv5-empty .s{font-size:12px;color:var(--tx3);opacity:.6;margin-top:4px}',
-].join('');
-document.head.appendChild(_css);
 
-var MODS=[
-  {id:'m1',key:'contracts',icon:'📄',num:'M-01',name:'Contracts',
-   desc:'Active & historical contracts across all entities',color:'rgba(59,130,246,0.8)',
-   fields:[{k:'title',l:'Contract Title',type:'text',req:true},{k:'entity',l:'Entity',type:'text'},
-     {k:'region',l:'Theater',type:'theater'},{k:'value',l:'Contract Value (USD)',type:'text'},
-     {k:'status',l:'Status',type:'select',opts:['Active','Pending','Completed','Terminated']},
-     {k:'start_date',l:'Start Date',type:'date'},{k:'end_date',l:'End Date',type:'date'},
-     {k:'notes',l:'Notes',type:'textarea'}]},
-  {id:'m2',key:'brand',icon:'🎯',num:'M-02',name:'Brand Assets',
-   desc:'Brand guidelines, collateral & visual identity',color:'rgba(168,85,247,0.8)',
-   fields:[{k:'name',l:'Asset Name',type:'text',req:true},
-     {k:'type',l:'Type',type:'select',opts:['Logo','Brand Guide','Template','Collateral','Photography','Video']},
-     {k:'region',l:'Theater',type:'theater'},{k:'format',l:'Format',type:'text'},
-     {k:'version',l:'Version',type:'text'},{k:'date',l:'Date',type:'date'},
-     {k:'url',l:'File URL',type:'text'},{k:'notes',l:'Notes',type:'textarea'}]},
-  {id:'m3',key:'tdocs',icon:'🔧',num:'M-03',name:'Technical Docs',
-   desc:'Specs, manuals & engineering documents',color:'rgba(34,197,94,0.8)',
-   fields:[{k:'title',l:'Document Title',type:'text',req:true},
-     {k:'type',l:'Type',type:'select',opts:['Specification','Manual','Drawing','Report','Proposal','SOW']},
-     {k:'region',l:'Theater',type:'theater'},{k:'version',l:'Version',type:'text'},
-     {k:'date',l:'Date',type:'date'},{k:'author',l:'Author',type:'text'},
-     {k:'url',l:'Document URL',type:'text'},{k:'notes',l:'Notes',type:'textarea'}]},
-  {id:'m4',key:'compliance',icon:'🛡️',num:'M-04',name:'Compliance',
-   desc:'Regulatory filings, audits & compliance docs',color:'rgba(245,158,11,0.8)',
-   fields:[{k:'title',l:'Compliance Item',type:'text',req:true},
-     {k:'requirement',l:'Requirement/Regulation',type:'text'},
-     {k:'region',l:'Theater',type:'theater'},
-     {k:'status',l:'Status',type:'select',opts:['Compliant','In Progress','Non-Compliant','Under Review','Expired']},
-     {k:'due_date',l:'Due Date',type:'date'},{k:'authority',l:'Regulatory Authority',type:'text'},
-     {k:'notes',l:'Notes',type:'textarea'}]},
-  {id:'m5',key:'fins',icon:'💰',num:'M-05',name:'Financials',
-   desc:'Financial records, invoices & budgets',color:'rgba(239,68,68,0.8)',
-   fields:[{k:'description',l:'Description',type:'text',req:true},
-     {k:'category',l:'Category',type:'select',opts:['Revenue','Expense','Invoice','Budget','Payroll','Tax']},
-     {k:'region',l:'Theater',type:'theater'},{k:'amount',l:'Amount (USD)',type:'text'},
-     {k:'status',l:'Status',type:'select',opts:['Pending','Approved','Paid','Overdue','Disputed']},
-     {k:'date',l:'Date',type:'date'},{k:'entity',l:'Entity',type:'text'},
-     {k:'notes',l:'Notes',type:'textarea'}]},
-  {id:'m6',key:'suppliers',icon:'🏭',num:'M-06',name:'Suppliers',
-   desc:'Supplier profiles, contracts & performance',color:'rgba(248,87,0,0.8)',
-   fields:[{k:'name',l:'Supplier Name',type:'text',req:true},
-     {k:'category',l:'Category',type:'select',opts:['Equipment','Services','Materials','Technology','Logistics','Consulting']},
-     {k:'region',l:'Theater',type:'theater'},
-     {k:'status',l:'Status',type:'select',opts:['Active','Approved','Pending','Suspended','Blacklisted']},
-     {k:'rating',l:'Rating (1-5)',type:'select',opts:['5','4','3','2','1']},
-     {k:'contact',l:'Primary Contact',type:'text'},{k:'email',l:'Email',type:'text'},
-     {k:'notes',l:'Notes',type:'textarea'}]},
+// ── 1. FIX: force .sa elements visible (they start at opacity:0) ──
+var _saFix = document.createElement('style');
+_saFix.textContent = '.sa{opacity:1!important;transform:none!important}.sa-d1,.sa-d2,.sa-d3,.sa-d4,.sa-d5{transition-delay:0s!important}';
+document.head.appendChild(_saFix);
+
+// ── 2. MODULE DEFINITIONS ─────────────────────────────────────────
+var MODS = [
+  {id:'m1',key:'contracts', icon:'📄',num:'M-01',name:'Contracts',   desc:'Active & historical contracts across all entities', clr:'59,130,246'},
+  {id:'m2',key:'brand',     icon:'🎯',num:'M-02',name:'Brand Assets', desc:'Brand guidelines, collateral & visual identity',    clr:'168,85,247'},
+  {id:'m3',key:'tdocs',     icon:'🔧',num:'M-03',name:'Tech Docs',    desc:'Specifications, manuals & engineering documents',   clr:'34,197,94'},
+  {id:'m4',key:'compliance',icon:'🛡️',num:'M-04',name:'Compliance',   desc:'Regulatory filings, audits & compliance docs',     clr:'245,158,11'},
+  {id:'m5',key:'fins',      icon:'💰',num:'M-05',name:'Financials',   desc:'Financial records, invoices & budget tracking',    clr:'239,68,68'},
+  {id:'m6',key:'suppliers', icon:'🏭',num:'M-06',name:'Suppliers',    desc:'Supplier profiles, contracts & performance data',  clr:'248,87,0'}
 ];
-var THEATERS=['ALL','CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'];
-var _state={activePage:'dash',activeModIdx:-1,theater:'ALL',search:'',editingId:null,data:{},counts:{}};
 
-var _toastTimer=null;
-function _toast(msg,type){
-  var t=document.getElementById('aqv5-toast');if(!t)return;
-  t.textContent=msg;t.className='on '+(type||'inf');
-  if(_toastTimer)clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(function(){t.className='';},3200);
-}
-
-function _nav(page){
-  _state.activePage=page;
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
-  var t=document.getElementById(page);if(t)t.classList.add('on');
-  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-  var s=document.querySelector('.nav-item[onclick*="''+page+''"]');
-  if(s)s.classList.add('active');
-  if(page!=='dash'){
-    var idx=parseInt(page.replace('m',''))-1;
-    if(idx>=0&&idx<MODS.length){_state.activeModIdx=idx;_state.theater='ALL';_state.search='';_loadModPage(idx);}
-  }else{_state.activeModIdx=-1;}
-}
-window.nav=_nav;
-
-async function _getRows(k){
-  if(!window.sb)return[];
-  try{var r=await window.sb.from('cb_store').select('records').eq('module',k).single();
-    return(r&&r.data&&Array.isArray(r.data.records))?r.data.records:[];}catch(e){return[];}
-}
-async function _saveRows(k,rows){
-  if(!window.sb)return false;
-  try{var ex=await window.sb.from('cb_store').select('id').eq('module',k).single();
-    if(ex&&ex.data&&ex.data.id){await window.sb.from('cb_store').update({records:rows}).eq('module',k);}
-    else{await window.sb.from('cb_store').insert({module:k,records:rows});}
-    return true;}catch(e){return false;}
-}
-async function _loadAllCounts(){
-  if(!window.sb)return;
-  try{var r=await window.sb.from('cb_store').select('module,records');
-    if(r&&r.data){r.data.forEach(function(row){
-      if(Array.isArray(row.records)){_state.counts[row.module]=row.records.length;_state.data[row.module]=row.records;}
-    });}
-  }catch(e){}
-  _updateCardCounts();_updateKPIs();
-}
-function _updateCardCounts(){
-  MODS.forEach(function(m){var el=document.getElementById('aqv5-cnt-'+m.key);if(el)el.textContent=_state.counts[m.key]||0;});
-}
-function _updateKPIs(){
-  var k0=document.getElementById('kv0'),k1=document.getElementById('kv1'),k2=document.getElementById('kv2');
-  if(k0)k0.textContent=_state.counts['contracts']||0;
-  if(k1)k1.textContent=_state.counts['suppliers']||0;
-  if(k2)k2.textContent=_state.counts['tdocs']||0;
-}
-
-function _buildCardsHTML(){
-  return MODS.map(function(m){
-    var cnt=_state.counts[m.key]||0;
-    return '<div class="aqv5-card mod-card" onclick="nav(''+m.id+'')" onmousemove="aqv5Tilt(this,event)" onmouseleave="aqv5TiltReset(this)">'+
-      '<div class="aqv5-stripe" style="background:linear-gradient(90deg,'+m.color+',transparent)"></div>'+
-      '<div class="aqv5-body"><div class="aqv5-num">'+m.num+'</div><div class="aqv5-icon">'+m.icon+'</div>'+
-      '<div class="aqv5-name">'+m.name+'</div><div class="aqv5-desc">'+m.desc+'</div>'+
-      '<div class="aqv5-foot"><div><div class="aqv5-cnt" id="aqv5-cnt-'+m.key+'">'+cnt+'</div>'+
-      '<div class="aqv5-cnt-l">RECORDS</div></div><div class="aqv5-arrow">→</div></div></div></div>';
+// ── 3. CARD HTML BUILDER ─────────────────────────────────────────
+function buildCards(counts) {
+  counts = counts || {};
+  return MODS.map(function(m) {
+    var n = counts[m.key] || 0;
+    return '<div class="mod-card" style="cursor:pointer;border:1px solid transparent;' +
+      'background:linear-gradient(rgba(6,12,28,.9),rgba(4,8,20,.9)) padding-box,' +
+      'linear-gradient(150deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.03) 100%) border-box;' +
+      'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;overflow:hidden;' +
+      'transition:all .25s ease;transform-style:preserve-3d;" ' +
+      'onclick="nav('' + m.id + '')" ' +
+      'onmousemove="aqv6Tilt(this,event)" onmouseleave="aqv6TiltReset(this)">' +
+      '<div style="height:3px;background:linear-gradient(90deg,rgba(' + m.clr + ',.9),transparent)"></div>' +
+      '<div style="padding:20px">' +
+        '<div style="font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase">' + m.num + '</div>' +
+        '<div style="font-size:26px;margin:8px 0 4px">' + m.icon + '</div>' +
+        '<div style="font-size:15px;font-weight:700;color:var(--tx)">' + m.name + '</div>' +
+        '<div style="font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5">' + m.desc + '</div>' +
+        '<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">' +
+          '<div>' +
+            '<div id="aqv6cnt_' + m.key + '" style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--tx)">' + n + '</div>' +
+            '<div style="font-size:10px;color:var(--tx3)">RECORDS</div>' +
+          '</div>' +
+          '<div style="font-size:18px;color:var(--tx3);transition:var(--trans)" class="aqv6arr">→</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
-window.aqv5Tilt=function(el,e){
-  var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-  el.style.setProperty('transform','perspective(600px) rotateX('+(-y*12)+'deg) rotateY('+(x*12)+'deg) translateY(-4px)','important');
+
+// ── 4. TILT EFFECT ───────────────────────────────────────────────
+window.aqv6Tilt = function(el, e) {
+  var r = el.getBoundingClientRect();
+  var x = (e.clientX - r.left) / r.width - 0.5;
+  var y = (e.clientY - r.top) / r.height - 0.5;
+  el.style.setProperty('transform',
+    'perspective(600px) rotateX(' + (-y * 10) + 'deg) rotateY(' + (x * 10) + 'deg) translateY(-4px)',
+    'important');
 };
-window.aqv5TiltReset=function(el){el.style.setProperty('transform','','important');};
-
-var _gridInjected=false;
-function _injectGrid(){
-  if(_gridInjected)return;
-  var mg=document.getElementById('mod-grid');if(!mg)return;
-  mg.style.setProperty('display','none','important');
-  if(document.getElementById('aqv5-grid')){_gridInjected=true;return;}
-  var g=document.createElement('div');g.id='aqv5-grid';g.innerHTML=_buildCardsHTML();
-  mg.parentNode.insertBefore(g,mg);_gridInjected=true;
-  document.querySelectorAll('#dash .sa').forEach(function(el){el.style.opacity='1';el.style.transform='none';});
-}
-
-function _filteredRows(mk,rows){
-  if(!rows)rows=_state.data[mk]||[];
-  return rows.filter(function(r){
-    return(_state.theater==='ALL'||r.region===_state.theater)&&
-      (!_state.search||JSON.stringify(r).toLowerCase().indexOf(_state.search.toLowerCase())>-1);
-  });
-}
-function _applyFilters(mk){
-  var idx=MODS.findIndex(function(m){return m.key===mk;});
-  if(idx>-1)_renderTable(MODS[idx],_state.data[mk]||[]);
-}
-window.aqv5SetTheater=function(mk,th){
-  _state.theater=th;
-  document.querySelectorAll('#aqv5-th-'+mk+' .aqv5-tab').forEach(function(t){t.classList.toggle('on',t.textContent===th);});
-  _applyFilters(mk);
+window.aqv6TiltReset = function(el) {
+  el.style.removeProperty('transform');
 };
 
-function _renderTable(mod,rows){
-  var w=document.getElementById('aqv5-tblwrap-'+mod.key);
-  if(!w){w=document.querySelector('#'+mod.id+' .tbl-wrap');if(!w)return;w.id='aqv5-tblwrap-'+mod.key;}
-  var filtered=_filteredRows(mod.key,rows);
-  if(!filtered.length){
-    w.innerHTML='<div class="aqv5-empty"><div class="ico">'+mod.icon+'</div>'+
-      '<div class="t">No records</div><div class="s">Add your first record or adjust filters</div></div>';return;
-  }
-  var cols=mod.fields.filter(function(f){return f.k!=='notes'&&f.k!=='url';});
-  var html='<table class="dtbl"><thead><tr>'+cols.map(function(f){return '<th>'+f.l+'</th>';}).join('')+'<th>ACTIONS</th></tr></thead><tbody>';
-  filtered.forEach(function(row){
-    html+='<tr><td>'+cols.map(function(f){
-      var v=row[f.k]||'—';
-      if(f.type==='theater'&&v&&v!=='—')return'<span class="bdg bdg-gd">'+v+'</span>';
-      if(f.k==='status'&&v&&v!=='—'){
-        var c='bdg-gr';
-        if(['Active','Compliant','Paid','Approved'].indexOf(v)>-1)c='bdg-g';
-        if(['Pending','In Progress'].indexOf(v)>-1)c='bdg-a';
-        if(['Terminated','Non-Compliant','Overdue','Blacklisted'].indexOf(v)>-1)c='bdg-r';
-        return'<span class="bdg '+c+'">'+v+'</span>';
-      }
-      return v;
-    }).join('</td><td>')+'</td>'+
-    '<td><button class="tbl-act" onclick="aqv5Edit(''+mod.key+'',''+row._id+'')">Edit</button> '+
-    '<button class="tbl-act d" onclick="aqv5Del(''+mod.key+'',''+row._id+'')">Del</button></td></tr>';
-  });
-  html+='</tbody></table>';w.innerHTML=html;
-  var ct=document.querySelector('#'+mod.id+' .tbl-ct');if(ct)ct.textContent=filtered.length+' records';
-}
-
-async function _loadModPage(idx){
-  var mod=MODS[idx],pageEl=document.getElementById(mod.id);if(!pageEl)return;
-  if(!pageEl.dataset.aqv5){
-    pageEl.dataset.aqv5='1';
-    var tb=pageEl.querySelector('.tbl-toolbar');
-    if(tb&&!tb.dataset.aqv5){
-      tb.dataset.aqv5='1';
-      var th=document.createElement('div');th.id='aqv5-th-'+mod.key;
-      th.innerHTML='<div id="aqv5-theaters">'+THEATERS.map(function(t){
-        return'<div class="aqv5-tab'+(t==='ALL'?' on':'')+'" onclick="aqv5SetTheater(''+mod.key+'',''+t+'')">'+t+'</div>';
-      }).join('')+'</div>';
-      tb.parentNode.insertBefore(th,tb);
-      var si=tb.querySelector('.tbl-search');
-      if(si)si.oninput=function(){_state.search=this.value;_applyFilters(mod.key);};
-      var ab=pageEl.querySelector('.btn-gold');if(ab)ab.onclick=function(){openDr(mod.id);};
+// ── 5. GRID INJECTION ────────────────────────────────────────────
+var _injected = false;
+function injectGrid(counts) {
+  if (_injected) {
+    // Just update counts if already injected
+    if (counts) {
+      MODS.forEach(function(m) {
+        var el = document.getElementById('aqv6cnt_' + m.key);
+        if (el) el.textContent = counts[m.key] || 0;
+      });
     }
+    return;
   }
-  var rows=await _getRows(mod.key);
-  _state.data[mod.key]=rows;_state.counts[mod.key]=rows.length;
-  _renderTable(mod,rows);_updateCardCounts();_updateKPIs();
+  var mg = document.getElementById('mod-grid');
+  if (!mg) return;
+
+  // Hide MEGA13's grid
+  mg.style.cssText = 'display:none!important;';
+
+  // Check if our grid already exists
+  var existing = document.getElementById('aqv6-grid');
+  if (existing) { _injected = true; return; }
+
+  // Create and insert our grid
+  var g = document.createElement('div');
+  g.id = 'aqv6-grid';
+  g.className = 'mod-grid'; // reuse existing CSS grid layout
+  g.innerHTML = buildCards(counts);
+  mg.parentNode.insertBefore(g, mg);
+  _injected = true;
+
+  console.log('[AQ-V6] Grid injected ✓');
 }
 
-function _ensureDrawer(){
-  if(document.getElementById('aqv5-overlay'))return;
-  var ov=document.createElement('div');ov.id='aqv5-overlay';
-  ov.onclick=function(e){if(e.target===ov)closeDr();};
-  var dr=document.createElement('div');dr.id='aqv5-drawer';
-  dr.innerHTML='<div id="aqv5-dr-head"><div>'+
-    '<div id="aqv5-dr-title" style="font-size:16px;font-weight:800;color:var(--tx)"></div>'+
-    '<div id="aqv5-dr-sub" style="font-size:11px;color:var(--tx3);margin-top:2px"></div></div>'+
-    '<button onclick="closeDr()" style="margin-left:auto;width:32px;height:32px;border-radius:8px;background:var(--glass);border:1px solid var(--border);color:var(--tx2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>'+
-    '</div><div id="aqv5-dr-body"></div>'+
-    '<div id="aqv5-dr-foot"><button class="btn btn-ghost" onclick="closeDr()">Cancel</button>'+
-    '<button class="btn btn-gold" id="aqv5-dr-save" onclick="aqv5Save()">Save Record</button></div>';
-  ov.appendChild(dr);document.body.appendChild(ov);
-  var t=document.createElement('div');t.id='aqv5-toast';document.body.appendChild(t);
-}
-function _buildForm(mod,rec){
-  rec=rec||{};var html='<div class="aqv5-fg">';
-  mod.fields.forEach(function(f){
-    var v=rec[f.k]||'';
-    if(f.type==='textarea'){
-      html+='<div class="aqv5-f fw"><label class="aqv5-lbl">'+f.l+(f.req?' <span style="color:var(--red)">*</span>':'')+'</label>'+
-        '<textarea class="aqv5-ta" id="aqvf-'+f.k+'">'+v+'</textarea></div>';
-    }else if(f.type==='select'||f.type==='theater'){
-      var opts=f.type==='theater'?['CENTCOM','EUROPE','AFRICA','MULTI-ENTITY']:(f.opts||[]);
-      html+='<div class="aqv5-f"><label class="aqv5-lbl">'+f.l+'</label>'+
-        '<select class="aqv5-sel" id="aqvf-'+f.k+'"><option value="">— Select —</option>'+
-        opts.map(function(o){return'<option value="'+o+'"'+(v===o?' selected':'')+'>'+o+'</option>';}).join('')+
-        '</select></div>';
-    }else{
-      html+='<div class="aqv5-f"><label class="aqv5-lbl">'+f.l+(f.req?' <span style="color:var(--red)">*</span>':'')+'</label>'+
-        '<input class="aqv5-inp" id="aqvf-'+f.k+'" type="'+(f.type==='date'?'date':'text')+'" value="'+v+'" placeholder="'+f.l+'"></div>';
-    }
-  });
-  return html+'</div>';
-}
-
-window.openDr=function(pageId){
-  _ensureDrawer();
-  var idx=pageId?MODS.findIndex(function(m){return m.id===pageId;}):_state.activeModIdx;
-  if(idx<0){_toast('Navigate to a module first','er');return;}
-  var mod=MODS[idx];_state.editingId=null;
-  document.getElementById('aqv5-dr-title').textContent='Add '+mod.name+' Record';
-  document.getElementById('aqv5-dr-sub').textContent=mod.icon+' '+mod.num;
-  document.getElementById('aqv5-dr-body').innerHTML=_buildForm(mod,null);
-  document.getElementById('aqv5-dr-save').setAttribute('data-mod',mod.key);
-  document.getElementById('aqv5-overlay').classList.add('on');
-  document.getElementById('aqv5-drawer').classList.add('on');
-};
-window.closeDr=function(){
-  var o=document.getElementById('aqv5-overlay'),d=document.getElementById('aqv5-drawer');
-  if(o)o.classList.remove('on');if(d)d.classList.remove('on');
-};
-window.aqv5Edit=function(mk,rid){
-  _ensureDrawer();
-  var mod=MODS.find(function(m){return m.key===mk;});if(!mod)return;
-  var rec=(_state.data[mk]||[]).find(function(r){return r._id===rid;});if(!rec)return;
-  _state.editingId=rid;
-  document.getElementById('aqv5-dr-title').textContent='Edit '+mod.name+' Record';
-  document.getElementById('aqv5-dr-sub').textContent=mod.icon+' '+mod.num;
-  document.getElementById('aqv5-dr-body').innerHTML=_buildForm(mod,rec);
-  document.getElementById('aqv5-dr-save').setAttribute('data-mod',mk);
-  document.getElementById('aqv5-overlay').classList.add('on');
-  document.getElementById('aqv5-drawer').classList.add('on');
-};
-window.aqv5Del=async function(mk,rid){
-  if(!confirm('Delete this record?'))return;
-  var rows=(_state.data[mk]||[]).filter(function(r){return r._id!==rid;});
-  if(await _saveRows(mk,rows)){
-    _state.data[mk]=rows;_state.counts[mk]=rows.length;
-    var mod=MODS.find(function(m){return m.key===mk;});if(mod)_renderTable(mod,rows);
-    _updateCardCounts();_updateKPIs();_toast('Record deleted','ok');
-  }else{_toast('Delete failed','er');}
-};
-window.aqv5Save=async function(){
-  var btn=document.getElementById('aqv5-dr-save'),mk=btn.getAttribute('data-mod');
-  var mod=MODS.find(function(m){return m.key===mk;});if(!mod)return;
-  var rec={_id:_state.editingId||(Date.now().toString(36)+Math.random().toString(36).slice(2))};
-  var valid=true;
-  mod.fields.forEach(function(f){
-    var el=document.getElementById('aqvf-'+f.k);if(!el)return;
-    var v=el.value.trim();
-    if(f.req&&!v){el.style.borderColor='var(--red)';valid=false;}else el.style.borderColor='';
-    rec[f.k]=v;
-  });
-  if(!valid){_toast('Fill in required fields','er');return;}
-  var rows=(_state.data[mk]||[]);
-  rows=_state.editingId?rows.map(function(r){return r._id===_state.editingId?rec:r;}):rows.concat([rec]);
-  if(await _saveRows(mk,rows)){
-    _state.data[mk]=rows;_state.counts[mk]=rows.length;
-    _renderTable(mod,rows);_updateCardCounts();_updateKPIs();
-    closeDr();_toast(_state.editingId?'Record updated':'Record saved','ok');_state.editingId=null;
-  }else{_toast('Save failed','er');}
-};
-
-window.csvExp=function(pageId){
-  var idx=pageId?MODS.findIndex(function(m){return m.id===pageId;}):_state.activeModIdx;
-  if(idx<0){_toast('Navigate to a module first','er');return;}
-  var mod=MODS[idx],rows=_filteredRows(mod.key);
-  if(!rows.length){_toast('No records to export','er');return;}
-  var keys=mod.fields.map(function(f){return f.k;});
-  var csv=keys.join(',')+'
-'+rows.map(function(r){
-    return keys.map(function(k){return'"'+(r[k]||'').toString().replace(/"/g,'""')+'"';}).join(',');
-  }).join('
-');
-  var a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='aq-'+mod.key+'-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
-  _toast('CSV exported: '+rows.length+' records','ok');
-};
-window.filt=function(){
-  var idx=_state.activeModIdx;if(idx<0){_toast('Navigate to a module first','er');return;}
-  var s=document.querySelector('#'+MODS[idx].id+' .tbl-search');if(s)s.focus();
-};
-window.filtF=function(){_toast('Use the Theater filter tabs above the table','inf');};
-
-var _booted=false,_gridInjected=false;
-function _boot(){
-  if(_booted)return;
-  var app=document.getElementById('app'),mg=document.getElementById('mod-grid');
-  if(!app||!mg){setTimeout(_boot,200);return;}
-  _booted=true;
-
-  // Intercept innerHTML setter on #mod-grid
-  try{
-    var origDesc=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
-    var origSet=origDesc.set;
-    Object.defineProperty(mg,'innerHTML',{
-      set:function(v){
-        origSet.call(this,v);
-        this.style.setProperty('display','none','important');
-        setTimeout(function(){mg.style.setProperty('display','none','important');_injectGrid();},0);
-      },
-      get:function(){return origDesc.get.call(this);},
-      configurable:true
+// ── 6. LOAD COUNTS FROM SUPABASE ─────────────────────────────────
+async function loadCounts() {
+  if (!window.sb) return {};
+  try {
+    var r = await window.sb.from('cb_store').select('module,records');
+    if (!r || !r.data) return {};
+    var c = {};
+    r.data.forEach(function(row) {
+      c[row.module] = Array.isArray(row.records) ? row.records.length : 0;
     });
-  }catch(e){}
-
-  // MutationObserver fallback
-  new MutationObserver(function(){
-    mg.style.setProperty('display','none','important');
-    setTimeout(_injectGrid,0);
-  }).observe(mg,{childList:true});
-
-  _injectGrid();
-
-  // Watch app class changes
-  new MutationObserver(function(){
-    if(app.classList.contains('on')){
-      setTimeout(function(){_injectGrid();_loadAllCounts();
-        document.querySelectorAll('#dash .sa').forEach(function(el){el.style.opacity='1';el.style.transform='none';});
-      },150);
-    }
-  }).observe(app,{attributes:true,attributeFilter:['class']});
-
-  if(app.classList.contains('on')){_loadAllCounts();}
-
-  // Polling safety net
-  var pc=0,pi=setInterval(function(){
-    pc++;mg.style.setProperty('display','none','important');_injectGrid();
-    if(pc>20||_gridInjected)clearInterval(pi);
-  },300);
+    return c;
+  } catch(e) { return {}; }
 }
 
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_boot);}
-else{_boot();}
-setTimeout(_boot,400);
-setTimeout(function(){if(!_gridInjected){_booted=false;_boot();}},1200);
+// ── 7. UPDATE KPIs ────────────────────────────────────────────────
+function updateKPIs(counts) {
+  var k0 = document.getElementById('kv0');
+  var k1 = document.getElementById('kv1');
+  var k2 = document.getElementById('kv2');
+  if (k0) k0.textContent = counts.contracts || 0;
+  if (k1) k1.textContent = counts.suppliers || 0;
+  if (k2) k2.textContent = counts.tdocs || 0;
+}
+
+// ── 8. NAV FUNCTION ──────────────────────────────────────────────
+var _activeModIdx = -1;
+window.nav = function(page) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('on'); });
+  var t = document.getElementById(page);
+  if (t) t.classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  // Find matching nav item
+  document.querySelectorAll('.nav-item').forEach(function(n) {
+    var oc = n.getAttribute('onclick') || '';
+    if (oc.indexOf("'" + page + "'") !== -1 || oc.indexOf('"' + page + '"') !== -1) {
+      n.classList.add('active');
+    }
+  });
+  if (page !== 'dash') {
+    var idx = parseInt(page.replace('m','')) - 1;
+    if (idx >= 0 && idx < MODS.length) {
+      _activeModIdx = idx;
+      loadModulePage(idx);
+    }
+  } else {
+    _activeModIdx = -1;
+  }
+};
+
+// ── 9. LOAD MODULE PAGE DATA ──────────────────────────────────────
+async function loadModulePage(idx) {
+  var mod = MODS[idx];
+  if (!mod || !window.sb) return;
+  var pageEl = document.getElementById(mod.id);
+  if (!pageEl) return;
+
+  var tblWrap = pageEl.querySelector('.tbl-wrap');
+  if (!tblWrap) return;
+  tblWrap.id = tblWrap.id || ('aqv6tw_' + mod.key);
+
+  try {
+    var r = await window.sb.from('cb_store').select('records').eq('module', mod.key).single();
+    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
+
+    if (!rows.length) {
+      tblWrap.innerHTML = '<div style="padding:64px;text-align:center;color:var(--tx3)">' +
+        '<div style="font-size:36px;margin-bottom:12px">' + mod.icon + '</div>' +
+        '<div style="font-size:14px;font-weight:600">No records yet</div>' +
+        '<div style="font-size:12px;margin-top:6px;opacity:.6">Add your first record using the button above</div>' +
+        '</div>';
+      return;
+    }
+
+    // Get all field keys from first record (excluding _id)
+    var keys = Object.keys(rows[0]).filter(function(k) { return k !== '_id'; });
+    var html = '<table class="dtbl"><thead><tr>' +
+      keys.map(function(k) { return '<th>' + k.replace(/_/g,' ').toUpperCase() + '</th>'; }).join('') +
+      '<th>ACTIONS</th></tr></thead><tbody>';
+    rows.forEach(function(row) {
+      html += '<tr><td>' + keys.map(function(k) { return row[k] || '—'; }).join('</td><td>') + '</td>' +
+        '<td><button class="tbl-act" onclick="aqv6Edit('' + mod.key + '','' + row._id + '')">Edit</button> ' +
+        '<button class="tbl-act d" onclick="aqv6Del('' + mod.key + '','' + row._id + '')">Del</button></td></tr>';
+    });
+    html += '</tbody></table>';
+    tblWrap.innerHTML = html;
+    var ct = pageEl.querySelector('.tbl-ct');
+    if (ct) ct.textContent = rows.length + ' records';
+  } catch(e) {
+    tblWrap.innerHTML = '<div style="padding:32px;text-align:center;color:var(--tx3);font-size:12px">Error loading data: ' + e.message + '</div>';
+  }
+}
+
+// ── 10. CRUD ─────────────────────────────────────────────────────
+window.openDr = function(pageId) {
+  var idx;
+  if (pageId) { idx = MODS.findIndex(function(m) { return m.id === pageId; }); }
+  else { idx = _activeModIdx; }
+  if (idx < 0) { alert('Navigate to a module first'); return; }
+  var mod = MODS[idx];
+  var fields = prompt('QUICK ADD — enter data as JSON
+Example: {"title":"Contract A","region":"CENTCOM","status":"Active"}');
+  if (!fields) return;
+  try {
+    var rec = JSON.parse(fields);
+    rec._id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+    saveRecord(mod.key, rec, false);
+  } catch(e) { alert('Invalid JSON: ' + e.message); }
+};
+
+async function saveRecord(modKey, rec, isEdit) {
+  if (!window.sb) { alert('Not connected to Supabase'); return; }
+  try {
+    var ex = await window.sb.from('cb_store').select('id,records').eq('module', modKey).single();
+    var rows = (ex && ex.data && Array.isArray(ex.data.records)) ? ex.data.records : [];
+    if (isEdit) {
+      rows = rows.map(function(r) { return r._id === rec._id ? rec : r; });
+    } else {
+      rows = rows.concat([rec]);
+    }
+    if (ex && ex.data && ex.data.id) {
+      await window.sb.from('cb_store').update({records: rows}).eq('module', modKey);
+    } else {
+      await window.sb.from('cb_store').insert({module: modKey, records: rows});
+    }
+    var idx = MODS.findIndex(function(m) { return m.key === modKey; });
+    if (idx >= 0) loadModulePage(idx);
+    loadAndRefresh();
+    alert('Saved!');
+  } catch(e) { alert('Save error: ' + e.message); }
+}
+
+window.aqv6Del = async function(modKey, recId) {
+  if (!confirm('Delete this record?')) return;
+  if (!window.sb) return;
+  var ex = await window.sb.from('cb_store').select('id,records').eq('module', modKey).single();
+  var rows = (ex && ex.data && Array.isArray(ex.data.records)) ? ex.data.records : [];
+  rows = rows.filter(function(r) { return r._id !== recId; });
+  await window.sb.from('cb_store').update({records: rows}).eq('module', modKey);
+  var idx = MODS.findIndex(function(m) { return m.key === modKey; });
+  if (idx >= 0) loadModulePage(idx);
+  loadAndRefresh();
+};
+
+window.aqv6Edit = function(modKey, recId) {
+  if (!window.sb) return;
+  window.sb.from('cb_store').select('records').eq('module', modKey).single().then(function(r) {
+    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
+    var rec = rows.find(function(x) { return x._id === recId; });
+    if (!rec) return;
+    var edited = prompt('Edit record (JSON):', JSON.stringify(rec));
+    if (!edited) return;
+    try { saveRecord(modKey, JSON.parse(edited), true); }
+    catch(e) { alert('Invalid JSON'); }
+  });
+};
+
+window.csvExp = function(pageId) {
+  var idx = pageId ? MODS.findIndex(function(m) { return m.id === pageId; }) : _activeModIdx;
+  if (idx < 0) { alert('Navigate to a module first'); return; }
+  var mod = MODS[idx];
+  if (!window.sb) return;
+  window.sb.from('cb_store').select('records').eq('module', mod.key).single().then(function(r) {
+    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
+    if (!rows.length) { alert('No records to export'); return; }
+    var keys = Object.keys(rows[0]).filter(function(k) { return k !== '_id'; });
+    var csv = keys.join(',') + '
+' + rows.map(function(row) {
+      return keys.map(function(k) { return '"' + (row[k] || '').toString().replace(/"/g, '""') + '"'; }).join(',');
+    }).join('
+');
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'aq-' + mod.key + '-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  });
+};
+
+window.filt = function() {
+  var idx = _activeModIdx;
+  if (idx < 0) return;
+  var s = document.querySelector('#' + MODS[idx].id + ' .tbl-search');
+  if (s) s.focus();
+};
+
+// ── 11. LOAD & REFRESH ALL ────────────────────────────────────────
+async function loadAndRefresh() {
+  var counts = await loadCounts();
+  injectGrid(counts);
+  updateKPIs(counts);
+}
+
+// ── 12. BOOT SEQUENCE ─────────────────────────────────────────────
+// Strategy: watch for #app to get class "on" (MEGA13 sets this after auth)
+// Then wait 700ms (MEGA13's longest setTimeout is 350ms) and inject
+
+function watchForAuth() {
+  var app = document.getElementById('app');
+  if (!app) { setTimeout(watchForAuth, 100); return; }
+
+  // If already logged in
+  if (app.classList.contains('on')) {
+    setTimeout(function() { loadAndRefresh(); }, 700);
+    return;
+  }
+
+  // Watch for class change
+  var obs = new MutationObserver(function() {
+    if (app.classList.contains('on')) {
+      obs.disconnect();
+      console.log('[AQ-V6] Auth detected, injecting in 700ms...');
+      setTimeout(function() { loadAndRefresh(); }, 700);
+      // Also retry at 1.5s and 3s for safety
+      setTimeout(function() { if (!_injected) loadAndRefresh(); }, 1500);
+      setTimeout(function() { if (!_injected) loadAndRefresh(); }, 3000);
+    }
+  });
+  obs.observe(app, { attributes: true, attributeFilter: ['class'] });
+
+  // Also watch #mod-grid for MEGA13 populating it
+  var mg = document.getElementById('mod-grid');
+  if (mg) {
+    var mgObs = new MutationObserver(function() {
+      console.log('[AQ-V6] mod-grid mutated, injecting...');
+      mg.style.cssText = 'display:none!important;';
+      setTimeout(function() { loadAndRefresh(); }, 100);
+    });
+    mgObs.observe(mg, { childList: true, subtree: true });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', watchForAuth);
+} else {
+  watchForAuth();
+}
 
 })();
 </script>
