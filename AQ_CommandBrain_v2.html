@@ -2032,411 +2032,243 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
-<script>
-// AQ-FIX6-GLASS
-(function(){
-  // ── Force .sa visible ─────────────────────────────────────────────────
-  var st=document.createElement('style');
-  st.textContent=
-    '.sa{opacity:1!important;transform:none!important;transition:none!important}'+
-    '.mod-card{overflow:visible!important;background:rgba(255,255,255,0.06)!important;'+
-    'border:1px solid rgba(255,255,255,0.13)!important;'+
-    'backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;'+
-    'box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;'+
-    'transform-style:preserve-3d!important;will-change:transform!important;transition:box-shadow .22s!important;}'+
-    '.mod-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.12),0 0 30px rgba(248,87,0,0.08)!important;border-color:rgba(255,255,255,0.22)!important;}'+
-    /* Transparent parents so canvas shows through backdrop-filter */
-    '#app>.layout>.content,#app>.layout,.content,main,.main,.page.on>.inner,.page-body{background:transparent!important;}'+
-    '.mod-grid{background:transparent!important;overflow:visible!important;}';
-  document.head.appendChild(st);
 
-  new MutationObserver(function(ms){
-    ms.forEach(function(m){
-      m.addedNodes.forEach(function(n){
-        if(n.nodeType!==1)return;
-        if(n.classList&&n.classList.contains('sa'))n.classList.add('in');
-        if(n.querySelectorAll)n.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});
-      });
-    });
-  }).observe(document.body,{childList:true,subtree:true});
 
-  // ── 3D Tilt (matches original liquid glass feel) ──────────────────────
-  function _addTilt(card){
-    var glowEl=document.createElement('div');
-    glowEl.style.cssText='position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .2s;background:radial-gradient(circle at 50% 50%,rgba(248,87,0,0.15),transparent 70%);';
-    card.style.position='relative';
-    card.appendChild(glowEl);
 
-    card.addEventListener('mousemove',function(e){
-      var r=card.getBoundingClientRect();
-      var x=(e.clientX-r.left)/r.width;
-      var y=(e.clientY-r.top)/r.height;
-      var rx=((0.5-y)*22).toFixed(2);
-      var ry=((x-0.5)*22).toFixed(2);
-      card.style.transition='none';
-      card.style.transform='perspective(700px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.03,1.03,1.03)';
-      glowEl.style.opacity='1';
-      glowEl.style.background='radial-gradient(circle at '+(x*100)+'% '+(y*100)+'%,rgba(248,87,0,0.18),transparent 65%)';
-    });
-    card.addEventListener('mouseleave',function(){
-      card.style.transition='transform .25s ease,box-shadow .22s';
-      card.style.transform='none';
-      glowEl.style.opacity='0';
-    });
-  }
-
-  // ── Module definitions ────────────────────────────────────────────────
-  var MODS=[
-    {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across CENTCOM, EUROPE, and AFRICA.',     id:'m1',color:'#F85700'},
-    {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral for all entities.',  id:'m2',color:'#3B82F6'},
-    {num:'03',name:'Technical Docs',     desc:'Engineering specs, SOPs, and technical documentation repository.',                id:'m3',color:'#22C55E'},
-    {num:'04',name:'Compliance',         desc:'Regulatory compliance tracking, audit trails, and certification status.',          id:'m4',color:'#F59E0B'},
-    {num:'05',name:'Financials',         desc:'Budget tracking, P&L summaries, and financial reporting across entities.',         id:'m5',color:'#A855F7'},
-    {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement relationships.',                id:'m6',color:'#06B6D4'}
-  ];
-
-  // ── Render module cards ───────────────────────────────────────────────
-  function _renderModCards(){
-    var grid=document.getElementById('mod-grid')||document.querySelector('.mod-grid');
-    if(!grid)return;
-    if(grid.getAttribute('data-fix6'))return;
-    grid.setAttribute('data-fix6','1');
-    grid.innerHTML='';
-    MODS.forEach(function(m){
-      var card=document.createElement('div');
-      card.className='mod-card';
-      card.style.cssText='cursor:pointer;';
-      card.innerHTML=
-        '<div class="mc-strip" style="height:3px;background:'+m.color+';flex-shrink:0"></div>'+
-        '<div class="mc-body">'+
-          '<div class="mc-num">'+m.num+'</div>'+
-          '<div class="mc-name">'+m.name+'</div>'+
-          '<div class="mc-desc">'+m.desc+'</div>'+
-          '<div class="mc-foot">'+
-            '<div><div class="mc-count" id="cnt-'+m.id+'">—</div>'+
-            '<div class="mc-count-l">Records</div></div>'+
-            '<div class="mc-arrow">→</div>'+
-          '</div>'+
-        '</div>';
-      card.addEventListener('click',function(e){e.preventDefault();window.nav(m.id);});
-      _addTilt(card);
-      grid.appendChild(card);
-    });
-    console.log('[FIX6] '+MODS.length+' cards rendered with tilt');
-  }
-
-  // ── nav() ─────────────────────────────────────────────────────────────
-  window.nav=function(id){
-    var pg=document.getElementById(id)||document.getElementById('pg-'+id)||document.getElementById('p-'+id)||document.getElementById('sec-'+id)||document.querySelector('[data-page="'+id+'"]');
-    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
-    if(pg){pg.classList.add('on');pg.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});}
-    document.querySelectorAll('.nav-item').forEach(function(ni){
-      ni.classList.remove('active');
-      var oc=ni.getAttribute('onclick')||'';
-      if(oc.indexOf("'"+id+"'")>=0||oc.indexOf('"'+id+'"')>=0)ni.classList.add('active');
-    });
-    if(id==='dash')setTimeout(_renderModCards,100);
-    console.log('[FIX6] nav('+id+') pg='+(pg?pg.id:'NOT FOUND'));
-  };
-  window.navTo=window.nav;
-
-  // ── Wire nav-items ────────────────────────────────────────────────────
-  function _wireNav(){
-    document.querySelectorAll('.nav-item[onclick]').forEach(function(ni){
-      if(ni._fix6)return;ni._fix6=true;
-      var oc=ni.getAttribute('onclick')||'';
-      var m=oc.match(/nav\(['"]([^'"]+)['"]\)/);
-      if(m){var t=m[1];ni.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.nav(t);});}
-    });
-  }
-
-  function _apply(){_wireNav();_renderModCards();document.querySelectorAll('.sa').forEach(function(e){e.classList.add('in');});}
-
-  var _ob=window.bootApp;
-  window.bootApp=function(){if(typeof _ob==='function')_ob.apply(this,arguments);setTimeout(_apply,700);};
-  window.bootApp._m13=true;
-
-  if(document.getElementById('app')&&document.getElementById('app').classList.contains('on')){setTimeout(_apply,300);}
-  window.addEventListener('load',function(){setTimeout(_apply,900);});
-})();
-</script>
 
 
 
 
 
 <script>
-// AQ-FIX7-DATA
+// AQ-COMPLETE-V1
 (function(){
-  var MOD_KEY={m1:'contracts',m2:'brand',m3:'tdocs',m4:'compliance',m5:'fins',m6:'suppliers'};
+'use strict';
 
-  var COLS={
-    tdocs:[{k:'title',l:'Title',w:'200px'},{k:'docType',l:'Type',w:'120px'},{k:'version',l:'Ver',w:'50px'},{k:'region',l:'Region',w:'90px'},{k:'contract',l:'Contract',w:'120px'},{k:'reuse',l:'Reuse',w:'70px'},{k:'classification',l:'Class',w:'100px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-    suppliers:[{k:'name',l:'Name',w:'180px'},{k:'category',l:'Category',w:'110px'},{k:'status',l:'Status',w:'110px'},{k:'rating',l:'Rating',badge:true,w:'70px'},{k:'region',l:'Region',w:'80px'},{k:'exposureAED',l:'Exposure AED',w:'100px'},{k:'tradeLicenseVerified',l:'License',w:'70px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-    contracts:[{k:'title',l:'Title',w:'180px'},{k:'client',l:'Client',w:'140px'},{k:'contractNo',l:'Ref',w:'110px'},{k:'value',l:'Value',w:'90px'},{k:'status',l:'Status',w:'100px'},{k:'region',l:'Region',w:'80px'},{k:'expiry',l:'Expiry',w:'85px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-    brand:[{k:'title',l:'Asset Name',w:'200px'},{k:'type',l:'Type',w:'120px'},{k:'version',l:'Ver',w:'60px'},{k:'region',l:'Region',w:'100px'},{k:'status',l:'Status',w:'100px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-    compliance:[{k:'title',l:'Requirement',w:'200px'},{k:'type',l:'Type',w:'120px'},{k:'status',l:'Status',w:'110px'},{k:'region',l:'Region',w:'80px'},{k:'owner',l:'Owner',w:'110px'},{k:'expiry',l:'Expiry',w:'85px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-    fins:[{k:'title',l:'Description',w:'190px'},{k:'type',l:'Type',w:'90px'},{k:'amount',l:'Amount',w:'90px'},{k:'date',l:'Date',w:'85px'},{k:'entity',l:'Entity',w:'90px'},{k:'region',l:'Region',w:'80px'},{k:'attachment',l:'File',link:true,w:'55px'}]
-  };
+// ── Config ────────────────────────────────────────────────────────────────
+var MOD_KEY={m1:'contracts',m2:'brand',m3:'tdocs',m4:'compliance',m5:'fins',m6:'suppliers'};
+var DRMAP={contract:'m1',contracts:'m1',brand:'m2',brands:'m2',tdoc:'m3',tdocs:'m3',doc:'m3',compliance:'m4',fin:'m5',fins:'m5',financial:'m5',supplier:'m6',suppliers:'m6'};
+var THEATER_REGIONS={
+  CENTCOM:['uae','ksa','kuwait','bahrain','qatar','oman','jordan','iraq','centcom'],
+  EUROPE:['poland','germany','uk','france','belgium','netherlands','europe'],
+  AFRICA:['kenya','nigeria','ethiopia','tanzania','ghana','africa'],
+  'MULTI-ENTITY':['multi-region','multi-entity','group','global','multi']
+};
+var MODS=[
+  {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across CENTCOM, EUROPE, and AFRICA.',     id:'m1',color:'#F85700'},
+  {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral for all entities.',  id:'m2',color:'#3B82F6'},
+  {num:'03',name:'Technical Docs',     desc:'Engineering specs, SOPs, and technical documentation repository.',                id:'m3',color:'#22C55E'},
+  {num:'04',name:'Compliance',         desc:'Regulatory compliance tracking, audit trails, and certification status.',          id:'m4',color:'#F59E0B'},
+  {num:'05',name:'Financials',         desc:'Budget tracking, P&L summaries, and financial reporting across entities.',         id:'m5',color:'#A855F7'},
+  {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement relationships.',                id:'m6',color:'#06B6D4'}
+];
+var COLS={
+  tdocs:    [{k:'title',l:'Title',w:'200px'},{k:'docType',l:'Type',w:'110px'},{k:'version',l:'Ver',w:'48px'},{k:'region',l:'Region',w:'90px'},{k:'contract',l:'Contract',w:'120px'},{k:'reuse',l:'Reuse',w:'65px'},{k:'classification',l:'Class',w:'95px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  suppliers:[{k:'name',l:'Name',w:'175px'},{k:'category',l:'Category',w:'105px'},{k:'status',l:'Status',w:'105px'},{k:'rating',l:'Rating',badge:true,w:'68px'},{k:'region',l:'Region',w:'78px'},{k:'exposureAED',l:'Exposure AED',w:'98px'},{k:'tradeLicenseVerified',l:'License',w:'68px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  contracts:[{k:'title',l:'Title',w:'175px'},{k:'client',l:'Client',w:'135px'},{k:'contractNo',l:'Ref',w:'108px'},{k:'value',l:'Value',w:'88px'},{k:'status',l:'Status',w:'98px'},{k:'region',l:'Region',w:'78px'},{k:'expiry',l:'Expiry',w:'82px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  brand:    [{k:'title',l:'Asset Name',w:'195px'},{k:'type',l:'Type',w:'118px'},{k:'version',l:'Ver',w:'58px'},{k:'region',l:'Region',w:'98px'},{k:'status',l:'Status',w:'98px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  compliance:[{k:'title',l:'Requirement',w:'195px'},{k:'type',l:'Type',w:'118px'},{k:'status',l:'Status',w:'108px'},{k:'region',l:'Region',w:'78px'},{k:'owner',l:'Owner',w:'108px'},{k:'expiry',l:'Expiry',w:'82px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  fins:     [{k:'title',l:'Description',w:'185px'},{k:'type',l:'Type',w:'88px'},{k:'amount',l:'Amount',w:'88px'},{k:'date',l:'Date',w:'82px'},{k:'entity',l:'Entity',w:'88px'},{k:'region',l:'Region',w:'78px'},{k:'attachment',l:'File',link:true,w:'55px'}]
+};
+var FIELDS={
+  tdocs:[{k:'title',l:'Title',req:true},{k:'docType',l:'Document Type',sel:['Technical Proposal','SOW','SOP','Report','Specification','Brief','Other']},{k:'version',l:'Version',ph:'v1'},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'contract',l:'Contract Reference'},{k:'author',l:'Author'},{k:'reviewedBy',l:'Reviewed By'},{k:'service',l:'Service'},{k:'reuse',l:'Reuse Potential',sel:['High','Medium','Low']},{k:'classification',l:'Classification',sel:['Unclassified','Confidential','Restricted','Secret']},{k:'keywords',l:'Keywords'},{k:'filePath',l:'File Path'},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'reuseNotes',l:'Reuse Notes',ta:true}],
+  suppliers:[{k:'name',l:'Legal Name',req:true},{k:'tradingName',l:'Trading Name'},{k:'category',l:'Category',sel:['Labour Supply','IT','Construction','Logistics','Consulting','Legal','Finance','Security','Facilities','Other']},{k:'status',l:'Status',sel:['Active','Pending Vetting','Under Review','Blacklisted','Inactive']},{k:'rating',l:'Rating',sel:['Green','Amber','Red']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region']},{k:'territory',l:'Territory'},{k:'email',l:'Email'},{k:'phone',l:'Phone'},{k:'contact',l:'Contact Person'},{k:'tradeLicenseNo',l:'Trade License No'},{k:'tradeLicenseExpiry',l:'License Expiry'},{k:'tradeLicenseVerified',l:'License Verified',sel:['Yes','No','Pending']},{k:'bankVerified',l:'Bank Verified',sel:['Yes','No','Pending']},{k:'referencesChecked',l:'References Checked',sel:['Yes','No','Pending']},{k:'exposureAED',l:'Financial Exposure (AED)'},{k:'legalAction',l:'Legal Action Status'},{k:'redFlags',l:'Red Flags',ta:true},{k:'disputeDetail',l:'Dispute Details',ta:true},{k:'ratingJustification',l:'Rating Justification',ta:true},{k:'attachment',l:'Attachment Link'},{k:'notes',l:'Notes',ta:true}],
+  contracts:[{k:'title',l:'Contract Title',req:true},{k:'client',l:'Client / Counter-party'},{k:'contractNo',l:'Contract Number'},{k:'value',l:'Contract Value (AED)'},{k:'status',l:'Status',sel:['Active','Pending Signature','Under Review','Expired','Terminated']},{k:'type',l:'Contract Type',sel:['Fixed Price','T&M','Framework','Retainer','Grant','Other']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'entity',l:'AQ Entity'},{k:'service',l:'Service / Scope'},{k:'startDate',l:'Start Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'notes',l:'Notes',ta:true}],
+  brand:[{k:'title',l:'Asset Name',req:true},{k:'type',l:'Asset Type',sel:['Logo','Template','Brand Guideline','Collateral','Presentation','Video','Photography','Other']},{k:'version',l:'Version'},{k:'region',l:'Region',sel:['AQ Global','UAE','KSA','Multi-Region']},{k:'status',l:'Status',sel:['Approved','Draft','Archived','Under Review']},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'notes',l:'Notes',ta:true}],
+  compliance:[{k:'title',l:'Requirement Title',req:true},{k:'type',l:'Type',sel:['Regulatory','Certification','Internal Policy','Audit','Legal','Insurance','Other']},{k:'status',l:'Status',sel:['Compliant','In Progress','Non-Compliant','Pending Review','Expired']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Multi-Region','Global']},{k:'owner',l:'Owner / Responsible'},{k:'dueDate',l:'Due Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'Supporting Document Link'},{k:'notes',l:'Notes',ta:true}],
+  fins:[{k:'title',l:'Description',req:true},{k:'type',l:'Type',sel:['Revenue','Cost','Budget','Forecast','Actual','Variance','Invoice','Other']},{k:'amount',l:'Amount (AED)'},{k:'date',l:'Date'},{k:'entity',l:'AQ Entity'},{k:'region',l:'Region',sel:['UAE','KSA','Multi-Region','Group']},{k:'category',l:'Category'},{k:'reference',l:'Reference No'},{k:'attachment',l:'Supporting Document Link'},{k:'notes',l:'Notes',ta:true}]
+};
 
-  var FIELDS={
-    tdocs:[
-      {k:'title',l:'Title',req:true},
-      {k:'docType',l:'Document Type',sel:['Technical Proposal','SOW','SOP','Report','Specification','Brief','Other']},
-      {k:'version',l:'Version',ph:'v1'},
-      {k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},
-      {k:'contract',l:'Contract Reference'},
-      {k:'author',l:'Author'},
-      {k:'reviewedBy',l:'Reviewed By'},
-      {k:'service',l:'Service'},
-      {k:'reuse',l:'Reuse Potential',sel:['High','Medium','Low']},
-      {k:'classification',l:'Classification',sel:['Unclassified','Confidential','Restricted','Secret']},
-      {k:'keywords',l:'Keywords'},
-      {k:'filePath',l:'File Path'},
-      {k:'attachment',l:'OneDrive / SharePoint Link'},
-      {k:'reuseNotes',l:'Reuse Notes',ta:true}
-    ],
-    suppliers:[
-      {k:'name',l:'Legal Name',req:true},
-      {k:'tradingName',l:'Trading Name'},
-      {k:'category',l:'Category',sel:['Labour Supply','IT','Construction','Logistics','Consulting','Legal','Finance','Security','Facilities','Other']},
-      {k:'status',l:'Status',sel:['Active','Pending Vetting','Under Review','Blacklisted','Inactive']},
-      {k:'rating',l:'Rating',sel:['Green','Amber','Red']},
-      {k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region']},
-      {k:'territory',l:'Territory'},
-      {k:'email',l:'Email'},
-      {k:'phone',l:'Phone'},
-      {k:'contact',l:'Contact Person'},
-      {k:'tradeLicenseNo',l:'Trade License No'},
-      {k:'tradeLicenseExpiry',l:'License Expiry'},
-      {k:'tradeLicenseVerified',l:'License Verified',sel:['Yes','No','Pending']},
-      {k:'bankVerified',l:'Bank Verified',sel:['Yes','No','Pending']},
-      {k:'referencesChecked',l:'References Checked',sel:['Yes','No','Pending']},
-      {k:'exposureAED',l:'Financial Exposure (AED)'},
-      {k:'legalAction',l:'Legal Action Status'},
-      {k:'redFlags',l:'Red Flags',ta:true},
-      {k:'disputeDetail',l:'Dispute Details',ta:true},
-      {k:'ratingJustification',l:'Rating Justification',ta:true},
-      {k:'attachment',l:'Attachment Link'},
-      {k:'notes',l:'Notes',ta:true}
-    ],
-    contracts:[
-      {k:'title',l:'Contract Title',req:true},
-      {k:'client',l:'Client / Counter-party'},
-      {k:'contractNo',l:'Contract Number'},
-      {k:'value',l:'Contract Value (AED)'},
-      {k:'status',l:'Status',sel:['Active','Pending Signature','Under Review','Expired','Terminated']},
-      {k:'type',l:'Contract Type',sel:['Fixed Price','T&M','Framework','Retainer','Grant','Other']},
-      {k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},
-      {k:'entity',l:'AQ Entity'},
-      {k:'service',l:'Service / Scope'},
-      {k:'startDate',l:'Start Date'},
-      {k:'expiry',l:'Expiry Date'},
-      {k:'attachment',l:'OneDrive / SharePoint Link'},
-      {k:'notes',l:'Notes',ta:true}
-    ],
-    brand:[
-      {k:'title',l:'Asset Name',req:true},
-      {k:'type',l:'Asset Type',sel:['Logo','Template','Brand Guideline','Collateral','Presentation','Video','Photography','Other']},
-      {k:'version',l:'Version'},
-      {k:'region',l:'Region',sel:['AQ Global','UAE','KSA','Multi-Region']},
-      {k:'status',l:'Status',sel:['Approved','Draft','Archived','Under Review']},
-      {k:'attachment',l:'OneDrive / SharePoint Link'},
-      {k:'notes',l:'Notes',ta:true}
-    ],
-    compliance:[
-      {k:'title',l:'Requirement Title',req:true},
-      {k:'type',l:'Type',sel:['Regulatory','Certification','Internal Policy','Audit','Legal','Insurance','Other']},
-      {k:'status',l:'Status',sel:['Compliant','In Progress','Non-Compliant','Pending Review','Expired']},
-      {k:'region',l:'Region',sel:['UAE','KSA','Qatar','Multi-Region','Global']},
-      {k:'owner',l:'Owner / Responsible'},
-      {k:'dueDate',l:'Due Date'},
-      {k:'expiry',l:'Expiry Date'},
-      {k:'attachment',l:'Supporting Document Link'},
-      {k:'notes',l:'Notes',ta:true}
-    ],
-    fins:[
-      {k:'title',l:'Description',req:true},
-      {k:'type',l:'Type',sel:['Revenue','Cost','Budget','Forecast','Actual','Variance','Invoice','Other']},
-      {k:'amount',l:'Amount (AED)'},
-      {k:'date',l:'Date'},
-      {k:'entity',l:'AQ Entity'},
-      {k:'region',l:'Region',sel:['UAE','KSA','Multi-Region','Group']},
-      {k:'category',l:'Category'},
-      {k:'reference',l:'Reference No'},
-      {k:'attachment',l:'Supporting Document Link'},
-      {k:'notes',l:'Notes',ta:true}
-    ]
-  };
+// ── CSS ───────────────────────────────────────────────────────────────────
+var css=document.createElement('style');
+css.textContent=
+  // Force .sa visible (IntersectionObserver lost in truncation)
+  '.sa{opacity:1!important;transform:none!important;transition:none!important}'+
+  // Glass module cards
+  '.mod-card{overflow:visible!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;transform-style:preserve-3d!important;will-change:transform!important;}'+
+  '.mod-card:hover{border-color:rgba(255,255,255,0.22)!important;box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.12)!important;}'+
+  // Theater filter bar
+  '.aqx-bar{display:flex;gap:8px;padding:14px 0 10px;flex-wrap:wrap}'+
+  '.aqx-tf{background:transparent;color:rgba(226,232,248,0.45);border:1px solid rgba(255,255,255,0.1);padding:4px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}'+
+  '.aqx-tf:hover{color:#e2e8f8;border-color:rgba(255,255,255,0.25)}'+
+  '.aqx-tf.on{background:#F85700;color:#000;border-color:#F85700;font-weight:700}'+
+  // Record count + add row
+  '.aqx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}'+
+  '.aqx-cnt{font-size:12px;color:rgba(226,232,248,0.4)}'+
+  '.aqx-add{background:#F85700;color:#000;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}'+
+  '.aqx-add:hover{opacity:.9}'+
+  // Table
+  '.aqx-tbl{width:100%;border-collapse:collapse;font-size:12px}'+
+  '.aqx-tbl th{text-align:left;padding:8px 12px;color:rgba(226,232,248,0.45);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;font-size:10px;text-transform:uppercase;letter-spacing:.05em}'+
+  '.aqx-tbl td{padding:9px 12px;color:#e2e8f8;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}'+
+  '.aqx-tbl tr:hover td{background:rgba(255,255,255,0.025)}'+
+  '.aqx-g{background:#22c55e18;color:#22c55e;border:1px solid #22c55e33;padding:2px 9px;border-radius:20px;font-size:11px}'+
+  '.aqx-a{background:#f59e0b18;color:#f59e0b;border:1px solid #f59e0b33;padding:2px 9px;border-radius:20px;font-size:11px}'+
+  '.aqx-r{background:#ef444418;color:#ef4444;border:1px solid #ef444433;padding:2px 9px;border-radius:20px;font-size:11px}'+
+  '.aqx-lnk{color:#F85700;text-decoration:none;font-size:11px;font-weight:600}'+
+  '.aqx-lnk:hover{text-decoration:underline}'+
+  '.aqx-eb{background:transparent;color:rgba(226,232,248,0.4);border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:inherit}'+
+  '.aqx-eb:hover{color:#e2e8f8;border-color:rgba(255,255,255,0.3)}'+
+  '.aqx-empty{color:rgba(226,232,248,0.25);text-align:center;padding:48px 20px;border:1px dashed rgba(255,255,255,0.07);border-radius:10px;font-size:13px}'+
+  // Modal
+  '.aqx-mbg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto}'+
+  '.aqx-modal{background:#0b1526;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px;width:100%;max-width:580px;box-shadow:0 40px 80px rgba(0,0,0,0.6)}'+
+  '.aqx-modal h2{margin:0 0 20px;font-size:16px;color:#e2e8f8;font-weight:700}'+
+  '.aqx-modal label{display:block;font-size:10px;color:rgba(226,232,248,0.45);margin:14px 0 4px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}'+
+  '.aqx-modal input,.aqx-modal select,.aqx-modal textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:6px;color:#e2e8f8;padding:9px 12px;font-size:13px;box-sizing:border-box;font-family:inherit;outline:none}'+
+  '.aqx-modal textarea{height:80px;resize:vertical}'+
+  '.aqx-modal input:focus,.aqx-modal select:focus,.aqx-modal textarea:focus{border-color:#F85700;background:rgba(248,87,0,0.04)}'+
+  '.aqx-modal select option{background:#0b1526}'+
+  '.aqx-mf{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)}'+
+  '.aqx-sv{background:#F85700;color:#000;border:none;padding:10px 28px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}'+
+  '.aqx-sv:disabled{opacity:.5;cursor:default}'+
+  '.aqx-cx{background:transparent;color:rgba(226,232,248,0.5);border:1px solid rgba(255,255,255,0.1);padding:10px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}'+
+  '.aqx-dl{background:transparent;color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:10px 14px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:auto;font-family:inherit}';
+document.head.appendChild(css);
 
-  // ── CSS ──────────────────────────────────────────────────────────────────
-  var css=document.createElement('style');
-  css.textContent=
-    '.aq-panel{margin:24px 0;padding:20px 24px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:12px}'+
-    '.aq-tbl{width:100%;border-collapse:collapse;font-size:12px}'+
-    '.aq-tbl th{text-align:left;padding:8px 12px;color:#475569;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:.04em}'+
-    '.aq-tbl td{padding:8px 12px;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}'+
-    '.aq-tbl tr:hover td{background:rgba(255,255,255,0.02)}'+
-    '.aq-bg{background:#22c55e18;color:#22c55e;border:1px solid #22c55e33;padding:2px 9px;border-radius:20px;font-size:11px}'+
-    '.aq-ba{background:#f59e0b18;color:#f59e0b;border:1px solid #f59e0b33;padding:2px 9px;border-radius:20px;font-size:11px}'+
-    '.aq-br{background:#ef444418;color:#ef4444;border:1px solid #ef444433;padding:2px 9px;border-radius:20px;font-size:11px}'+
-    '.aq-lnk{color:#F85700;text-decoration:none;font-size:11px}'+
-    '.aq-lnk:hover{text-decoration:underline}'+
-    '.aq-add{background:#F85700;color:#000;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}'+
-    '.aq-edit{background:transparent;color:#475569;border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer}'+
-    '.aq-edit:hover{color:#e2e8f0;border-color:rgba(255,255,255,0.25)}'+
-    '.aq-mbg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto}'+
-    '.aq-m{background:#0b1526;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px;width:100%;max-width:580px;position:relative;box-shadow:0 40px 80px rgba(0,0,0,0.6)}'+
-    '.aq-m h2{margin:0 0 20px;font-size:16px;color:#e2e8f0;font-weight:700}'+
-    '.aq-m label{display:block;font-size:10px;color:#475569;margin:14px 0 4px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}'+
-    '.aq-m input,.aq-m select,.aq-m textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:6px;color:#e2e8f0;padding:9px 12px;font-size:13px;box-sizing:border-box;font-family:inherit}'+
-    '.aq-m textarea{height:80px;resize:vertical}'+
-    '.aq-m input:focus,.aq-m select:focus,.aq-m textarea:focus{outline:none;border-color:#F85700;background:rgba(248,87,0,0.04)}'+
-    '.aq-m select option{background:#0b1526}'+
-    '.aq-mf{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)}'+
-    '.aq-sv{background:#F85700;color:#000;border:none;padding:10px 28px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer}'+
-    '.aq-sv:disabled{opacity:.5;cursor:default}'+
-    '.aq-cx{background:transparent;color:#475569;border:1px solid rgba(255,255,255,0.1);padding:10px 18px;border-radius:6px;font-size:13px;cursor:pointer}'+
-    '.aq-dl{background:transparent;color:#ef4444;border:1px solid #ef444430;padding:10px 14px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:auto}'+
-    '.aq-empty{color:#334155;text-align:center;padding:48px;border:1px dashed rgba(255,255,255,0.06);border-radius:10px;font-size:13px}';
-  document.head.appendChild(css);
+// ── State ─────────────────────────────────────────────────────────────────
+var _cache={};       // mid → full records array
+var _theater={};     // mid → active theater filter
+var _editIdx=null;   // index being edited
 
-  var _cache={};
-  var _editIdx=null;
-  var DRMAP={contract:'m1',contracts:'m1',brand:'m2',brands:'m2',tdoc:'m3',tdocs:'m3',doc:'m3',compliance:'m4',fin:'m5',fins:'m5',financial:'m5',supplier:'m6',suppliers:'m6'};
+function _eh(s){return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
 
-  function _eh(s){return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
-
-  function _panel(mid){
-    var pid='aq7-'+mid;
-    var existing=document.getElementById(pid);
-    if(existing)return existing;
-    var pg=document.getElementById(mid);
-    if(!pg){console.warn('[FIX7] page #'+mid+' not found');return null;}
-    var toolbar=pg.querySelector('.tbl-toolbar');
-    var p=document.createElement('div');
-    p.id=pid;
-    p.style.cssText='padding:0 16px 32px;';
-    if(toolbar){
-      if(toolbar.nextElementSibling){toolbar.parentNode.insertBefore(p,toolbar.nextElementSibling);}
-      else{toolbar.parentNode.appendChild(p);}
-    } else {
-      pg.appendChild(p);
-    }
-    console.log('[FIX7] panel injected for #'+mid);
-    return p;
+// ── Panel injection ────────────────────────────────────────────────────────
+function _panel(mid){
+  var pid='aqx-'+mid;
+  var ex=document.getElementById(pid);
+  if(ex) return ex;
+  var pg=document.getElementById(mid);
+  if(!pg){console.warn('[AQX] page not found: #'+mid);return null;}
+  // Prefer existing .tbl-wrap (styled container already in app HTML)
+  var wrap=pg.querySelector('.tbl-wrap');
+  if(wrap){wrap.id=pid;wrap.style.overflow='visible';return wrap;}
+  // Create after toolbar
+  var toolbar=pg.querySelector('.tbl-toolbar');
+  var p=document.createElement('div');
+  p.id=pid;
+  p.className='tbl-wrap';
+  p.style.cssText='overflow:visible;padding:0;border:none;background:transparent';
+  if(toolbar){
+    toolbar.parentNode.insertBefore(p,toolbar.nextSibling);
+  } else {
+    pg.appendChild(p);
   }
+  console.log('[AQX] panel created for #'+mid);
+  return p;
+}
 
-  // ── Re-implement functions lost in script truncation ─────────────────────
-  window.openDr=function(type){
-    var mid=DRMAP[(type||'').toLowerCase()];
-    if(!mid)return;
-    window._aq7Add(mid,MOD_KEY[mid]);
-  };
-  window.csvExp=function(type){
-    var mid=null;
-    Object.keys(MOD_KEY).forEach(function(m){if(MOD_KEY[m]===(type||''))mid=m;});
-    if(!mid)mid=DRMAP[(type||'').toLowerCase()];
-    if(!mid)return;
-    var recs=_cache[mid]||[];
-    if(!recs.length){alert('No records to export.');return;}
-    var keys=Object.keys(recs[0]);
-    var csv=keys.join(',')+'\n'+recs.map(function(r){return keys.map(function(k){return'"'+String(r[k]||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-    var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=(type||'export')+'.csv';a.click();
-  };
-  window.filt=function(type,val){
-    var mid=null;Object.keys(MOD_KEY).forEach(function(m){if(MOD_KEY[m]===type)mid=m;});
-    if(!mid)return;
-    var recs=_cache[mid]||[];
-    var f=val?recs.filter(function(r){return Object.values(r).some(function(v){return String(v).toLowerCase().indexOf(val.toLowerCase())>=0;});}):recs;
-    var p=document.getElementById('aq7-'+mid);if(p)_render(mid,type,f,p);
-  };
-  window.filtF=function(type,field,val){
-    var mid=null;Object.keys(MOD_KEY).forEach(function(m){if(MOD_KEY[m]===type)mid=m;});
-    if(!mid)return;
-    var recs=_cache[mid]||[];
-    var f=val?recs.filter(function(r){return String(r[field]||'')===val;}):recs;
-    var p=document.getElementById('aq7-'+mid);if(p)_render(mid,type,f,p);
-  };
+// ── Load data ─────────────────────────────────────────────────────────────
+function _load(mid){
+  if(!window.sb){setTimeout(function(){_load(mid);},600);return;}
+  var key=MOD_KEY[mid];
+  if(!key) return;
+  var panel=_panel(mid);
+  if(!panel) return;
+  panel.innerHTML='<div style="padding:20px;color:rgba(226,232,248,0.3);font-size:12px">Loading…</div>';
+  console.log('[AQX] loading '+key+'…');
+  window.sb.from('cb_store').select('module,records').eq('module',key)
+  .then(function(res){
+    if(res.error) throw res.error;
+    var rows=res.data||[];
+    var recs=(rows.length&&Array.isArray(rows[0].records))?rows[0].records:[];
+    console.log('[AQX] '+key+': '+recs.length+' records');
+    _cache[mid]=recs;
+    _updKPI(mid,recs.length);
+    _render(mid,key,recs,panel,_theater[mid]||'ALL');
+  })
+  .catch(function(e){
+    console.error('[AQX] load error:',e);
+    panel.innerHTML='<div style="padding:20px;color:#ef4444;font-size:12px">Error loading data: '+(e.message||e)+'</div>';
+  });
+}
 
-  function _load(mid){
-    if(!window.sb){console.warn('[FIX7] sb not ready, retry in 1s');setTimeout(function(){_load(mid);},1000);return;}
-    var key=MOD_KEY[mid];
-    if(!key)return;
-    var panel=_panel(mid);
-    if(!panel){console.warn('[FIX7] panel not found for '+mid);return;}
-    panel.innerHTML='<div style="color:#334155;padding:20px;font-size:12px">Loading…</div>';
-    console.log('[FIX7] loading '+key);
-    window.sb.from('cb_store').select('module,records').eq('module',key)
-    .then(function(res){
-      if(res.error)throw res.error;
-      var rows=res.data||[];
-      var recs=(rows.length>0&&Array.isArray(rows[0].records))?rows[0].records:[];
-      console.log('[FIX7] '+key+' → '+recs.length+' records');
-      _cache[mid]=recs;
-      var cnt=document.getElementById('cnt-'+mid);
-      if(cnt)cnt.textContent=recs.length;
-      _render(mid,key,recs,panel);
-    })
-    .catch(function(e){
-      console.error('[FIX7] load error:',e);
-      panel.innerHTML='<div style="color:#ef4444;padding:20px;font-size:12px">Load error: '+(e.message||e)+'<br><small>Check console for details</small></div>';
-    });
-  }
+// ── Theater filter ─────────────────────────────────────────────────────────
+function _filterTheater(recs,theater){
+  if(!theater||theater==='ALL') return recs;
+  var regions=THEATER_REGIONS[theater]||[];
+  return recs.filter(function(r){
+    var rv=String(r.region||r.territory||'').toLowerCase();
+    return regions.some(function(tr){return rv.indexOf(tr)>=0;});
+  });
+}
 
-  function _render(mid,key,recs,panel){
-    var cols=COLS[key]||[];
-    var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">';
-    h+='<div style="font-size:12px;color:#475569">'+recs.length+' record'+(recs.length!==1?'s':'')+'</div>';
-    h+='<button class="aq-add" onclick="window._aq7Add(\''+mid+'\',\''+key+'\')">+ Add Record</button>';
-    h+='</div>';
-    if(!recs.length){
-      h+='<div class="aq-empty">No records yet — click <strong style="color:#F85700">+ Add Record</strong> to begin</div>';
-    } else {
-      h+='<div style="overflow-x:auto"><table class="aq-tbl"><thead><tr>';
-      cols.forEach(function(c){h+='<th style="min-width:'+c.w+'">'+c.l+'</th>';});
-      h+='<th></th></tr></thead><tbody>';
-      recs.forEach(function(rec,i){
-        h+='<tr>';
-        cols.forEach(function(c){
-          var v=rec[c.k]||'';
-          var cell='';
-          if(c.link&&v){
-            cell='<a class="aq-lnk" href="'+_eh(v)+'" target="_blank" rel="noopener">Open →</a>';
-          } else if(c.badge){
-            var cls='aq-b'+((v+'').toLowerCase().charAt(0)||'a');
-            cell='<span class="'+cls+'">'+_eh(v)+'</span>';
-          } else {
-            var d=String(v);if(d.length>44)d=d.slice(0,43)+'…';
-            cell='<span title="'+_eh(String(v))+'">'+_eh(d)+'</span>';
-          }
-          h+='<td>'+cell+'</td>';
-        });
-        h+='<td><button class="aq-edit" onclick="window._aq7Edit(\''+mid+'\',\''+key+'\','+i+')">Edit</button></td>';
-        h+='</tr>';
+// ── Render table ───────────────────────────────────────────────────────────
+function _render(mid,key,allRecs,panel,theater){
+  var cols=COLS[key]||[];
+  var cur=theater||_theater[mid]||'ALL';
+  _theater[mid]=cur;
+  var filtered=_filterTheater(allRecs,cur==='ALL'?null:cur);
+  var h='';
+  // Theater tabs
+  h+='<div class="aqx-bar">';
+  ['ALL','CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'].forEach(function(t){
+    h+='<button class="aqx-tf'+(cur===t?' on':'')+'" onclick="window._aqxTheater(\''+mid+'\',\''+key+'\',\''+t+'\')">'+t+'</button>';
+  });
+  h+='</div>';
+  // Top bar
+  h+='<div class="aqx-top">';
+  h+='<div class="aqx-cnt">'+filtered.length+(filtered.length!==allRecs.length?' of '+allRecs.length:'')+' record'+(allRecs.length!==1?'s':'')+'</div>';
+  h+='<button class="aqx-add" onclick="window._aqxAdd(\''+mid+'\',\''+key+'\')">+ Add Record</button>';
+  h+='</div>';
+  // Table
+  if(!filtered.length){
+    h+='<div class="aqx-empty">'+(allRecs.length?'No records match this filter.':'No records yet — click <strong style="color:#F85700">+ Add Record</strong> to begin')+'</div>';
+  } else {
+    h+='<div style="overflow-x:auto"><table class="aqx-tbl"><thead><tr>';
+    cols.forEach(function(c){h+='<th style="min-width:'+c.w+'">'+c.l+'</th>';});
+    h+='<th></th></tr></thead><tbody>';
+    filtered.forEach(function(rec){
+      var origIdx=allRecs.indexOf(rec);
+      h+='<tr>';
+      cols.forEach(function(c){
+        var v=rec[c.k]||'';
+        var cell='';
+        if(c.link&&v){
+          cell='<a class="aqx-lnk" href="'+_eh(v)+'" target="_blank" rel="noopener">Open ↗</a>';
+        } else if(c.badge){
+          var cl='aqx-'+((v+'').toLowerCase().charAt(0)||'a');
+          cell='<span class="'+cl+'">'+_eh(v)+'</span>';
+        } else {
+          var d=String(v);if(d.length>46)d=d.slice(0,45)+'…';
+          cell='<span title="'+_eh(String(v))+'">'+_eh(d)+'</span>';
+        }
+        h+='<td>'+cell+'</td>';
       });
-      h+='</tbody></table></div>';
-    }
-    panel.innerHTML=h;
+      h+='<td><button class="aqx-eb" onclick="window._aqxEdit(\''+mid+'\',\''+key+'\','+origIdx+')">Edit</button></td>';
+      h+='</tr>';
+    });
+    h+='</tbody></table></div>';
   }
+  panel.innerHTML=h;
+}
 
-  window._aq7Add=function(mid,key){_editIdx=null;_modal(mid,key,{});};
-  window._aq7Edit=function(mid,key,i){_editIdx=i;_modal(mid,key,(_cache[mid]||[])[i]||{});};
+// ── Theater switch ─────────────────────────────────────────────────────────
+window._aqxTheater=function(mid,key,t){
+  _theater[mid]=t;
+  var recs=_cache[mid]||[];
+  var p=document.getElementById('aqx-'+mid);
+  if(p) _render(mid,key,recs,p,t);
+};
 
-  function _modal(mid,key,rec){
-    var flds=FIELDS[key]||[];
-    var isE=(_editIdx!==null);
-    var h='<div class="aq-mbg" id="aq7-mbg"><div class="aq-m">';
-    h+='<h2>'+(isE?'Edit':'New')+' Record</h2><form id="aq7-form">';
-    flds.forEach(function(f){
-      h+='<label>'+f.l+(f.req?' <span style="color:#F85700">*</span>':'')+'</label>';
-      var v=_eh(String(rec[f.k]!=null?rec[f.k]:''));
-      if(f.sel){
-        h+='<select name="'+f.k+'"><option value="">— select —</option>';
-        f.sel.forEach(function(o){h+='<option value="'+_eh(o)+'"'+(rec[f.k]===o?' selected':'')+'>'+_eh(o)+'</option>';});
-        h+='</select>';
-      } else if(f.ta){
-        h+='<textarea name="'+f.k+'">'+v+'
+// ── Add / Edit modal ───────────────────────────────────────────────────────
+window._aqxAdd=function(mid,key){_editIdx=null;_modal(mid,key,{});};
+window._aqxEdit=function(mid,key,i){_editIdx=i;_modal(mid,key,(_cache[mid]||[])[i]||{});};
+
+function _modal(mid,key,rec){
+  var flds=FIELDS[key]||[];
+  var isE=_editIdx!==null;
+  var h='<div class="aqx-mbg" id="aqx-mbg"><div class="aqx-modal">';
+  h+='<h2>'+(isE?'Edit Record':'New Record')+'</h2><form id="aqx-form">';
+  flds.forEach(function(f){
+    h+='<label>'+_eh(f.l)+(f.req?' <span style="color:#F85700">*</span>':'')+'</label>';
+    var v=_eh(String(rec[f.k]!=null?rec[f.k]:''));
+    if(f.sel){
+      h+='<select name="'+f.k+'"><option value="">— select —</option>';
+      f.sel.forEach(function(o){h+='<option value="'+_eh(o)+'"'+(rec[f.k]===o?' selected':'')+'>'+_eh(o)+'</option>';});
+      h+='</select>';
+    } else if(f.ta){
+      h+='<textarea name="'+f.k+'">'+v+'
 </script>
 </body>
 </html>
