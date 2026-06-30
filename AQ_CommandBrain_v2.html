@@ -2048,12 +2048,14 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
-// AQ-V3
+// AQ-V4
 (function(){
 'use strict';
-if(window._aqV2){return;}
-window._aqV2=true;
+if(window._aqV4)return;
+window._aqV4=true;
 
 var MOD_KEY={m1:'contracts',m2:'brand',m3:'tdocs',m4:'compliance',m5:'fins',m6:'suppliers'};
 var DRMAP={contract:'m1',contracts:'m1',brand:'m2',brands:'m2',tdoc:'m3',tdocs:'m3',doc:'m3',compliance:'m4',fin:'m5',fins:'m5',financial:'m5',supplier:'m6',suppliers:'m6'};
@@ -2064,36 +2066,44 @@ var THEATER_REGIONS={
   'MULTI-ENTITY':['multi-region','multi-entity','group','global','multi']
 };
 var MODS=[
-  {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across all theaters.',  id:'m1',color:'#F85700'},
-  {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral.', id:'m2',color:'#3B82F6'},
-  {num:'03',name:'Technical Docs',     desc:'Engineering specs, SOPs, and technical documentation.', id:'m3',color:'#22C55E'},
-  {num:'04',name:'Compliance',         desc:'Regulatory tracking, audit trails, and certification status.', id:'m4',color:'#F59E0B'},
-  {num:'05',name:'Financials',         desc:'Budget tracking, P&L summaries, and financial reporting.', id:'m5',color:'#A855F7'},
-  {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement.', id:'m6',color:'#06B6D4'}
+  {num:'01',name:'Contract Registry',  desc:'Track all active and expired contracts across all theaters.',id:'m1',color:'#F85700'},
+  {num:'02',name:'Brand Repository',   desc:'Centralised brand assets, guidelines, and approved collateral.',id:'m2',color:'#3B82F6'},
+  {num:'03',name:'Technical Docs',     desc:'Engineering specs, SOPs, and technical documentation.',id:'m3',color:'#22C55E'},
+  {num:'04',name:'Compliance',         desc:'Regulatory tracking, audit trails, and certification status.',id:'m4',color:'#F59E0B'},
+  {num:'05',name:'Financials',         desc:'Budget tracking, P&L summaries, and financial reporting.',id:'m5',color:'#A855F7'},
+  {num:'06',name:'Suppliers',          desc:'Supplier registry, vetting status, and procurement.',id:'m6',color:'#06B6D4'}
 ];
 var COLS={
-  tdocs:    [{k:'title',l:'Title',w:'200px'},{k:'docType',l:'Type',w:'110px'},{k:'version',l:'Ver',w:'48px'},{k:'region',l:'Region',w:'90px'},{k:'contract',l:'Contract',w:'120px'},{k:'reuse',l:'Reuse',w:'65px'},{k:'classification',l:'Class',w:'95px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-  suppliers:[{k:'name',l:'Name',w:'175px'},{k:'category',l:'Category',w:'105px'},{k:'status',l:'Status',w:'105px'},{k:'rating',l:'Rating',badge:true,w:'68px'},{k:'region',l:'Region',w:'78px'},{k:'exposureAED',l:'Exposure AED',w:'98px'},{k:'tradeLicenseVerified',l:'License',w:'68px'},{k:'attachment',l:'File',link:true,w:'55px'}],
   contracts:[{k:'title',l:'Title',w:'175px'},{k:'client',l:'Client',w:'135px'},{k:'contractNo',l:'Ref',w:'108px'},{k:'value',l:'Value',w:'88px'},{k:'status',l:'Status',w:'98px'},{k:'region',l:'Region',w:'78px'},{k:'expiry',l:'Expiry',w:'82px'},{k:'attachment',l:'File',link:true,w:'55px'}],
   brand:    [{k:'title',l:'Asset Name',w:'195px'},{k:'type',l:'Type',w:'118px'},{k:'version',l:'Ver',w:'58px'},{k:'region',l:'Region',w:'98px'},{k:'status',l:'Status',w:'98px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  tdocs:    [{k:'title',l:'Title',w:'200px'},{k:'docType',l:'Type',w:'110px'},{k:'version',l:'Ver',w:'48px'},{k:'region',l:'Region',w:'90px'},{k:'contract',l:'Contract',w:'120px'},{k:'reuse',l:'Reuse',w:'65px'},{k:'classification',l:'Class',w:'95px'},{k:'attachment',l:'File',link:true,w:'55px'}],
   compliance:[{k:'title',l:'Requirement',w:'195px'},{k:'type',l:'Type',w:'118px'},{k:'status',l:'Status',w:'108px'},{k:'region',l:'Region',w:'78px'},{k:'owner',l:'Owner',w:'108px'},{k:'expiry',l:'Expiry',w:'82px'},{k:'attachment',l:'File',link:true,w:'55px'}],
-  fins:     [{k:'title',l:'Description',w:'185px'},{k:'type',l:'Type',w:'88px'},{k:'amount',l:'Amount',w:'88px'},{k:'date',l:'Date',w:'82px'},{k:'entity',l:'Entity',w:'88px'},{k:'region',l:'Region',w:'78px'},{k:'attachment',l:'File',link:true,w:'55px'}]
+  fins:     [{k:'title',l:'Description',w:'185px'},{k:'type',l:'Type',w:'88px'},{k:'amount',l:'Amount',w:'88px'},{k:'date',l:'Date',w:'82px'},{k:'entity',l:'Entity',w:'88px'},{k:'region',l:'Region',w:'78px'},{k:'attachment',l:'File',link:true,w:'55px'}],
+  suppliers:[{k:'name',l:'Name',w:'175px'},{k:'category',l:'Category',w:'105px'},{k:'status',l:'Status',w:'105px'},{k:'rating',l:'Rating',badge:true,w:'68px'},{k:'region',l:'Region',w:'78px'},{k:'exposureAED',l:'Exposure AED',w:'98px'},{k:'tradeLicenseVerified',l:'License',w:'68px'},{k:'attachment',l:'File',link:true,w:'55px'}]
 };
 var FIELDS={
-  tdocs:[{k:'title',l:'Title',req:true},{k:'docType',l:'Document Type',sel:['Technical Proposal','SOW','SOP','Report','Specification','Brief','Other']},{k:'version',l:'Version',ph:'v1'},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'contract',l:'Contract Reference'},{k:'author',l:'Author'},{k:'reviewedBy',l:'Reviewed By'},{k:'service',l:'Service'},{k:'reuse',l:'Reuse Potential',sel:['High','Medium','Low']},{k:'classification',l:'Classification',sel:['Unclassified','Confidential','Restricted','Secret']},{k:'keywords',l:'Keywords'},{k:'filePath',l:'File Path'},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'reuseNotes',l:'Reuse Notes',ta:true}],
-  suppliers:[{k:'name',l:'Legal Name',req:true},{k:'tradingName',l:'Trading Name'},{k:'category',l:'Category',sel:['Labour Supply','IT','Construction','Logistics','Consulting','Legal','Finance','Security','Facilities','Other']},{k:'status',l:'Status',sel:['Active','Pending Vetting','Under Review','Blacklisted','Inactive']},{k:'rating',l:'Rating',sel:['Green','Amber','Red']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region']},{k:'territory',l:'Territory'},{k:'email',l:'Email'},{k:'phone',l:'Phone'},{k:'contact',l:'Contact Person'},{k:'tradeLicenseNo',l:'Trade License No'},{k:'tradeLicenseExpiry',l:'License Expiry'},{k:'tradeLicenseVerified',l:'License Verified',sel:['Yes','No','Pending']},{k:'bankVerified',l:'Bank Verified',sel:['Yes','No','Pending']},{k:'referencesChecked',l:'References Checked',sel:['Yes','No','Pending']},{k:'exposureAED',l:'Financial Exposure (AED)'},{k:'legalAction',l:'Legal Action Status'},{k:'redFlags',l:'Red Flags',ta:true},{k:'disputeDetail',l:'Dispute Details',ta:true},{k:'ratingJustification',l:'Rating Justification',ta:true},{k:'attachment',l:'Attachment Link'},{k:'notes',l:'Notes',ta:true}],
-  contracts:[{k:'title',l:'Contract Title',req:true},{k:'client',l:'Client / Counter-party'},{k:'contractNo',l:'Contract Number'},{k:'value',l:'Contract Value (AED)'},{k:'status',l:'Status',sel:['Active','Pending Signature','Under Review','Expired','Terminated']},{k:'type',l:'Contract Type',sel:['Fixed Price','T&M','Framework','Retainer','Grant','Other']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'entity',l:'AQ Entity'},{k:'service',l:'Service / Scope'},{k:'startDate',l:'Start Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'notes',l:'Notes',ta:true}],
-  brand:[{k:'title',l:'Asset Name',req:true},{k:'type',l:'Asset Type',sel:['Logo','Template','Brand Guideline','Collateral','Presentation','Video','Photography','Other']},{k:'version',l:'Version'},{k:'region',l:'Region',sel:['AQ Global','UAE','KSA','Multi-Region']},{k:'status',l:'Status',sel:['Approved','Draft','Archived','Under Review']},{k:'attachment',l:'OneDrive / SharePoint Link'},{k:'notes',l:'Notes',ta:true}],
-  compliance:[{k:'title',l:'Requirement Title',req:true},{k:'type',l:'Type',sel:['Regulatory','Certification','Internal Policy','Audit','Legal','Insurance','Other']},{k:'status',l:'Status',sel:['Compliant','In Progress','Non-Compliant','Pending Review','Expired']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Multi-Region','Global']},{k:'owner',l:'Owner / Responsible'},{k:'dueDate',l:'Due Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'Supporting Document Link'},{k:'notes',l:'Notes',ta:true}],
-  fins:[{k:'title',l:'Description',req:true},{k:'type',l:'Type',sel:['Revenue','Cost','Budget','Forecast','Actual','Variance','Invoice','Other']},{k:'amount',l:'Amount (AED)'},{k:'date',l:'Date'},{k:'entity',l:'AQ Entity'},{k:'region',l:'Region',sel:['UAE','KSA','Multi-Region','Group']},{k:'category',l:'Category'},{k:'reference',l:'Reference No'},{k:'attachment',l:'Supporting Document Link'},{k:'notes',l:'Notes',ta:true}]
+  contracts:[{k:'title',l:'Contract Title',req:true},{k:'client',l:'Client / Counter-party'},{k:'contractNo',l:'Contract Number'},{k:'value',l:'Contract Value (AED)'},{k:'status',l:'Status',sel:['Active','Pending Signature','Under Review','Expired','Terminated']},{k:'type',l:'Contract Type',sel:['Fixed Price','T&M','Framework','Retainer','Grant','Other']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'entity',l:'AQ Entity'},{k:'service',l:'Service / Scope'},{k:'startDate',l:'Start Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'Document Link'},{k:'notes',l:'Notes',ta:true}],
+  brand:[{k:'title',l:'Asset Name',req:true},{k:'type',l:'Asset Type',sel:['Logo','Template','Brand Guideline','Collateral','Presentation','Video','Photography','Other']},{k:'version',l:'Version'},{k:'region',l:'Region',sel:['AQ Global','UAE','KSA','Multi-Region']},{k:'status',l:'Status',sel:['Approved','Draft','Archived','Under Review']},{k:'attachment',l:'Link'},{k:'notes',l:'Notes',ta:true}],
+  tdocs:[{k:'title',l:'Title',req:true},{k:'docType',l:'Document Type',sel:['Technical Proposal','SOW','SOP','Report','Specification','Brief','Other']},{k:'version',l:'Version',ph:'v1'},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region','CENTCOM','EUROPE','AFRICA']},{k:'contract',l:'Contract Reference'},{k:'author',l:'Author'},{k:'reuse',l:'Reuse Potential',sel:['High','Medium','Low']},{k:'classification',l:'Classification',sel:['Unclassified','Confidential','Restricted','Secret']},{k:'keywords',l:'Keywords'},{k:'attachment',l:'Link'},{k:'reuseNotes',l:'Reuse Notes',ta:true}],
+  compliance:[{k:'title',l:'Requirement Title',req:true},{k:'type',l:'Type',sel:['Regulatory','Certification','Internal Policy','Audit','Legal','Insurance','Other']},{k:'status',l:'Status',sel:['Compliant','In Progress','Non-Compliant','Pending Review','Expired']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Multi-Region','Global']},{k:'owner',l:'Owner / Responsible'},{k:'dueDate',l:'Due Date'},{k:'expiry',l:'Expiry Date'},{k:'attachment',l:'Document Link'},{k:'notes',l:'Notes',ta:true}],
+  fins:[{k:'title',l:'Description',req:true},{k:'type',l:'Type',sel:['Revenue','Cost','Budget','Forecast','Actual','Variance','Invoice','Other']},{k:'amount',l:'Amount (AED)'},{k:'date',l:'Date'},{k:'entity',l:'AQ Entity'},{k:'region',l:'Region',sel:['UAE','KSA','Multi-Region','Group']},{k:'category',l:'Category'},{k:'reference',l:'Reference No'},{k:'attachment',l:'Document Link'},{k:'notes',l:'Notes',ta:true}],
+  suppliers:[{k:'name',l:'Legal Name',req:true},{k:'tradingName',l:'Trading Name'},{k:'category',l:'Category',sel:['Labour Supply','IT','Construction','Logistics','Consulting','Legal','Finance','Security','Facilities','Other']},{k:'status',l:'Status',sel:['Active','Pending Vetting','Under Review','Blacklisted','Inactive']},{k:'rating',l:'Rating',sel:['Green','Amber','Red']},{k:'region',l:'Region',sel:['UAE','KSA','Qatar','Oman','Kuwait','Bahrain','Multi-Region']},{k:'email',l:'Email'},{k:'phone',l:'Phone'},{k:'contact',l:'Contact Person'},{k:'tradeLicenseNo',l:'Trade License No'},{k:'tradeLicenseExpiry',l:'License Expiry'},{k:'tradeLicenseVerified',l:'License Verified',sel:['Yes','No','Pending']},{k:'exposureAED',l:'Financial Exposure (AED)'},{k:'redFlags',l:'Red Flags',ta:true},{k:'attachment',l:'Attachment Link'},{k:'notes',l:'Notes',ta:true}]
 };
 
-// CSS
-var css=document.createElement('style');
-css.id='aqx-css';
+// ── CSS ──────────────────────────────────────────────────────────────────
+var css=document.createElement('style');css.id='aqx-v4-css';
 css.textContent=
+  // Fix .sa animation (make all scroll-animate elements visible immediately)
   '.sa,.sa-l,.sa-r,.sa-d,.anim{opacity:1!important;transform:none!important;transition:none!important}'+
-  '.mod-card{overflow:visible!important;position:relative!important;display:flex!important;flex-direction:column!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;border-radius:14px!important;transform-style:preserve-3d!important;will-change:transform!important;cursor:pointer!important;min-height:160px}'+
+  // Page visibility — ensure nav works via class toggle
+  '.page{display:none!important}.page.on{display:block!important}'+
+  // Hide MEGA13's mod-grid (we use #aqx-mgrid instead)
+  '#mod-grid{display:none!important}'+
+  // Our module card grid
+  '#aqx-mgrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:20px!important;padding:16px 0 32px!important;width:100%!important}'+
+  // Module cards — glass effect
+  '.mod-card{overflow:visible!important;position:relative!important;display:flex!important;flex-direction:column!important;min-height:160px!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;border-radius:14px!important;transform-style:preserve-3d!important;cursor:pointer!important}'+
+  // Card sub-elements
   '.mc-strip{height:3px;flex-shrink:0;border-radius:14px 14px 0 0}'+
   '.mc-body{flex:1;display:flex;flex-direction:column;padding:20px}'+
   '.mc-num{font-size:10px;font-weight:700;color:rgba(226,232,248,0.3);letter-spacing:.12em;margin-bottom:8px}'+
@@ -2103,17 +2113,15 @@ css.textContent=
   '.mc-count{font-size:22px;font-weight:800;color:#e2e8f8}'+
   '.mc-count-l{font-size:9px;color:rgba(226,232,248,0.35);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}'+
   '.mc-arrow{font-size:18px;color:rgba(248,87,0,0.6)}'+
-  // Our injected grid
-  '#aqx-mgrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:20px!important;padding:16px 0 32px!important;width:100%!important}'+
-  // Theater bar
+  // Theater filter bar
   '.aqx-bar{display:flex;gap:8px;padding:14px 0 10px;flex-wrap:wrap}'+
   '.aqx-tf{background:transparent;color:rgba(226,232,248,0.45);border:1px solid rgba(255,255,255,0.1);padding:4px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}'+
   '.aqx-tf.on{background:#F85700;color:#000;border-color:#F85700;font-weight:700}'+
-  // Record top bar
+  // Data table top bar
   '.aqx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}'+
   '.aqx-cnt{font-size:12px;color:rgba(226,232,248,0.4)}'+
   '.aqx-add{background:#F85700;color:#000;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}'+
-  // Table
+  // Data table
   '.aqx-tbl{width:100%;border-collapse:collapse;font-size:12px}'+
   '.aqx-tbl th{text-align:left;padding:8px 12px;color:rgba(226,232,248,0.45);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;font-size:10px;text-transform:uppercase;letter-spacing:.05em}'+
   '.aqx-tbl td{padding:9px 12px;color:#e2e8f8;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}'+
@@ -2138,7 +2146,7 @@ css.textContent=
   '.aqx-sv:disabled{opacity:.5;cursor:default}'+
   '.aqx-cx{background:transparent;color:rgba(226,232,248,0.5);border:1px solid rgba(255,255,255,0.1);padding:10px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}'+
   '.aqx-dl{background:transparent;color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:10px 14px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:auto;font-family:inherit}'+
-  // Global search dropdown
+  // Search dropdown
   '.aqx-gsd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#0b1526;border:1px solid rgba(255,255,255,0.12);border-radius:10px;max-height:380px;overflow-y:auto;z-index:8888;box-shadow:0 20px 40px rgba(0,0,0,0.6)}'+
   '.aqx-gsr{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04)}'+
   '.aqx-gsr:hover{background:rgba(255,255,255,0.04)}'+
@@ -2152,26 +2160,23 @@ document.head.appendChild(css);
 var _cache={};var _theater={};var _editIdx=null;
 function _eh(s){return String(s||'').replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
 
-// Panel
+// ── Panel ────────────────────────────────────────────────────────────────
 function _panel(mid){
-  var pid='aqx-'+mid;
-  var ex=document.getElementById(pid);if(ex)return ex;
-  var pg=document.getElementById(mid);
-  if(!pg){console.warn('[AQX] no page #'+mid);return null;}
+  var pid='aqx-'+mid,ex=document.getElementById(pid);if(ex)return ex;
+  var pg=document.getElementById(mid);if(!pg)return null;
   var wrap=pg.querySelector('.tbl-wrap');
   if(wrap){wrap.id=pid;wrap.style.overflow='visible';return wrap;}
-  var toolbar=pg.querySelector('.tbl-toolbar');
+  var tb=pg.querySelector('.tbl-toolbar');
   var p=document.createElement('div');p.id=pid;p.className='tbl-wrap';
   p.style.cssText='overflow:visible;padding:0;border:none;background:transparent';
-  if(toolbar)toolbar.parentNode.insertBefore(p,toolbar.nextSibling);else pg.appendChild(p);
+  if(tb)tb.parentNode.insertBefore(p,tb.nextSibling);else pg.appendChild(p);
   return p;
 }
 
-// Load
+// ── Load from Supabase ───────────────────────────────────────────────────
 function _load(mid){
   if(!window.sb){setTimeout(function(){_load(mid);},600);return;}
-  var key=MOD_KEY[mid];
-  var panel=_panel(mid);if(!panel)return;
+  var key=MOD_KEY[mid],panel=_panel(mid);if(!panel)return;
   if(panel.getAttribute('data-loading'))return;
   panel.setAttribute('data-loading','1');
   panel.innerHTML='<div style="padding:20px;color:rgba(226,232,248,0.3);font-size:12px">Loading…</div>';
@@ -2189,53 +2194,52 @@ function _load(mid){
   });
 }
 
-// Filter
-function _filterTheater(recs,theater){
-  if(!theater||theater==='ALL')return recs;
-  var regions=THEATER_REGIONS[theater]||[];
-  return recs.filter(function(r){var rv=String(r.region||r.territory||'').toLowerCase();return regions.some(function(tr){return rv.indexOf(tr)>=0;});});
+// ── Theater filter ───────────────────────────────────────────────────────
+function _filterT(recs,t){
+  if(!t||t==='ALL')return recs;
+  var regions=THEATER_REGIONS[t]||[];
+  return recs.filter(function(r){var v=String(r.region||r.territory||'').toLowerCase();return regions.some(function(tr){return v.indexOf(tr)>=0;});});
 }
 
-// Render table
-function _render(mid,key,allRecs,panel,theater){
-  var cols=COLS[key]||[];
-  var cur=theater||_theater[mid]||'ALL';_theater[mid]=cur;
-  var filtered=_filterTheater(allRecs,cur==='ALL'?null:cur);
+// ── Render table ─────────────────────────────────────────────────────────
+function _render(mid,key,all,panel,theater){
+  var cols=COLS[key]||[];var cur=theater||'ALL';_theater[mid]=cur;
+  var fil=_filterT(all,cur==='ALL'?null:cur);
   var h='<div class="aqx-bar">';
   ['ALL','CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'].forEach(function(t){
-    h+='<button class="aqx-tf'+(cur===t?' on':'')+'" onclick="window._aqxTheater(\''+mid+'\',\''+key+'\',\''+t+'\')">'+t+'</button>';
+    h+='<button class="aqx-tf'+(cur===t?' on':'')+'" onclick="window._aqxT(\''+mid+'\',\''+key+'\',\''+t+'\')">'+t+'</button>';
   });
-  h+='</div><div class="aqx-top"><span class="aqx-cnt">'+filtered.length+(filtered.length!==allRecs.length?' of '+allRecs.length:'')+' record'+(allRecs.length!==1?'s':'')+'</span>';
+  h+='</div><div class="aqx-top"><span class="aqx-cnt">'+fil.length+(fil.length!==all.length?' of '+all.length:'')+' record'+(all.length!==1?'s':'')+'</span>';
   h+='<button class="aqx-add" onclick="window._aqxAdd(\''+mid+'\',\''+key+'\')">+ Add Record</button></div>';
-  if(!filtered.length){
-    h+='<div class="aqx-empty">'+(allRecs.length?'No records match this filter.':'No records yet — click <strong style="color:#F85700">+ Add Record</strong> to begin')+'</div>';
+  if(!fil.length){
+    h+='<div class="aqx-empty">'+(all.length?'No records match this filter.':'No records yet — click <strong style="color:#F85700">+ Add Record</strong> to begin')+'</div>';
   }else{
     h+='<div style="overflow-x:auto"><table class="aqx-tbl"><thead><tr>';
     cols.forEach(function(c){h+='<th style="min-width:'+c.w+'">'+c.l+'</th>';});
     h+='<th></th></tr></thead><tbody>';
-    filtered.forEach(function(rec){
-      var origIdx=allRecs.indexOf(rec);h+='<tr data-idx="'+origIdx+'">';
+    fil.forEach(function(rec){
+      var oi=all.indexOf(rec);h+='<tr data-idx="'+oi+'">';
       cols.forEach(function(c){
-        var v=rec[c.k]||'';var cell='';
+        var v=rec[c.k]||'',cell='';
         if(c.link&&v)cell='<a class="aqx-lnk" href="'+_eh(v)+'" target="_blank" rel="noopener">Open ↗</a>';
         else if(c.badge){var cl='aqx-'+((v+'').toLowerCase().charAt(0)||'a');cell='<span class="'+cl+'">'+_eh(v)+'</span>';}
         else{var d=String(v);if(d.length>46)d=d.slice(0,45)+'…';cell='<span title="'+_eh(String(v))+'">'+_eh(d)+'</span>';}
         h+='<td>'+cell+'</td>';
       });
-      h+='<td><button class="aqx-eb" onclick="window._aqxEdit(\''+mid+'\',\''+key+'\','+origIdx+')">Edit</button></td></tr>';
+      h+='<td><button class="aqx-eb" onclick="window._aqxEdit(\''+mid+'\',\''+key+'\','+oi+')">Edit</button></td></tr>';
     });
     h+='</tbody></table></div>';
   }
   panel.innerHTML=h;
 }
 
-window._aqxTheater=function(mid,key,t){_theater[mid]=t;var p=document.getElementById('aqx-'+mid);if(p)_render(mid,key,_cache[mid]||[],p,t);};
+window._aqxT=function(mid,key,t){_theater[mid]=t;var p=document.getElementById('aqx-'+mid);if(p)_render(mid,key,_cache[mid]||[],p,t);};
 window._aqxAdd=function(mid,key){_editIdx=null;_modal(mid,key,{});};
 window._aqxEdit=function(mid,key,i){_editIdx=i;_modal(mid,key,(_cache[mid]||[])[i]||{});};
 
 function _modal(mid,key,rec){
   var flds=FIELDS[key]||[];var isE=_editIdx!==null;
-  var h='<div class="aqx-mbg" id="aqx-mbg"><div class="aqx-modal"><h2>'+(isE?'Edit':'New Record')+'</h2><form id="aqx-form">';
+  var h='<div class="aqx-mbg" id="aqx-mbg"><div class="aqx-modal"><h2>'+(isE?'Edit Record':'New Record')+'</h2><form id="aqx-form">';
   flds.forEach(function(f){
     h+='<label>'+_eh(f.l)+(f.req?' <span style="color:#F85700">*</span>':'')+'</label>';
     var v=_eh(String(rec[f.k]!=null?rec[f.k]:''));
