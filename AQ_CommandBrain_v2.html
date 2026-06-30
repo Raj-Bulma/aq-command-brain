@@ -122,8 +122,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 /* TOPBAR */
 .topbar{
   height:58px;padding:0 24px;display:flex;align-items:center;gap:16px;flex-shrink:0;
-  background:rgba(2,8,23,0.7);border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:100;
+  background:#0a1628;border-bottom:1px solid rgba(248,87,0,0.2);
+  z-index:100;
 }
 .tb-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .tb-mark{
@@ -135,6 +135,26 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .tb-brand{font-size:13px;font-weight:700;color:var(--tx)}
 .tb-pipe{width:1px;height:24px;background:var(--border)}
 .tb-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase}
+.gsearch{position:relative;width:min(380px,34vw);min-width:220px}
+.gsearch-input{
+  width:100%;height:34px;padding:0 12px 0 34px;border-radius:var(--r);
+  background:rgba(255,255,255,0.045);border:1px solid var(--border);
+  color:var(--tx);font:inherit;font-size:12px;outline:none;transition:var(--trans)
+}
+.gsearch-input:focus{border-color:rgba(248,87,0,0.45);box-shadow:0 0 0 3px var(--glow)}
+.gsearch-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--tx3);pointer-events:none}
+.gsearch-results{
+  position:absolute;left:0;right:0;top:42px;display:none;max-height:360px;overflow:auto;
+  background:rgba(6,12,28,0.98);border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--r);box-shadow:var(--sh2);z-index:300
+}
+.gsearch-results.on{display:block}
+.gsearch-hit{display:block;width:100%;padding:11px 12px;border:0;border-bottom:1px solid rgba(255,255,255,0.06);background:transparent;text-align:left;color:var(--tx);font:inherit;cursor:pointer}
+.gsearch-hit:hover{background:rgba(248,87,0,0.08)}
+.gsearch-hit:last-child{border-bottom:0}
+.gsearch-meta{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.gsearch-title{font-size:12px;font-weight:700;margin-top:2px}
+.gsearch-sub{font-size:10px;color:var(--tx3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tb-space{flex:1}
 .tb-badge{
   padding:4px 12px;background:rgba(248,87,0,0.1);border:1px solid rgba(248,87,0,0.3);
@@ -149,11 +169,11 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 }
 .tb-name{font-size:12px;color:var(--tx2)}
 .tb-logout{
-  padding:6px 12px;border:1px solid var(--border);border-radius:var(--r);
-  background:transparent;color:var(--tx3);font-size:11px;font-family:inherit;
+  padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:var(--r);
+  background:rgba(255,255,255,0.06);color:#cdd6f4;font-size:11px;font-weight:600;font-family:inherit;
   cursor:pointer;transition:var(--trans)
 }
-.tb-logout:hover{border-color:var(--b2);color:var(--tx)}
+.tb-logout:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444}
 
 /* MAIN LAYOUT */
 .layout{display:flex;flex:1;overflow:hidden}
@@ -211,9 +231,12 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .dh-pills{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
 .pill{
   padding:6px 14px;border-radius:99px;font-size:11px;font-weight:600;
-  background:var(--glass);border:1px solid var(--border);color:var(--tx2)
+  background:var(--glass);border:1px solid var(--border);color:var(--tx2);
+  font-family:inherit;cursor:pointer;transition:var(--trans)
 }
+.pill:hover{border-color:rgba(248,87,0,0.35);color:var(--tx)}
 .pill.gold{background:rgba(248,87,0,0.1);border-color:rgba(248,87,0,0.3);color:var(--gold)}
+.pill.active{background:rgba(248,87,0,0.16);border-color:rgba(248,87,0,0.55);color:var(--gold);box-shadow:0 0 0 3px rgba(248,87,0,0.08)}
 
 /* KPI GRID */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -468,884 +491,60 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .sa-d4{transition-delay:.4s}.sa-d5{transition-delay:.5s}
 
 /* RESPONSIVE */
-@media(max-width:1100px){.kpi-grid,.mod-grid{grid-template-columns:repeat(2,1fr)}.content{padding:20px 16px}}
-@media(max-width:768px){.sidebar{width:56px}.nav-item span{display:none}.kpi-grid,.mod-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){.btn{min-height:44px}}
-@media(max-width:480px){.modal-box{width:98vw}}
-._glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;transition:opacity .4s;opacity:0}
-.mc-name,.mc-count,.mc-arrow{will-change:transform;display:inline-block}
-.mod-card{overflow:visible!important}
-
-/* ═══ AQ GLOBAL FX ═══ */
-.kpi-val{
-  background:linear-gradient(90deg,#E2E8F8 0%,#F85700 40%,#FF7A2A 55%,#E2E8F8 80%);
-  background-size:300% 100%;
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:none;
-}
-.adot{animation:_aqDotPulse 2.2s ease-in-out infinite}
-.adot.a{animation-duration:2.8s}
-.adot.g{animation-duration:3.4s}
-@keyframes _aqDotPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.8) saturate(1.5)}}
-@keyframes _aqShimmer{0%,55%{background-position:100% 0}80%{background-position:0% 0}100%{background-position:-100% 0}}
-.nav-item{will-change:transform;border-left-width:3px;transition:background .2s,color .2s,border-color .2s}
-.btn-gold,.btn-ghost,.tbl-act{will-change:transform}
-.dtbl tbody tr{will-change:transform;position:relative}
-.dtbl tbody tr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
-.dtbl tbody tr:hover::before{opacity:0.7}
-.kpi{transform-style:preserve-3d;will-change:transform}
-.panel,.mod-banner,.dash-hero{will-change:transform;transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
-.topbar{position:relative;overflow:hidden}
-.drawer.on{box-shadow:-40px 0 120px rgba(0,0,0,.9),0 0 60px rgba(248,87,0,0.06)}
-.bdg{transition:transform .15s,box-shadow .15s}
-.bdg:hover{transform:scale(1.08);box-shadow:0 0 12px currentColor}
-.tbl-act{transition:transform .1s,background .2s,color .2s,border-color .2s}
-
-
-/* ═══ WORLD CLASS FX 2026 ═══ */
-html *{cursor:auto}
-#_aqDot,#_aqRing{
-  position:fixed;top:0;left:0;pointer-events:none;will-change:transform;z-index:10000;
-  transform:translate(-50%,-50%);border-radius:50%;
-}
-#_aqDot{
-  width:7px;height:7px;
-  background:#F85700;
-  box-shadow:0 0 8px rgba(248,87,0,0.8),0 0 20px rgba(248,87,0,0.3);
-  mix-blend-mode:normal;
-}
-#_aqRing{
-  width:38px;height:38px;
-  border:1.5px solid rgba(248,87,0,0.75);
-  background:transparent;
-  transition:width .22s cubic-bezier(.34,1.56,.64,1),height .22s cubic-bezier(.34,1.56,.64,1),border-radius .22s,border-color .22s,background .22s;
-}
-#_aqRing.hov{
-  width:52px;height:52px;
-  border-radius:10px;
-  border-color:rgba(248,87,0,1);
-  background:rgba(248,87,0,0.07);
-}
-#_aqRing.click{transform:translate(-50%,-50%) scale(0.75)!important}
-#_aqGrain{
-  position:fixed;inset:0;z-index:9990;pointer-events:none;
-  opacity:0.038;mix-blend-mode:overlay;
-}
-#_aqOrb{
-  position:fixed;top:0;left:0;width:1000px;height:1000px;border-radius:50%;
-  pointer-events:none;z-index:0;opacity:1;
-  background:radial-gradient(circle,rgba(248,87,0,0.06) 0%,rgba(248,87,0,0.025) 35%,transparent 62%);
-  will-change:transform;
-  animation:_aqOrb 30s ease-in-out infinite alternate;
-}
-@keyframes _aqOrb{
-  0%{transform:translate(-15%,-15%)}
-  20%{transform:translate(50vw,10vh)}
-  40%{transform:translate(25vw,55vh)}
-  60%{transform:translate(60vw,35vh)}
-  80%{transform:translate(15vw,50vh)}
-  100%{transform:translate(45vw,-10vh)}
-}
-.mod-card{position:relative;overflow:visible}
-.mod-card::after{
-  content:'';position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;z-index:5;
-  background:conic-gradient(from 0deg,transparent 0deg,rgba(248,87,0,0.5) 60deg,rgba(255,180,80,0.3) 90deg,transparent 150deg);
-  opacity:0;transition:opacity .3s;
-}
-.mod-card:hover::after{opacity:1;animation:_aqSpin 3s linear infinite}
-@keyframes _aqSpin{to{transform:rotate(360deg)}}
-.mod-card,.kpi,.nav-item,.panel,.mod-banner{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.ph-title{
-  text-shadow:
-    0 0 20px rgba(248,87,0,0.2),
-    0 0 60px rgba(248,87,0,0.08);
-}
-.dh-title{
-  text-shadow:
-    0 0 30px rgba(248,87,0,0.15),
-    0 0 80px rgba(248,87,0,0.06);
-}
-.nav-item.active{
-  text-shadow:0 0 14px rgba(248,87,0,0.5);
-  box-shadow:inset 0 0 24px rgba(248,87,0,0.07);
-}
-.kpi-val{
-  background:linear-gradient(135deg,#ffffff 10%,#F85700 80%)!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  -webkit-text-fill-color:transparent!important;
-  animation:none!important;
-}
-.ph-title,.dh-title{perspective:600px;display:block}
-._sc{display:inline-block;will-change:transform,opacity}
-.topbar::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(248,87,0,0.4),transparent);
-  animation:_aqTopSh 4s ease-in-out infinite;
-}
-@keyframes _aqTopSh{
-  0%,100%{opacity:0.4;transform:scaleX(0.6)}
-  50%{opacity:1;transform:scaleX(1)}
-}
-.panel:hover{box-shadow:0 12px 48px rgba(0,0,0,.5),0 0 0 1px rgba(248,87,0,0.18)!important;transform:translateY(-3px)!important}
-.mod-banner:hover{box-shadow:0 12px 48px rgba(0,0,0,.5),0 0 0 1px rgba(248,87,0,0.18)!important;transform:translateY(-3px)!important}
-
-
-/* ═══════════════════════════════════════════════
-   PREMIUM REDESIGN — injected override layer
-   Gradient-border cards + refined dark theme
-═══════════════════════════════════════════════ */
-html,body{cursor:auto!important}
-html *{cursor:inherit}
-a,button,.btn,.nav-item,.mod-card,.kpi,.tbl-act,[onclick],
-[role="button"],.dr-close,.tb-logout,.tb-avatar{cursor:pointer!important}
-input,textarea,[contenteditable]{cursor:text!important}
-#_aqDot,#_aqRing,#_aqOrb,#_aqGrain,#_aqA1,#_aqA2{display:none!important}
-.mod-card::after,.mod-card::before{animation:none!important;opacity:0!important}
-@keyframes _aqSpin{to{transform:none}}
-:root{
-  --bg:#040912;
-  --bg2:#07101E;
-  --bg3:#0B1830;
-  --glass:rgba(255,255,255,0.055);
-  --border:rgba(255,255,255,0.09);
-  --b2:rgba(255,255,255,0.16);
-  --gold:#FF5F00;
-  --gold2:#FF8A38;
-  --glow:rgba(255,95,0,0.13);
-  --glow2:rgba(255,95,0,0.26);
-  --tx:#EDF2FF;
-  --tx2:rgba(237,242,255,0.52);
-  --tx3:rgba(237,242,255,0.28);
-  --navy:#0C1A34;
-}
-.topbar{
-  background:rgba(3,7,16,0.97)!important;
-  backdrop-filter:blur(24px)!important;
-  -webkit-backdrop-filter:blur(24px)!important;
-  border-bottom:1px solid rgba(255,255,255,0.07)!important;
-  box-shadow:none!important;
-}
-.sidebar{
-  background:linear-gradient(180deg,rgba(7,14,28,0.99) 0%,rgba(4,8,18,0.99) 100%)!important;
-  border-right:1px solid rgba(255,255,255,0.07)!important;
-}
-.nav-item{
-  margin:2px 10px!important;
-  border-radius:8px!important;
-  border-left:2px solid transparent!important;
-  padding:10px 12px!important;
-  transition:background .18s,color .18s,border-color .18s!important;
-}
-.nav-item:hover{
-  background:rgba(255,255,255,0.05)!important;
-  border-left-color:rgba(255,95,0,0.5)!important;
-  color:#fff!important;
-}
-.nav-item.active{
-  background:rgba(255,95,0,0.1)!important;
-  border-left-color:var(--gold)!important;
-  color:var(--gold)!important;
-  font-weight:600!important;
-}
-.mod-card{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(10,18,38,0.92),rgba(7,13,26,0.92)) padding-box,
-    linear-gradient(145deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.02) 100%) border-box!important;
-  transition:background 0.3s ease,transform 0.3s ease,box-shadow 0.3s ease!important;
-  overflow:hidden!important;
-}
-.mod-card:hover{
-  background:
-    linear-gradient(rgba(12,22,44,0.96),rgba(8,16,32,0.96)) padding-box,
-    linear-gradient(145deg,rgba(255,95,0,0.7) 0%,rgba(255,138,56,0.25) 55%,rgba(255,255,255,0.05) 100%) border-box!important;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 40px rgba(255,95,0,0.07)!important;
-}
-.kpi{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(7,14,28,0.88),rgba(5,10,20,0.88)) padding-box,
-    linear-gradient(135deg,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.03) 100%) border-box!important;
-  transition:background 0.3s,transform 0.3s,box-shadow 0.3s!important;
-}
-.kpi:hover{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(10,18,36,0.94),rgba(7,13,26,0.94)) padding-box,
-    linear-gradient(135deg,rgba(255,95,0,0.5) 0%,rgba(255,95,0,0.08) 100%) border-box!important;
-  transform:translateY(-3px)!important;
-  box-shadow:0 12px 40px rgba(0,0,0,0.45)!important;
-}
-.kpi-val{
-  background:linear-gradient(125deg,#FFFFFF 0%,#FF8A38 100%)!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  -webkit-text-fill-color:transparent!important;
-  animation:none!important;
-}
-.panel{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(7,14,28,0.9),rgba(5,10,20,0.9)) padding-box,
-    linear-gradient(135deg,rgba(255,255,255,0.09) 0%,rgba(255,255,255,0.02) 100%) border-box!important;
-}
-.panel:hover{
-  transform:translateY(-2px)!important;
-  background:
-    linear-gradient(rgba(9,16,32,0.92),rgba(6,12,22,0.92)) padding-box,
-    linear-gradient(135deg,rgba(255,95,0,0.25) 0%,rgba(255,95,0,0.04) 100%) border-box!important;
-}
-.tbl-wrap{
-  border:1px solid rgba(255,255,255,0.07)!important;
-  background:rgba(5,10,20,0.7)!important;
-}
-.dash-hero{
-  background:linear-gradient(135deg,rgba(7,14,30,0.97) 0%,rgba(9,18,38,0.95) 50%,rgba(11,22,46,0.97) 100%)!important;
-  border:1px solid rgba(255,95,0,0.16)!important;
-  overflow:hidden;position:relative;
-}
-.dash-hero::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,95,0,0.65) 25%,rgba(255,138,56,1) 50%,rgba(255,95,0,0.65) 75%,transparent 100%);
-  z-index:1;
-}
-.mod-banner{
-  background:linear-gradient(135deg,rgba(7,14,30,0.96) 0%,rgba(9,18,38,0.94) 100%)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-}
-.mod-banner:hover{
-  transform:translateY(-2px)!important;
-  border-color:rgba(255,95,0,0.2)!important;
-}
-.tbl-toolbar{
-  background:rgba(5,9,18,0.9)!important;
-  border:1px solid rgba(255,255,255,0.07)!important;
-}
-.dtbl thead th{
-  background:rgba(3,7,16,0.9)!important;
-  border-bottom-color:rgba(255,255,255,0.08)!important;
-  color:rgba(237,242,255,0.55)!important;
-}
-.dtbl tbody tr:hover td{
-  background:rgba(255,95,0,0.04)!important;
-}
-.dtbl tbody td{
-  border-bottom-color:rgba(255,255,255,0.04)!important;
-}
-.drawer{
-  background:rgba(5,10,20,0.99)!important;
-  border-left:1px solid rgba(255,255,255,0.1)!important;
-}
-.dr-head{
-  background:rgba(3,7,16,0.95)!important;
-  border-bottom-color:rgba(255,255,255,0.07)!important;
-}
-.f-inp,.f-sel,.f-ta,.tbl-search,.tbl-sel,.lc-input{
-  background:rgba(5,10,20,0.8)!important;
-  border-color:rgba(255,255,255,0.12)!important;
-}
-.f-inp:focus,.f-sel:focus,.f-ta:focus,.tbl-search:focus,.lc-input:focus{
-  border-color:var(--gold)!important;
-  box-shadow:0 0 0 3px rgba(255,95,0,0.12),0 4px 20px rgba(0,0,0,0.4)!important;
-  transform:translateY(-1px);
-}
-.btn-gold{
-  background:linear-gradient(135deg,#FF5F00 0%,#FF8A38 100%)!important;
-  box-shadow:0 4px 20px rgba(255,95,0,0.3)!important;
-}
-.btn-gold:hover{
-  transform:translateY(-2px)!important;
-  box-shadow:0 8px 32px rgba(255,95,0,0.4)!important;
-  filter:brightness(1.08);
-}
-.btn-gold:active{transform:translateY(0)!important;filter:brightness(0.95)}
-.btn-ghost{
-  background:rgba(255,255,255,0.05)!important;
-  border:1px solid rgba(255,255,255,0.12)!important;
-}
-.btn-ghost:hover{
-  background:rgba(255,255,255,0.09)!important;
-  border-color:rgba(255,255,255,0.2)!important;
-  transform:translateY(-1px)!important;
-}
-.ph-title{
-  text-shadow:0 0 50px rgba(255,95,0,0.1)!important;
-  letter-spacing:-0.5px;
-}
-.dh-title{
-  text-shadow:0 0 60px rgba(255,95,0,0.08)!important;
-}
-.dh-title em,.dh-title span{color:var(--gold)}
-.pill.gold{
-  background:rgba(255,95,0,0.1)!important;
-  border-color:rgba(255,95,0,0.28)!important;
-  color:var(--gold)!important;
-}
-#_aqOrb,#_aqGrain,#_aqA1,#_aqA2,#_aqDot,#_aqRing{
-  display:none!important;visibility:hidden!important;
-}
-@keyframes _aqOrbDrift{0%,100%{transform:none}}
-@keyframes _aqDotPulse{0%,100%{filter:none}}
-
-
-
-/* ═══ AQ BOLD REDESIGN v2 — space theme + cursor fix ═══ */
-
-/* CURSOR NUCLEAR OVERRIDE */
-html{cursor:auto!important}
-html *{cursor:auto!important}
-a,button,.btn,.btn-gold,.btn-ghost,.nav-item,.mod-card,.kpi,
-.tbl-act,[onclick],[role="button"],.dr-close,.tb-logout,
-.tb-avatar,.tb-notif,.pg-card,.da-card,.mod-banner{cursor:pointer!important}
-input,textarea,.f-inp,.f-sel,.f-ta,.tbl-search,.lc-input{cursor:text!important}
-
-/* Kill leftover bad elements */
-#_aqDot,#_aqRing,#_aqOrb,#_aqGrain{display:none!important}
-.mod-card::after,.mod-card::before{content:none!important;animation:none!important;display:none!important}
-
-/* SPACE BACKGROUND — canvas sits behind everything */
-#_aqSpace{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-
-/* NEBULA GRADIENTS over the canvas */
-body::before{
-  content:'';
-  position:fixed;inset:0;pointer-events:none;z-index:1;
-  background:
-    radial-gradient(ellipse 65% 55% at 10% 10%, rgba(75,20,160,0.12) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 65% at 88% 85%, rgba(10,50,160,0.1) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 45% at 60% 25%, rgba(255,80,0,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 25% 75%, rgba(0,100,200,0.07) 0%, transparent 60%);
-}
-
-/* DESIGN TOKENS */
-:root{
-  --bg:#020714;
-  --bg2:#06101E;
-  --bg3:#0A1830;
-  --glass:rgba(255,255,255,0.055);
-  --border:rgba(255,255,255,0.09);
-  --b2:rgba(255,255,255,0.16);
-  --gold:#FF5F00;
-  --gold2:#FF8A38;
-  --glow:rgba(255,95,0,0.14);
-  --glow2:rgba(255,95,0,0.28);
-  --tx:#EDF2FF;
-  --tx2:rgba(237,242,255,0.52);
-  --tx3:rgba(237,242,255,0.28);
-}
-
-/* MAIN LAYOUT — transparent so space shows through */
-body{background:#020714!important}
-.layout{background:transparent!important}
-.main{background:transparent!important;position:relative;z-index:2}
-
-/* TOPBAR */
-.topbar{
-  background:rgba(2,5,15,0.92)!important;
-  backdrop-filter:blur(28px)!important;
-  -webkit-backdrop-filter:blur(28px)!important;
-  border-bottom:1px solid rgba(255,255,255,0.08)!important;
-  box-shadow:0 1px 0 rgba(255,95,0,0.18),0 4px 30px rgba(0,0,0,0.5)!important;
-  position:relative!important;z-index:10!important;
-}
-
-/* SIDEBAR */
-.sidebar{
-  background:rgba(4,8,20,0.88)!important;
-  backdrop-filter:blur(20px)!important;
-  -webkit-backdrop-filter:blur(20px)!important;
-  border-right:1px solid rgba(255,255,255,0.07)!important;
-  box-shadow:2px 0 40px rgba(0,0,0,0.6)!important;
-  position:relative!important;z-index:5!important;
-}
-.nav-item{
-  margin:2px 10px!important;
-  border-radius:8px!important;
-  border-left:2px solid transparent!important;
-  transition:all 0.18s ease!important;
-}
-.nav-item:hover{
-  background:rgba(255,255,255,0.06)!important;
-  border-left-color:rgba(255,95,0,0.65)!important;
-  color:#fff!important;
-}
-.nav-item.active{
-  background:linear-gradient(90deg,rgba(255,95,0,0.16) 0%,rgba(255,95,0,0.04) 100%)!important;
-  border-left-color:#FF5F00!important;
-  color:#FF5F00!important;
-  font-weight:700!important;
-}
-
-/* MODULE CARDS — gradient border (Linear/Vercel style) */
-.mod-card{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(6,12,28,0.88),rgba(4,8,20,0.88)) padding-box,
-    linear-gradient(150deg,rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.03) 100%) border-box!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-  box-shadow:0 4px 24px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06)!important;
-  transition:all 0.3s ease!important;
-  position:relative!important;z-index:2!important;
-}
-.mod-card:hover{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(10,18,42,0.96),rgba(6,12,30,0.96)) padding-box,
-    linear-gradient(150deg,rgba(255,95,0,0.9) 0%,rgba(255,140,60,0.35) 50%,rgba(200,180,255,0.08) 100%) border-box!important;
-  box-shadow:0 24px 70px rgba(0,0,0,0.6),0 0 60px rgba(255,95,0,0.12)!important;
-  transform:translateY(-6px) scale(1.01)!important;
-}
-
-/* KPI CARDS */
-.kpi{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(6,10,24,0.85),rgba(4,7,18,0.85)) padding-box,
-    linear-gradient(135deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.03) 100%) border-box!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  transition:all 0.25s ease!important;
-  position:relative!important;z-index:2!important;
-}
-.kpi:hover{
-  border:1px solid transparent!important;
-  background:
-    linear-gradient(rgba(9,16,36,0.94),rgba(6,11,26,0.94)) padding-box,
-    linear-gradient(135deg,rgba(255,95,0,0.65) 0%,rgba(255,140,60,0.15) 100%) border-box!important;
-  transform:translateY(-4px)!important;
-  box-shadow:0 18px 50px rgba(0,0,0,0.55),0 0 30px rgba(255,95,0,0.08)!important;
-}
-.kpi-val{
-  background:linear-gradient(120deg,#FFFFFF 0%,#FFB060 100%)!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  -webkit-text-fill-color:transparent!important;
-  animation:none!important;
-}
-
-/* DASHBOARD HERO */
-.dash-hero{
-  background:linear-gradient(135deg,rgba(4,10,24,0.94) 0%,rgba(6,14,32,0.92) 50%,rgba(8,18,40,0.94) 100%)!important;
-  backdrop-filter:blur(16px)!important;
-  -webkit-backdrop-filter:blur(16px)!important;
-  border:1px solid rgba(255,255,255,0.08)!important;
-  border-top:1px solid rgba(255,95,0,0.55)!important;
-  box-shadow:0 0 0 1px rgba(255,95,0,0.12),0 -2px 30px rgba(255,95,0,0.08),0 30px 80px rgba(0,0,0,0.6)!important;
-  position:relative!important;z-index:2!important;
-}
-
-/* PANELS */
-.panel{
-  border:1px solid rgba(255,255,255,0.08)!important;
-  background:rgba(5,9,22,0.8)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  transition:all 0.25s ease!important;
-  position:relative!important;z-index:2!important;
-}
-.panel:hover{
-  border-color:rgba(255,95,0,0.24)!important;
-  transform:translateY(-2px)!important;
-  box-shadow:0 14px 44px rgba(0,0,0,0.5)!important;
-}
-
-/* MODULE BANNER */
-.mod-banner{
-  background:rgba(4,9,22,0.88)!important;
-  backdrop-filter:blur(14px)!important;
-  -webkit-backdrop-filter:blur(14px)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-  border-top:1px solid rgba(255,95,0,0.35)!important;
-  position:relative!important;z-index:2!important;
-}
-
-/* TABLES */
-.tbl-wrap{
-  background:rgba(3,7,18,0.7)!important;
-  border:1px solid rgba(255,255,255,0.08)!important;
-  backdrop-filter:blur(8px)!important;
-  -webkit-backdrop-filter:blur(8px)!important;
-  position:relative!important;z-index:2!important;
-}
-.tbl-toolbar{
-  background:rgba(2,5,14,0.9)!important;
-  border-color:rgba(255,255,255,0.07)!important;
-}
-.dtbl thead th{
-  background:rgba(1,4,12,0.92)!important;
-  color:rgba(237,242,255,0.48)!important;
-  border-bottom:1px solid rgba(255,255,255,0.07)!important;
-  font-size:11px!important;
-  letter-spacing:0.06em!important;
-  text-transform:uppercase!important;
+/* ── HAMBURGER BUTTON ───────────────────────────────── */
+.tb-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  background:transparent;border:none;cursor:pointer;padding:6px;margin-right:4px;
+}
+.tb-hamburger span{display:block;width:20px;height:2px;background:#cdd6f4;border-radius:2px;transition:var(--trans)}
+
+/* ── SIDEBAR OVERLAY (mobile) ────────────────────────── */
+.sb-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;
+  backdrop-filter:blur(2px);
+}
+.sb-overlay.on{display:block}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:1100px){
+  .kpi-grid,.mod-grid{grid-template-columns:repeat(2,1fr)}
+  .content{padding:20px 16px}
+  .gsearch{width:min(300px,30vw);min-width:180px}
+}
+
+@media(max-width:768px){
+  /* Hamburger visible */
+  .tb-hamburger{display:flex}
+  /* Hide topbar clutter */
+  .tb-pipe,.tb-title,.tb-space,.tb-badge,.tb-name,.tb-avatar,.tb-logout{display:none}
+  .tb-brand{display:none}
+  .gsearch{flex:1;width:auto;min-width:0}
+  .gsearch-input{height:32px;font-size:11px}
+  .gsearch-results{position:fixed;left:12px;right:12px;top:56px}
+  /* Sidebar becomes full-height overlay */
+  .sidebar{
+    position:fixed;top:0;left:0;height:100vh;z-index:200;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    width:240px !important;
+  }
+  .sidebar.open{transform:translateX(0)}
+  /* Content full width */
+  .kpi-grid,.mod-grid{grid-template-columns:1fr}
+  .content{padding:16px 12px}
+  /* Forms single column on mobile */
+  .form-grid{grid-template-columns:1fr !important}
+  .fw{grid-column:span 1 !important}
+  /* Page header stack */
+  .ph{flex-direction:column;gap:8px}
+  .ph-title{font-size:18px}
+  /* Table scroll */
+  .rec-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Dash hero compact */
+  .dh-title{font-size:22px}
+  .dash-hero::before{display:none}
+  /* Modal full-screen */
+  .modal-box{width:95vw;max-height:90vh;overflow-y:auto}
 }
-.dtbl tbody tr:hover td{background:rgba(255,95,0,0.05)!important}
-.dtbl tbody td{border-bottom-color:rgba(255,255,255,0.04)!important}
-
-/* DRAWER */
-.drawer{
-  background:rgba(3,6,16,0.98)!important;
-  backdrop-filter:blur(24px)!important;
-  -webkit-backdrop-filter:blur(24px)!important;
-  border-left:1px solid rgba(255,255,255,0.1)!important;
-}
-.dr-head{
-  background:rgba(2,4,12,0.98)!important;
-  border-bottom:1px solid rgba(255,255,255,0.08)!important;
-  border-top:2px solid rgba(255,95,0,0.5)!important;
-}
-
-/* INPUTS */
-.f-inp,.f-sel,.f-ta,.tbl-search,.tbl-sel,.lc-input{
-  background:rgba(3,7,18,0.8)!important;
-  border-color:rgba(255,255,255,0.1)!important;
-  transition:all 0.2s!important;
-}
-.f-inp:focus,.f-sel:focus,.f-ta:focus,.tbl-search:focus,.lc-input:focus{
-  border-color:var(--gold)!important;
-  box-shadow:0 0 0 3px rgba(255,95,0,0.14),0 4px 20px rgba(0,0,0,0.5)!important;
-  background:rgba(5,10,25,0.9)!important;
-}
-
-/* BUTTONS */
-.btn-gold{
-  background:linear-gradient(135deg,#FF5200 0%,#FF7D2A 100%)!important;
-  box-shadow:0 4px 18px rgba(255,82,0,0.35)!important;
-  transition:all 0.2s!important;
-}
-.btn-gold:hover{
-  transform:translateY(-2px)!important;
-  box-shadow:0 8px 32px rgba(255,82,0,0.48)!important;
-  filter:brightness(1.1)!important;
-}
-.btn-ghost{
-  background:rgba(255,255,255,0.05)!important;
-  border:1px solid rgba(255,255,255,0.13)!important;
-}
-.btn-ghost:hover{
-  background:rgba(255,255,255,0.1)!important;
-  border-color:rgba(255,255,255,0.22)!important;
-  transform:translateY(-1px)!important;
-}
-
-/* HEADINGS */
-.ph-title{
-  font-size:clamp(22px,2.8vw,30px)!important;
-  font-weight:800!important;
-  letter-spacing:-0.5px!important;
-}
-.dh-title{
-  font-size:clamp(24px,3.2vw,36px)!important;
-  font-weight:800!important;
-  letter-spacing:-0.7px!important;
-}
-.alert-row{border-left:3px solid rgba(255,95,0,0.7)!important;background:rgba(255,95,0,0.05)!important}
-
-
-
-
-/* ═══ SPACE BOOST ═══ */
-
-html{
-  background:#010610!important;
-}
-body{
-  background:transparent!important;
-  background-color:transparent!important;
-}
-#app,.app,.layout,.app-layout,.main,.main-content,#main,
-.content,.content-wrap,.page,.page.on{
-  background:transparent!important;
-  background-color:transparent!important;
-}
-
-/* Nebula overlay — stronger now */
-body::before{
-  content:''!important;
-  position:fixed!important;inset:0!important;
-  pointer-events:none!important;z-index:1!important;
-  background:
-    radial-gradient(ellipse 70% 60% at 8% 8%, rgba(100,20,220,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 70% at 90% 88%, rgba(10,40,200,0.16) 0%, transparent 62%),
-    radial-gradient(ellipse 50% 45% at 62% 20%, rgba(255,60,0,0.10) 0%, transparent 55%),
-    radial-gradient(ellipse 45% 45% at 22% 78%, rgba(0,100,240,0.13) 0%, transparent 55%),
-    radial-gradient(ellipse 35% 35% at 48% 55%, rgba(60,0,180,0.07) 0%, transparent 50%)!important;
-}
-
-/* Space canvas */
-#_aqSpace{
-  position:fixed!important;top:0!important;left:0!important;
-  width:100%!important;height:100%!important;
-  pointer-events:none!important;z-index:0!important;
-}
-
-/* Topbar + sidebar — more transparent for star bleed */
-.topbar{
-  background:rgba(1,4,12,0.80)!important;
-  backdrop-filter:blur(22px)!important;
-  -webkit-backdrop-filter:blur(22px)!important;
-  border-bottom:1px solid rgba(255,255,255,0.08)!important;
-  box-shadow:0 1px 0 rgba(255,95,0,0.2)!important;
-  position:relative!important;z-index:10!important;
-}
-.sidebar{
-  background:rgba(2,5,15,0.72)!important;
-  backdrop-filter:blur(18px)!important;
-  -webkit-backdrop-filter:blur(18px)!important;
-  border-right:1px solid rgba(255,255,255,0.06)!important;
-  position:relative!important;z-index:5!important;
-}
-
-/* Panels — translucent so stars show in gaps */
-.panel{
-  background:rgba(4,8,22,0.62)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-  position:relative!important;z-index:2!important;
-}
-.dash-hero{
-  background:rgba(4,8,20,0.75)!important;
-  backdrop-filter:blur(14px)!important;
-  -webkit-backdrop-filter:blur(14px)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-  border-top:1px solid rgba(255,95,0,0.55)!important;
-  position:relative!important;z-index:2!important;
-}
-.mod-banner{
-  background:rgba(3,7,18,0.72)!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-  border-top:1px solid rgba(255,95,0,0.35)!important;
-  position:relative!important;z-index:2!important;
-}
-.tbl-wrap,.tbl-toolbar{
-  background:rgba(2,5,14,0.65)!important;
-  backdrop-filter:blur(8px)!important;
-  -webkit-backdrop-filter:blur(8px)!important;
-  position:relative!important;z-index:2!important;
-}
-.mod-card{
-  background:
-    linear-gradient(rgba(5,10,24,0.78),rgba(3,7,16,0.78)) padding-box,
-    linear-gradient(150deg,rgba(255,255,255,0.13) 0%,rgba(255,255,255,0.03) 100%) border-box!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-  position:relative!important;z-index:2!important;
-}
-.kpi{
-  background:rgba(4,8,20,0.68)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  position:relative!important;z-index:2!important;
-}
-.drawer{
-  background:rgba(2,5,14,0.96)!important;
-  backdrop-filter:blur(24px)!important;
-  -webkit-backdrop-filter:blur(24px)!important;
-  z-index:20!important;
-}
-
-
-
-/* ═══ SPACE FIX — CORRECT SELECTORS ═══ */
-
-/* HTML: vivid nebula baked in so it shows through everything */
-html{
-  background:
-    radial-gradient(ellipse 65% 55% at 10% 12%, rgba(120,30,255,0.28) 0%, transparent 58%),
-    radial-gradient(ellipse 60% 65% at 88% 86%, rgba(20,55,220,0.24) 0%, transparent 60%),
-    radial-gradient(ellipse 48% 42% at 64% 20%, rgba(255,65,0,0.14) 0%, transparent 52%),
-    radial-gradient(ellipse 44% 44% at 20% 80%, rgba(0,110,255,0.18) 0%, transparent 52%),
-    radial-gradient(ellipse 55% 55% at 48% 52%, rgba(60,0,180,0.10) 0%, transparent 55%),
-    #010610!important;
-}
-
-/* CORRECT LAYOUT SELECTORS — confirmed from live HTML */
-body{background:transparent!important;background-color:transparent!important}
-.layout{background:transparent!important;background-color:transparent!important}
-main.content,#content,.content{background:transparent!important;background-color:transparent!important}
-.page,.page.on{background:transparent!important;background-color:transparent!important}
-
-/* Canvas stays behind everything */
-#_aqSpace{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;pointer-events:none!important;z-index:0!important}
-
-/* Topbar — frosted glass, stars bleed through */
-.topbar{
-  background:rgba(1,3,12,0.78)!important;
-  backdrop-filter:blur(24px)!important;
-  -webkit-backdrop-filter:blur(24px)!important;
-  border-bottom:1px solid rgba(255,255,255,0.08)!important;
-  box-shadow:0 1px 0 rgba(255,95,0,0.22)!important;
-  position:relative!important;z-index:10!important;
-}
-
-/* Sidebar — frosted, stars visible */
-.sidebar{
-  background:rgba(2,4,14,0.68)!important;
-  backdrop-filter:blur(18px)!important;
-  -webkit-backdrop-filter:blur(18px)!important;
-  border-right:1px solid rgba(255,255,255,0.07)!important;
-  position:relative!important;z-index:5!important;
-}
-
-/* Dashboard hero */
-.dash-hero{
-  background:rgba(3,7,20,0.70)!important;
-  backdrop-filter:blur(16px)!important;
-  -webkit-backdrop-filter:blur(16px)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-  border-top:1px solid rgba(255,95,0,0.55)!important;
-  position:relative!important;z-index:2!important;
-}
-
-/* KPI cards */
-.kpi{
-  background:rgba(3,6,18,0.65)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  border:1px solid rgba(255,255,255,0.09)!important;
-  position:relative!important;z-index:2!important;
-}
-.kpi:hover{
-  background:rgba(5,10,26,0.75)!important;
-  border-color:rgba(255,95,0,0.4)!important;
-  transform:translateY(-3px)!important;
-  box-shadow:0 16px 44px rgba(0,0,0,0.5)!important;
-}
-
-/* Module cards */
-.mod-card{
-  background:rgba(3,6,18,0.68)!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-  position:relative!important;z-index:2!important;
-}
-.mod-card:hover{
-  background:rgba(6,12,30,0.82)!important;
-  box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 50px rgba(255,95,0,0.1)!important;
-  transform:translateY(-5px)!important;
-}
-
-/* Panels */
-.panel{
-  background:rgba(3,6,18,0.60)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  border:1px solid rgba(255,255,255,0.08)!important;
-  position:relative!important;z-index:2!important;
-}
-.panel:hover{border-color:rgba(255,95,0,0.22)!important;transform:translateY(-2px)!important}
-
-/* Module banner */
-.mod-banner{
-  background:rgba(3,6,18,0.70)!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-  border-top:1px solid rgba(255,95,0,0.35)!important;
-  position:relative!important;z-index:2!important;
-}
-
-/* Tables */
-.tbl-wrap,.tbl-toolbar,.dtbl{
-  background:rgba(2,4,14,0.62)!important;
-  backdrop-filter:blur(8px)!important;
-  -webkit-backdrop-filter:blur(8px)!important;
-  position:relative!important;z-index:2!important;
-}
-.dtbl thead th{background:rgba(1,3,10,0.85)!important;color:rgba(237,242,255,0.48)!important}
-.dtbl tbody tr:hover td{background:rgba(255,95,0,0.06)!important}
-
-/* Drawer */
-.drawer{background:rgba(2,4,14,0.97)!important;backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;z-index:20!important}
-
-/* Section headers ("OVERVIEW", "MODULES" labels) */
-.nav-section,.sidebar-section{background:transparent!important}
-
-
-
-
-/* ═══ MEGA PUSH ═══ */
-
-/* ── CUSTOM CURSOR ── */
-html *{cursor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCI+PGNpcmNsZSBjeD0iMTQiIGN5PSIxNCIgcj0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuODgiLz48bGluZSB4MT0iMTQiIHkxPSIxIiB4Mj0iMTQiIHkyPSI4IiBzdHJva2U9IiNGRjVGMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMTQiIHkxPSIyMCIgeDI9IjE0IiB5Mj0iMjciIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxsaW5lIHgxPSIxIiB5MT0iMTQiIHgyPSI4IiB5Mj0iMTQiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxsaW5lIHgxPSIyMCIgeTE9IjE0IiB4Mj0iMjciIHkyPSIxNCIgc3Ryb2tlPSIjRkY1RjAwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTQiIGN5PSIxNCIgcj0iMi4yIiBmaWxsPSIjRkY1RjAwIi8+PC9zdmc+") 14 14, crosshair!important}
-a,button,.btn,.btn-gold,.btn-ghost,.nav-item,.mod-card,[onclick],
-[role="button"],.dr-close,.tb-logout,.tb-avatar,.tb-notif,.tbl-act{
-  cursor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCI+PGNpcmNsZSBjeD0iMTQiIGN5PSIxNCIgcj0iMTEiIGZpbGw9InJnYmEoMjU1LDk1LDAsMC4xKSIgc3Ryb2tlPSIjRkY4QTM4IiBzdHJva2Utd2lkdGg9IjEuOCIvPjxjaXJjbGUgY3g9IjE0IiBjeT0iMTQiIHI9IjQuNSIgZmlsbD0iI0ZGNUYwMCIvPjwvc3ZnPg==") 14 14, pointer!important
-}
-input,textarea,.f-inp,.f-sel,.f-ta,.tbl-search,.lc-input{
-  cursor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyNCI+PGxpbmUgeDE9IjEwIiB5MT0iMCIgeDI9IjEwIiB5Mj0iMjQiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48bGluZSB4MT0iNCIgeTE9IjAiIHgyPSIxNiIgeTI9IjAiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48bGluZSB4MT0iNCIgeTE9IjI0IiB4Mj0iMTYiIHkyPSIyNCIgc3Ryb2tlPSIjRkY1RjAwIiBzdHJva2Utd2lkdGg9IjEuNSIvPjwvc3ZnPg==") 10 12, text!important
-}
-
-/* ── KPI CARDS: NOT clickable ── */
-.kpi,.kpi *{cursor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCI+PGNpcmNsZSBjeD0iMTQiIGN5PSIxNCIgcj0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuODgiLz48bGluZSB4MT0iMTQiIHkxPSIxIiB4Mj0iMTQiIHkyPSI4IiBzdHJva2U9IiNGRjVGMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMTQiIHkxPSIyMCIgeDI9IjE0IiB5Mj0iMjciIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxsaW5lIHgxPSIxIiB5MT0iMTQiIHgyPSI4IiB5Mj0iMTQiIHN0cm9rZT0iI0ZGNUYwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxsaW5lIHgxPSIyMCIgeTE9IjE0IiB4Mj0iMjciIHkyPSIxNCIgc3Ryb2tlPSIjRkY1RjAwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTQiIGN5PSIxNCIgcj0iMi4yIiBmaWxsPSIjRkY1RjAwIi8+PC9zdmc+") 14 14, default!important}
-.kpi:hover{
-  transform:none!important;
-  background:rgba(3,6,18,0.65)!important;
-  border-color:rgba(255,255,255,0.09)!important;
-  box-shadow:none!important;
-}
-
-/* ── MODULE CARDS: reset transform so JS tilt works ── */
-.mod-card{transform:none!important}
-.mod-card:hover{
-  transform:none!important; /* JS _aqFixTilt uses setProperty !important */
-  background:rgba(6,12,30,0.88)!important;
-  box-shadow:0 24px 70px rgba(0,0,0,0.6),0 0 60px rgba(255,95,0,0.12)!important;
-}
-
-/* ── PLANET (CSS sphere, top-right) ── */
-#_aqPlanet{
-  position:fixed;top:-90px;right:-90px;
-  width:340px;height:340px;border-radius:50%;
-  background:radial-gradient(circle at 32% 32%,rgba(140,160,255,0.55) 0%,rgba(60,80,200,0.40) 35%,rgba(20,35,120,0.30) 65%,rgba(5,10,50,0.22) 100%);
-  box-shadow:0 0 80px rgba(80,100,240,0.25),0 0 160px rgba(40,60,200,0.12),inset 0 0 60px rgba(0,0,80,0.4);
-  pointer-events:none;z-index:1;
-}
-/* Saturn ring */
-#_aqPlanet::after{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  width:540px;height:160px;
-  margin:-80px -270px;
-  border-radius:50%;
-  border:14px solid rgba(200,180,140,0.18);
-  box-shadow:0 0 20px rgba(200,180,140,0.1);
-  transform:rotateX(72deg);
-}
-
-/* ── INTRO OVERLAY ── */
-#_aqIntroOverlay{
-  position:fixed;inset:0;z-index:99999;
-  background:#000008;overflow:hidden;
-}
-
-
-</style>
-
-
-
-
-
-
-
-
-<style>
-/* ==AQ-M10== */
-html,body{background:#020817!important;background-image:none!important}
-.bg-mesh,.bg-grid{display:none!important}
-.kpi,.kpi-card,.kpi-box{cursor:default!important}
-.kpi:hover,.kpi-card:hover,.kpi-box:hover{transform:none!important;box-shadow:none!important}
-.mod-card{cursor:pointer!important}
-.mod-card,.mod-card:hover{transform:none!important}
-*,*::before,*::after{cursor:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2724%27%20height=%2724%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%273%27%20fill=%27%23F85700%27/%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27%20fill=%27none%27%20stroke=%27%23F85700%27%20stroke-width=%271%27%20opacity=%27.6%27/%3E%3Cline%20x1=%2712%27%20y1=%271%27%20x2=%2712%27%20y2=%278%27%20stroke=%27%23F85700%27%20stroke-width=%271.5%27/%3E%3Cline%20x1=%2712%27%20y1=%2716%27%20x2=%2712%27%20y2=%2723%27%20stroke=%27%23F85700%27%20stroke-width=%271.5%27/%3E%3Cline%20x1=%271%27%20y1=%2712%27%20x2=%278%27%20y2=%2712%27%20stroke=%27%23F85700%27%20stroke-width=%271.5%27/%3E%3Cline%20x1=%2716%27%20y1=%2712%27%20x2=%2723%27%20y2=%2712%27%20stroke=%27%23F85700%27%20stroke-width=%271.5%27/%3E%3C/svg%3E) 12 12,crosshair!important}
-
 </style>
 </head>
 <body>
@@ -1366,16 +565,16 @@ html,body{background:#020817!important;background-image:none!important}
   <div class="login-card" id="lcard">
     <div class="lc-accent"></div>
     <div class="lc-head">
-      <div class="lc-mark"><svg viewBox="0 0 62 46" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="_ag4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFAA20"/><stop offset="55%" stop-color="#FF5F00"/><stop offset="100%" stop-color="#E03500"/></linearGradient></defs><defs><linearGradient id="_aqLg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF8C20"/><stop offset="100%" stop-color="#FF4400"/></linearGradient></defs>
+      <div class="lc-mark"><svg viewBox="0 0 62 46" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
   <!-- A: forward-leaning angular letterform -->
-  <polygon points="0,44 13,2 18.5,2 5.5,44" fill="url(#_aqLg)"/>
-  <polygon points="5.5,44 18.5,2 24,2 11,44" fill="url(#_aqLg)"/>
-  <polygon points="6.5,28 21.5,28 19.5,34 8.5,34" fill="url(#_aqLg)"/>
+  <polygon points="0,44 13,2 18.5,2 5.5,44" fill="#F85700"/>
+  <polygon points="5.5,44 18.5,2 24,2 11,44" fill="#F85700"/>
+  <polygon points="6.5,28 21.5,28 19.5,34 8.5,34" fill="#F85700"/>
   <!-- Q: circle with inner cutout overlapping A right side -->
-  <circle cx="42" cy="23" r="18" fill="url(#_aqLg)"/>
-  <circle cx="42" cy="23" r="11" fill="none"/>
+  <circle cx="42" cy="23" r="18" fill="#F85700"/>
+  <circle cx="42" cy="23" r="11" fill="#020817"/>
   <!-- Q tail -->
-  <polygon points="49.5,31 61,44 55.5,44 44,31" fill="url(#_aqLg)"/>
+  <polygon points="49.5,31 61,44 55.5,44 44,31" fill="#F85700"/>
 </svg></div>
       <div class="lc-tag">AQ Global Group</div>
       <div class="lc-title">Command Brain</div>
@@ -1498,19 +697,27 @@ html,body{background:#020817!important;background-image:none!important}
 <div id="app">
   <!-- TOPBAR -->
   <div class="topbar">
+    <button class="tb-hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
     <div class="tb-logo">
       <div class="tb-mark"><svg viewBox="0 0 62 46" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
   <polygon points="0,44 13,2 18.5,2 5.5,44" fill="#F85700"/>
   <polygon points="5.5,44 18.5,2 24,2 11,44" fill="#F85700"/>
   <polygon points="6.5,28 21.5,28 19.5,34 8.5,34" fill="#F85700"/>
   <circle cx="42" cy="23" r="18" fill="#F85700"/>
-  <circle cx="42" cy="23" r="11" fill="none"/>
+  <circle cx="42" cy="23" r="11" fill="#020817"/>
   <polygon points="49.5,31 61,44 55.5,44 44,31" fill="#F85700"/>
 </svg></div>
       <div class="tb-brand">AQ Global Group</div>
     </div>
     <div class="tb-pipe"></div>
     <div class="tb-title">Command Brain</div>
+    <div class="gsearch">
+      <span class="gsearch-ico">🔍</span>
+      <input class="gsearch-input" id="global-search" type="search" placeholder="Search Command Brain" oninput="globalSearch(this.value)" autocomplete="off">
+      <div class="gsearch-results" id="global-results"></div>
+    </div>
     <div class="tb-space"></div>
     <div class="tb-badge">INTERNAL — RESTRICTED</div>
     <div class="tb-name" id="tb-name"></div>
@@ -1518,10 +725,13 @@ html,body{background:#020817!important;background-image:none!important}
     <button class="tb-logout" onclick="doLogout()">Sign Out</button>
   </div>
 
+  <!-- SIDEBAR OVERLAY (mobile tap-outside to close) -->
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
   <!-- MAIN -->
   <div class="layout">
     <!-- SIDEBAR -->
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
       <div class="sb-label">Overview</div>
       <div class="nav-item active" onclick="nav('dash')">
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -1553,7 +763,10 @@ html,body{background:#020817!important;background-image:none!important}
         <span>06 Suppliers</span>
         <span class="nb" id="snb" style="display:none">!</span>
       </div>
-      <div class="sb-foot"><div class="sb-ver">Command Brain v2.0 · June 2026</div></div>
+      <div class="sb-foot">
+        <div class="sb-ver">Command Brain v2.0 · June 2026</div>
+        <button onclick="doLogout()" style="margin-top:10px;width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:8px;color:#ef4444;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.3px">⏻ Sign Out</button>
+      </div>
     </nav>
 
     <!-- CONTENT -->
@@ -1566,8 +779,11 @@ html,body{background:#020817!important;background-image:none!important}
           <div class="dh-title" id="dh-greet">Command Brain</div>
           <div class="dh-sub" id="dh-sub">25 years of institutional knowledge. Centralised. Secured. Live.</div>
           <div class="dh-pills">
-            <span class="pill gold">CENTCOM</span><span class="pill">EUROPE</span><span class="pill">AFRICA</span>
-            <span class="pill">MULTI-ENTITY</span><span class="pill gold">Day 1 LIVE</span>
+            <button class="pill active" type="button" data-theater="ALL" onclick="setTheater('ALL')">ALL</button>
+            <button class="pill" type="button" data-theater="CENTCOM" onclick="setTheater('CENTCOM')">CENTCOM</button>
+            <button class="pill" type="button" data-theater="EUROPE" onclick="setTheater('EUROPE')">EUROPE</button>
+            <button class="pill" type="button" data-theater="AFRICA" onclick="setTheater('AFRICA')">AFRICA</button>
+            <button class="pill" type="button" data-theater="MULTI-ENTITY" onclick="setTheater('MULTI-ENTITY')">MULTI-ENTITY</button>
           </div>
         </div>
         <div class="kpi-grid">
@@ -1598,7 +814,7 @@ html,body{background:#020817!important;background-image:none!important}
 
       <div class="page" id="m3">
         <div class="mod-banner sa"><div class="mb-icon">📚</div><div><div class="mb-num">Module 03</div><div class="mb-name">Technical Document Library</div><div class="mb-desc">Proposals, SOWs, method statements — rated for reusability on future bids</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('tdoc')">+ Add Document</button></div>
-        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search documents…" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div><button class="tbl-act" onclick="exportCSV('tdocs')" style="margin-left:8px;padding:4px 12px;height:30px;font-size:11px">&#8681; Export</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search documents…" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div></div>
         <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Service</th><th>Region</th><th>Reusability</th><th>Version</th><th>Author</th><th></th></tr></thead><tbody id="tb-tdocs"></tbody></table><div class="empty-st" id="em-tdocs"><div class="ico">📚</div><div class="t">No documents yet</div><div class="s">File technical documents to power future proposals</div></div></div>
       </div>
 
@@ -1640,350 +856,882 @@ html,body{background:#020817!important;background-image:none!important}
   </div>
 </div>
 
-
-{document.querySelectorAll('#dash .sa').forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*80);});},200);
-  setTimeout(_dashIn,300);
-  setTimeout(initGlobalFx,350);
-      setTimeout(function(){},0);
-</script>
-
-
-
-
 <script>
-// AQ-V6
-(function(){
-'use strict';
+// ═══════════════════════════════════════════════════════
+//  CONFIG — paste Supabase credentials to enable shared
+//  multi-user mode. Leave blank to use localStorage.
+// ═══════════════════════════════════════════════════════
+const SB_URL = 'https://gavwwznxxuhhgtlvxwvu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdhdnd3em54eHVoaGd0bHZ4d3Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODAzMDksImV4cCI6MjA5Nzk1NjMwOX0.FTE6KLHOJrOa5aHIUEnkCeqdU86VaAYb-Ipu2lOY3WY';
 
-// ── 1. FIX: force .sa elements visible (they start at opacity:0) ──
-var _saFix = document.createElement('style');
-_saFix.textContent = '.sa{opacity:1!important;transform:none!important}.sa-d1,.sa-d2,.sa-d3,.sa-d4,.sa-d5{transition-delay:0s!important}';
-document.head.appendChild(_saFix);
-
-// ── 2. MODULE DEFINITIONS ─────────────────────────────────────────
-var MODS = [
-  {id:'m1',key:'contracts', icon:'📄',num:'M-01',name:'Contracts',   desc:'Active & historical contracts across all entities', clr:'59,130,246'},
-  {id:'m2',key:'brand',     icon:'🎯',num:'M-02',name:'Brand Assets', desc:'Brand guidelines, collateral & visual identity',    clr:'168,85,247'},
-  {id:'m3',key:'tdocs',     icon:'🔧',num:'M-03',name:'Tech Docs',    desc:'Specifications, manuals & engineering documents',   clr:'34,197,94'},
-  {id:'m4',key:'compliance',icon:'🛡️',num:'M-04',name:'Compliance',   desc:'Regulatory filings, audits & compliance docs',     clr:'245,158,11'},
-  {id:'m5',key:'fins',      icon:'💰',num:'M-05',name:'Financials',   desc:'Financial records, invoices & budget tracking',    clr:'239,68,68'},
-  {id:'m6',key:'suppliers', icon:'🏭',num:'M-06',name:'Suppliers',    desc:'Supplier profiles, contracts & performance data',  clr:'248,87,0'}
-];
-
-// ── 3. CARD HTML BUILDER ─────────────────────────────────────────
-function buildCards(counts) {
-  counts = counts || {};
-  return MODS.map(function(m) {
-    var n = counts[m.key] || 0;
-    return '<div class="mod-card" style="cursor:pointer;border:1px solid transparent;' +
-      'background:linear-gradient(rgba(6,12,28,.9),rgba(4,8,20,.9)) padding-box,' +
-      'linear-gradient(150deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.03) 100%) border-box;' +
-      'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;overflow:hidden;' +
-      'transition:all .25s ease;transform-style:preserve-3d;" ' +
-      'onclick="nav('' + m.id + '')" ' +
-      'onmousemove="aqv6Tilt(this,event)" onmouseleave="aqv6TiltReset(this)">' +
-      '<div style="height:3px;background:linear-gradient(90deg,rgba(' + m.clr + ',.9),transparent)"></div>' +
-      '<div style="padding:20px">' +
-        '<div style="font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase">' + m.num + '</div>' +
-        '<div style="font-size:26px;margin:8px 0 4px">' + m.icon + '</div>' +
-        '<div style="font-size:15px;font-weight:700;color:var(--tx)">' + m.name + '</div>' +
-        '<div style="font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5">' + m.desc + '</div>' +
-        '<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">' +
-          '<div>' +
-            '<div id="aqv6cnt_' + m.key + '" style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--tx)">' + n + '</div>' +
-            '<div style="font-size:10px;color:var(--tx3)">RECORDS</div>' +
-          '</div>' +
-          '<div style="font-size:18px;color:var(--tx3);transition:var(--trans)" class="aqv6arr">→</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+// ─── DATA LAYER ─────────────────────────────────────────
+let sb = null;
+if (SB_URL && SB_KEY && window.supabase) sb = window.supabase.createClient(SB_URL, SB_KEY);
+window.sb = sb;
+if(!window.gsap){
+  window.gsap={
+    to(_target,opts={}){ if(typeof opts.onComplete==='function') setTimeout(opts.onComplete,0); },
+    from(){},
+    registerPlugin(){}
+  };
 }
+if(!window.ScrollTrigger) window.ScrollTrigger={};
 
-// ── 4. TILT EFFECT ───────────────────────────────────────────────
-window.aqv6Tilt = function(el, e) {
-  var r = el.getBoundingClientRect();
-  var x = (e.clientX - r.left) / r.width - 0.5;
-  var y = (e.clientY - r.top) / r.height - 0.5;
-  el.style.setProperty('transform',
-    'perspective(600px) rotateX(' + (-y * 10) + 'deg) rotateY(' + (x * 10) + 'deg) translateY(-4px)',
-    'important');
-};
-window.aqv6TiltReset = function(el) {
-  el.style.removeProperty('transform');
-};
-
-// ── 5. GRID INJECTION ────────────────────────────────────────────
-var _injected = false;
-function injectGrid(counts) {
-  if (_injected) {
-    // Just update counts if already injected
-    if (counts) {
-      MODS.forEach(function(m) {
-        var el = document.getElementById('aqv6cnt_' + m.key);
-        if (el) el.textContent = counts[m.key] || 0;
+const MODULE_KEYS = ['contracts','brand','tdocs','compliance','fins','suppliers'];
+const DB = {
+  store: {},
+  loadedRemote: false,
+  uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8) },
+  normRow(row){
+    const id = row && row.id != null ? row.id : (row && row._id) || DB.uid();
+    return {...(row||{}), id, _id:String((row && row._id) || id)};
+  },
+  normRows(rows){ return Array.isArray(rows) ? rows.map(DB.normRow) : [] },
+  loadLocal(){
+    MODULE_KEYS.forEach(k=>{ DB.store[k]=DB.normRows(JSON.parse(localStorage.getItem('cb_'+k)||'[]')); });
+  },
+  get(k){ return DB.normRows(DB.store[k]||[]) },
+  set(k,v,opts={remote:true}){
+    const rows=DB.normRows(v);
+    DB.store[k]=rows;
+    localStorage.setItem('cb_'+k,JSON.stringify(rows));
+    if(opts.remote) return DB.saveRemote(k,rows);
+    return Promise.resolve(rows);
+  },
+  async add(k,obj){
+    const id=obj.id||obj._id||DB.uid();
+    const row=DB.normRow({...obj,id,_id:String(obj._id||id),by:obj.by||CU,at:obj.at||new Date().toLocaleDateString('en-GB')});
+    const a=DB.get(k); a.unshift(row);
+    await DB.set(k,a);
+  },
+  async del(k,id){ await DB.set(k,DB.get(k).filter(r=>String(r.id)!==String(id)&&String(r._id)!==String(id))) },
+  async upd(k,id,up){
+    const a=DB.get(k);
+    const i=a.findIndex(r=>String(r.id)===String(id)||String(r._id)===String(id));
+    if(i>-1){ a[i]=DB.normRow({...a[i],...up,id:a[i].id,_id:a[i]._id}); await DB.set(k,a); }
+  },
+  async loadAll(){
+    DB.loadLocal();
+    if(!sb) return false;
+    try{
+      const {data,error}=await sb.from('cb_store').select('module,records');
+      if(error) throw error;
+      const byModule={};
+      (data||[]).forEach(row=>{ if(row&&MODULE_KEYS.includes(row.module)) byModule[row.module]=DB.normRows(row.records); });
+      MODULE_KEYS.forEach(k=>{
+        if(byModule[k]) DB.set(k,byModule[k],{remote:false});
+        else if(!DB.store[k]) DB.store[k]=[];
       });
+      DB.loadedRemote=true;
+      return true;
+    }catch(e){
+      console.warn('[CB] Supabase load failed; using local cache',e);
+      if(document.getElementById('app')?.classList.contains('on')) toast('Using local cache; Supabase load failed','er');
+      return false;
     }
-    return;
-  }
-  var mg = document.getElementById('mod-grid');
-  if (!mg) return;
-
-  // Hide MEGA13's grid
-  mg.style.cssText = 'display:none!important;';
-
-  // Check if our grid already exists
-  var existing = document.getElementById('aqv6-grid');
-  if (existing) { _injected = true; return; }
-
-  // Create and insert our grid
-  var g = document.createElement('div');
-  g.id = 'aqv6-grid';
-  g.className = 'mod-grid'; // reuse existing CSS grid layout
-  g.innerHTML = buildCards(counts);
-  mg.parentNode.insertBefore(g, mg);
-  _injected = true;
-
-  console.log('[AQ-V6] Grid injected ✓');
-}
-
-// ── 6. LOAD COUNTS FROM SUPABASE ─────────────────────────────────
-async function loadCounts() {
-  if (!window.sb) return {};
-  try {
-    var r = await window.sb.from('cb_store').select('module,records');
-    if (!r || !r.data) return {};
-    var c = {};
-    r.data.forEach(function(row) {
-      c[row.module] = Array.isArray(row.records) ? row.records.length : 0;
-    });
-    return c;
-  } catch(e) { return {}; }
-}
-
-// ── 7. UPDATE KPIs ────────────────────────────────────────────────
-function updateKPIs(counts) {
-  var k0 = document.getElementById('kv0');
-  var k1 = document.getElementById('kv1');
-  var k2 = document.getElementById('kv2');
-  if (k0) k0.textContent = counts.contracts || 0;
-  if (k1) k1.textContent = counts.suppliers || 0;
-  if (k2) k2.textContent = counts.tdocs || 0;
-}
-
-// ── 8. NAV FUNCTION ──────────────────────────────────────────────
-var _activeModIdx = -1;
-window.nav = function(page) {
-  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('on'); });
-  var t = document.getElementById(page);
-  if (t) t.classList.add('on');
-  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-  // Find matching nav item
-  document.querySelectorAll('.nav-item').forEach(function(n) {
-    var oc = n.getAttribute('onclick') || '';
-    if (oc.indexOf("'" + page + "'") !== -1 || oc.indexOf('"' + page + '"') !== -1) {
-      n.classList.add('active');
+  },
+  async saveRemote(k,rows){
+    if(!sb) return;
+    try{
+      const payload={module:k,records:DB.normRows(rows).map(r=>({...r,_id:String(r._id||r.id)}))};
+      const found=await sb.from('cb_store').select('module').eq('module',k).limit(1);
+      if(found.error) throw found.error;
+      const res=(found.data&&found.data.length)
+        ? await sb.from('cb_store').update({records:payload.records}).eq('module',k)
+        : await sb.from('cb_store').insert(payload);
+      if(res.error) throw res.error;
+    }catch(e){
+      console.warn('[CB] Supabase save failed',e);
+      toast('Saved locally; Supabase sync failed','er');
     }
-  });
-  if (page !== 'dash') {
-    var idx = parseInt(page.replace('m','')) - 1;
-    if (idx >= 0 && idx < MODS.length) {
-      _activeModIdx = idx;
-      loadModulePage(idx);
-    }
-  } else {
-    _activeModIdx = -1;
   }
 };
+DB.loadLocal();
 
-// ── 9. LOAD MODULE PAGE DATA ──────────────────────────────────────
-async function loadModulePage(idx) {
-  var mod = MODS[idx];
-  if (!mod || !window.sb) return;
-  var pageEl = document.getElementById(mod.id);
-  if (!pageEl) return;
+// ─── AUTH ────────────────────────────────────────────────
+let CU = '';
+let _authEmail = '';
 
-  var tblWrap = pageEl.querySelector('.tbl-wrap');
-  if (!tblWrap) return;
-  tblWrap.id = tblWrap.id || ('aqv6tw_' + mod.key);
+// Show/hide a specific step
+function goStep(n){
+  [1,2,3,4,5].forEach(i=>document.getElementById('auth-step'+i).style.display='none');
+  document.getElementById('auth-local').style.display='none';
+  if(n==='local') document.getElementById('auth-local').style.display='block';
+  else document.getElementById('auth-step'+n).style.display='block';
+}
 
-  try {
-    var r = await window.sb.from('cb_store').select('records').eq('module', mod.key).single();
-    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
+function setLoading(btnId,spinId,on){
+  document.getElementById(btnId).style.display=on?'none':'inline';
+  document.getElementById(spinId).style.display=on?'block':'none';
+}
 
-    if (!rows.length) {
-      tblWrap.innerHTML = '<div style="padding:64px;text-align:center;color:var(--tx3)">' +
-        '<div style="font-size:36px;margin-bottom:12px">' + mod.icon + '</div>' +
-        '<div style="font-size:14px;font-weight:600">No records yet</div>' +
-        '<div style="font-size:12px;margin-top:6px;opacity:.6">Add your first record using the button above</div>' +
-        '</div>';
+// STEP 1 — Email submitted
+function authStep1(){
+  const email=document.getElementById('l-email').value.trim().toLowerCase();
+  document.getElementById('l-eerr').style.display='none';
+  if(!email.endsWith('@aqglobal.net')){document.getElementById('l-eerr').style.display='block';return}
+  _authEmail=email;
+  if(!sb){ goStep('local'); document.getElementById('l-email-local').value=email; return; }
+  document.getElementById('l-email-disp2').textContent=email;
+  document.getElementById('l-email-disp3').textContent=email;
+  goStep(2);
+  setTimeout(()=>document.getElementById('l-pass').focus(),50);
+}
+
+// STEP 2 — Password login
+async function authStep2(){
+  const pass=document.getElementById('l-pass').value;
+  const errEl=document.getElementById('l-perr');
+  errEl.style.display='none';
+  if(!pass){errEl.textContent='Password is required.';errEl.style.display='block';return}
+  setLoading('l-btn2-txt','l-spin2',true);
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email:_authEmail,password:pass});
+    if(error){
+      errEl.textContent='Incorrect password. Try again or use "Forgot password?" below.';
+      errEl.style.display='block';
       return;
     }
+    CU=data.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn2-txt','l-spin2',false); }
+}
 
-    // Get all field keys from first record (excluding _id)
-    var keys = Object.keys(rows[0]).filter(function(k) { return k !== '_id'; });
-    var html = '<table class="dtbl"><thead><tr>' +
-      keys.map(function(k) { return '<th>' + k.replace(/_/g,' ').toUpperCase() + '</th>'; }).join('') +
-      '<th>ACTIONS</th></tr></thead><tbody>';
-    rows.forEach(function(row) {
-      html += '<tr><td>' + keys.map(function(k) { return row[k] || '—'; }).join('</td><td>') + '</td>' +
-        '<td><button class="tbl-act" onclick="aqv6Edit('' + mod.key + '','' + row._id + '')">Edit</button> ' +
-        '<button class="tbl-act d" onclick="aqv6Del('' + mod.key + '','' + row._id + '')">Del</button></td></tr>';
-    });
-    html += '</tbody></table>';
-    tblWrap.innerHTML = html;
-    var ct = pageEl.querySelector('.tbl-ct');
-    if (ct) ct.textContent = rows.length + ' records';
-  } catch(e) {
-    tblWrap.innerHTML = '<div style="padding:32px;text-align:center;color:var(--tx3);font-size:12px">Error loading data: ' + e.message + '</div>';
+// STEP 3 — Create account (new user sets password)
+async function authStep3(){
+  const p1=document.getElementById('l-newpass').value;
+  const p2=document.getElementById('l-confpass').value;
+  const errEl=document.getElementById('l-cperr');
+  errEl.style.display='none';
+  if(p1.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.style.display='block';return}
+  if(p1!==p2){errEl.textContent='Passwords do not match.';errEl.style.display='block';return}
+  setLoading('l-btn3-txt','l-spin3',true);
+  try{
+    const {data,error}=await sb.auth.signUp({email:_authEmail,password:p1,options:{emailRedirectTo:window.location.href}});
+    if(error){
+      // User already exists — send them to reset flow to set their password
+      if(error.message.toLowerCase().includes('already')){
+        toast('Account exists. Use "Forgot password?" on the previous screen to set your password.','er');
+        goStep(2);
+        return;
+      }
+      toast(error.message,'er');
+      return;
+    }
+    if(data.session){
+      // Email confirmation not required — log straight in
+      CU=data.user.email;
+      localStorage.setItem('cb_ses',CU);
+      bootApp();
+    } else {
+      // Email confirmation required
+      document.getElementById('auth-reset-msg').innerHTML='A confirmation link has been sent to <strong>'+_authEmail+'</strong>.<br>Click it to activate your account and you\'ll be logged in automatically.';
+      goStep(4);
+    }
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn3-txt','l-spin3',false); }
+}
+
+// Forgot password — send reset email
+async function sendPasswordReset(){
+  if(!_authEmail){goStep(1);return}
+  if(!sb){toast('Requires Supabase connection.','er');return}
+  toast('Sending reset link to '+_authEmail+'…','in');
+  const {error}=await sb.auth.resetPasswordForEmail(_authEmail,{redirectTo:window.location.href});
+  if(error){ toast('Error: '+error.message,'er'); return; }
+  document.getElementById('auth-reset-msg').innerHTML='A password reset link has been sent to <strong>'+_authEmail+'</strong>.<br>Check your inbox.';
+  goStep(4);
+  toast('Reset link sent — check your email','ok');
+}
+
+// STEP 5 — Set new password (arrived via reset link)
+async function authStep5(){
+  const p1=document.getElementById('l-resetpass').value;
+  const p2=document.getElementById('l-resetconfpass').value;
+  const errEl=document.getElementById('l-rperr');
+  errEl.style.display='none';
+  if(p1.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.style.display='block';return}
+  if(p1!==p2){errEl.textContent='Passwords do not match.';errEl.style.display='block';return}
+  setLoading('l-btn5-txt','l-spin5',true);
+  try{
+    const {data,error}=await sb.auth.updateUser({password:p1});
+    if(error){toast(error.message,'er');return}
+    CU=data.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn5-txt','l-spin5',false); }
+}
+
+// LOCAL MODE — no Supabase
+function doLocalLogin(){
+  const email=document.getElementById('l-email-local').value.trim().toLowerCase();
+  document.getElementById('l-eerr-local').style.display='none';
+  if(!email.endsWith('@aqglobal.net')){document.getElementById('l-eerr-local').style.display='block';return}
+  setLoading('l-btn-local-txt','l-spin-local',true);
+  setTimeout(()=>{CU=email;localStorage.setItem('cb_ses',email);setLoading('l-btn-local-txt','l-spin-local',false);bootApp();},600);
+}
+
+function doLogout(){
+  localStorage.removeItem('cb_ses');
+  if(sb) sb.auth.signOut();
+  location.reload();
+}
+
+// ── MOBILE SIDEBAR TOGGLE ──────────────────────────────
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sb-overlay');
+  if(s.classList.contains('open')){closeSidebar();}
+  else{s.classList.add('open');o.classList.add('on');}
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('on');
+}
+
+document.getElementById('l-email').addEventListener('keydown',e=>{if(e.key==='Enter')authStep1()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const s2=document.getElementById('auth-step2');
+    const s3=document.getElementById('auth-step3');
+    const s5=document.getElementById('auth-step5');
+    if(s2&&s2.style.display!=='none') authStep2();
+    else if(s3&&s3.style.display!=='none') authStep3();
+    else if(s5&&s5.style.display!=='none') authStep5();
   }
-}
+});
 
-// ── 10. CRUD ─────────────────────────────────────────────────────
-window.openDr = function(pageId) {
-  var idx;
-  if (pageId) { idx = MODS.findIndex(function(m) { return m.id === pageId; }); }
-  else { idx = _activeModIdx; }
-  if (idx < 0) { alert('Navigate to a module first'); return; }
-  var mod = MODS[idx];
-  var fields = prompt('QUICK ADD — enter data as JSON
-Example: {"title":"Contract A","region":"CENTCOM","status":"Active"}');
-  if (!fields) return;
-  try {
-    var rec = JSON.parse(fields);
-    rec._id = Date.now().toString(36) + Math.random().toString(36).slice(2);
-    saveRecord(mod.key, rec, false);
-  } catch(e) { alert('Invalid JSON: ' + e.message); }
-};
+// Initialise correct step on load
+(function initAuthUI(){
+  if(!sb) goStep('local');
+  else goStep(1);
+})();
 
-async function saveRecord(modKey, rec, isEdit) {
-  if (!window.sb) { alert('Not connected to Supabase'); return; }
-  try {
-    var ex = await window.sb.from('cb_store').select('id,records').eq('module', modKey).single();
-    var rows = (ex && ex.data && Array.isArray(ex.data.records)) ? ex.data.records : [];
-    if (isEdit) {
-      rows = rows.map(function(r) { return r._id === rec._id ? rec : r; });
-    } else {
-      rows = rows.concat([rec]);
+// ─── SESSION RESTORE & AUTH STATE ────────────────────────
+(async function initSession(){
+  if(!sb){ const s=localStorage.getItem('cb_ses'); if(s&&s.endsWith('@aqglobal.net')){CU=s;bootApp();} return; }
+
+  // Listen for auth events
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      // User arrived via password reset link — show set-password form
+      window.history.replaceState(null,'',window.location.pathname+window.location.search);
+      goStep(5);
+      setTimeout(()=>document.getElementById('l-resetpass').focus(),50);
+      return;
     }
-    if (ex && ex.data && ex.data.id) {
-      await window.sb.from('cb_store').update({records: rows}).eq('module', modKey);
-    } else {
-      await window.sb.from('cb_store').insert({module: modKey, records: rows});
+    if(event==='SIGNED_IN'&&session&&session.user&&session.user.email.endsWith('@aqglobal.net')&&!CU){
+      CU=session.user.email;
+      localStorage.setItem('cb_ses',CU);
+      bootApp();
     }
-    var idx = MODS.findIndex(function(m) { return m.key === modKey; });
-    if (idx >= 0) loadModulePage(idx);
-    loadAndRefresh();
-    alert('Saved!');
-  } catch(e) { alert('Save error: ' + e.message); }
+  });
+
+  // Check for existing session
+  const {data:{session}}=await sb.auth.getSession();
+  if(session&&session.user&&session.user.email.endsWith('@aqglobal.net')){
+    CU=session.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }
+})();
+
+// ─── BOOT ────────────────────────────────────────────────
+function bootApp(){
+  const name=CU.split('@')[0].split('.').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+  const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  document.getElementById('tb-name').textContent=name;
+  document.getElementById('tb-av').textContent=initials;
+  const h=new Date().getHours();
+  const greet=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  document.getElementById('dh-greet').textContent=greet+', '+name.split(' ')[0];
+  document.getElementById('dh-sub').textContent='25 years of AQ Global institutional knowledge — now centralised.';
+  gsap.to('#login',{opacity:0,duration:.5,ease:'power2.in',onComplete:()=>{
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('on');
+    initApp();
+  }});
 }
 
-window.aqv6Del = async function(modKey, recId) {
-  if (!confirm('Delete this record?')) return;
-  if (!window.sb) return;
-  var ex = await window.sb.from('cb_store').select('id,records').eq('module', modKey).single();
-  var rows = (ex && ex.data && Array.isArray(ex.data.records)) ? ex.data.records : [];
-  rows = rows.filter(function(r) { return r._id !== recId; });
-  await window.sb.from('cb_store').update({records: rows}).eq('module', modKey);
-  var idx = MODS.findIndex(function(m) { return m.key === modKey; });
-  if (idx >= 0) loadModulePage(idx);
-  loadAndRefresh();
-};
-
-window.aqv6Edit = function(modKey, recId) {
-  if (!window.sb) return;
-  window.sb.from('cb_store').select('records').eq('module', modKey).single().then(function(r) {
-    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
-    var rec = rows.find(function(x) { return x._id === recId; });
-    if (!rec) return;
-    var edited = prompt('Edit record (JSON):', JSON.stringify(rec));
-    if (!edited) return;
-    try { saveRecord(modKey, JSON.parse(edited), true); }
-    catch(e) { alert('Invalid JSON'); }
-  });
-};
-
-window.csvExp = function(pageId) {
-  var idx = pageId ? MODS.findIndex(function(m) { return m.id === pageId; }) : _activeModIdx;
-  if (idx < 0) { alert('Navigate to a module first'); return; }
-  var mod = MODS[idx];
-  if (!window.sb) return;
-  window.sb.from('cb_store').select('records').eq('module', mod.key).single().then(function(r) {
-    var rows = (r && r.data && Array.isArray(r.data.records)) ? r.data.records : [];
-    if (!rows.length) { alert('No records to export'); return; }
-    var keys = Object.keys(rows[0]).filter(function(k) { return k !== '_id'; });
-    var csv = keys.join(',') + '
-' + rows.map(function(row) {
-      return keys.map(function(k) { return '"' + (row[k] || '').toString().replace(/"/g, '""') + '"'; }).join(',');
-    }).join('
-');
-    var a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = 'aq-' + mod.key + '-' + new Date().toISOString().slice(0,10) + '.csv';
-    a.click();
-  });
-};
-
-window.filt = function() {
-  var idx = _activeModIdx;
-  if (idx < 0) return;
-  var s = document.querySelector('#' + MODS[idx].id + ' .tbl-search');
-  if (s) s.focus();
-};
-
-// ── 11. LOAD & REFRESH ALL ────────────────────────────────────────
-async function loadAndRefresh() {
-  var counts = await loadCounts();
-  injectGrid(counts);
-  updateKPIs(counts);
+async function initApp(){
+  refreshAll();
+  await DB.loadAll();
+  seedSupplier();
+  refreshAll();
+  updateTheaterButtons();
+  if(!window._cbFxStarted){
+    window._cbFxStarted=true;
+    initParticles();
+    initScrollAnim();
+  }
+  init3DTilt();
+  // topbar and sidebar appear instantly — no clip/overflow issues
 }
 
-// ── 12. BOOT SEQUENCE ─────────────────────────────────────────────
-// Strategy: watch for #app to get class "on" (MEGA13 sets this after auth)
-// Then wait 700ms (MEGA13's longest setTimeout is 350ms) and inject
+// ─── SEED FOUNDING ENTRY ─────────────────────────────────
+function seedSupplier(){
+  if(DB.get('suppliers').length>0) return;
+  const f={
+    id:1000000001,name:'UNCONFIRMED — Pending Ram Mohan Verification',tradingName:'Confirm trading name',
+    category:'Labour Supply',region:'UAE',status:'Blacklisted',rating:'Red',
+    exposure:'13600',exposureAED:'50000',
+    disputeDetail:'AED 50,000 financial loss — supplier engaged without prior vetting. Active fraud case as at June 2026. Ram Mohan to confirm all details and complete this record.',
+    tradeLicenseVerified:'No',bankVerified:'No',referencesChecked:'No',
+    contact:'Unknown — not verified at time of engagement',phone:'Unknown',email:'Unknown',
+    notes:'FOUNDING ENTRY: This registry was created because AQ Global lost AED 50,000 to this unvetted supplier. No documentation was obtained before engagement. Ram Mohan to investigate.',
+    redFlags:'No trade license. No bank verification. No references. AED 50,000 exposure.',
+    legalAction:'Active — as at June 2026',ratingJustification:'AED 50,000 fraud/financial loss. Zero pre-engagement vetting.',
+    by:'Raj Verma',at:'25-Jun-2026',isFounder:true
+  };
+  DB.set('suppliers',[f]);
+}
 
-function watchForAuth() {
-  var app = document.getElementById('app');
-  if (!app) { setTimeout(watchForAuth, 100); return; }
+// ─── NAVIGATION ──────────────────────────────────────────
+let THEATER='ALL';
+const MOD_META={
+  contracts:{page:'m1',label:'Contracts'},
+  brand:{page:'m2',label:'Brand'},
+  tdocs:{page:'m3',label:'Tech Docs'},
+  compliance:{page:'m4',label:'Compliance'},
+  fins:{page:'m5',label:'Financials'},
+  suppliers:{page:'m6',label:'Suppliers'}
+};
 
-  // If already logged in
-  if (app.classList.contains('on')) {
-    setTimeout(function() { loadAndRefresh(); }, 700);
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jsArg(v){return JSON.stringify(String(v??'')).replace(/</g,'\\u003c')}
+function regionTheater(v){
+  const s=String(v||'').toUpperCase();
+  if(!s) return '';
+  if(s.includes('MULTI')||s.includes('GROUP')||s.includes('GLOBAL')) return 'MULTI-ENTITY';
+  if(s.includes('EUROPE')||s.includes('POLAND')||s.includes('GERMANY')||s.includes('ITALY')||s.includes('UK')) return 'EUROPE';
+  if(s.includes('AFRICA')||s.includes('KENYA')) return 'AFRICA';
+  if(s.includes('CENTCOM')||s.includes('KUWAIT')||s.includes('UAE')||s.includes('KSA')||s.includes('SAUDI')||s.includes('BAHRAIN')||s.includes('QATAR')||s.includes('OMAN')) return 'CENTCOM';
+  return '';
+}
+function rowTheater(row){
+  const direct=regionTheater(row.region||row.territory||row.entity||row.country);
+  if(direct) return direct;
+  const all=JSON.stringify(row||{}).toUpperCase();
+  return ['CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'].find(t=>all.includes(t))||'';
+}
+function scopedRows(rows){return THEATER==='ALL'?rows:rows.filter(r=>rowTheater(r)===THEATER)}
+function updateTheaterButtons(){
+  document.querySelectorAll('[data-theater]').forEach(btn=>btn.classList.toggle('active',btn.dataset.theater===THEATER));
+}
+function setTheater(t){
+  THEATER=t||'ALL';
+  updateTheaterButtons();
+  refreshAll();
+  const q=document.getElementById('global-search')?.value||'';
+  if(q) globalSearch(q);
+}
+function bestTitle(k,r){
+  return r.contractNo||r.title||r.name||r.fileName||r.entity||r.customer||r.client||r.docType||r.category||MOD_META[k]?.label||k;
+}
+function bestSub(r){
+  return [r.region||r.territory||r.status||'',r.customer||r.client||r.category||r.service||'',r.owner||r.author||r.contact||''].filter(Boolean).join(' · ');
+}
+function globalSearch(q){
+  const panel=document.getElementById('global-results');
+  if(!panel) return;
+  q=String(q||'').trim();
+  if(!q){panel.classList.remove('on');panel.innerHTML='';return;}
+  const needle=q.toLowerCase();
+  const hits=[];
+  MODULE_KEYS.forEach(k=>{
+    scopedRows(DB.get(k)).forEach(r=>{
+      if(JSON.stringify(r).toLowerCase().includes(needle)){
+        hits.push({k,r,id:r.id||r._id,title:bestTitle(k,r),sub:bestSub(r)});
+      }
+    });
+  });
+  if(!hits.length){
+    panel.innerHTML='<div class="gsearch-hit"><div class="gsearch-title">No matches</div></div>';
+    panel.classList.add('on');
     return;
   }
-
-  // Watch for class change
-  var obs = new MutationObserver(function() {
-    if (app.classList.contains('on')) {
-      obs.disconnect();
-      console.log('[AQ-V6] Auth detected, injecting in 700ms...');
-      setTimeout(function() { loadAndRefresh(); }, 700);
-      // Also retry at 1.5s and 3s for safety
-      setTimeout(function() { if (!_injected) loadAndRefresh(); }, 1500);
-      setTimeout(function() { if (!_injected) loadAndRefresh(); }, 3000);
-    }
+  panel.innerHTML=hits.slice(0,14).map(h=>`
+    <button class="gsearch-hit" data-k="${esc(h.k)}" data-id="${esc(h.id)}" data-q="${esc(q)}">
+      <div class="gsearch-meta">${esc(MOD_META[h.k]?.label||h.k)}</div>
+      <div class="gsearch-title">${esc(h.title)}</div>
+      <div class="gsearch-sub">${esc(h.sub)}</div>
+    </button>`).join('');
+  panel.querySelectorAll('.gsearch-hit[data-k]').forEach(btn=>{
+    btn.addEventListener('click',()=>openSearchHit(btn.dataset.k,btn.dataset.id,btn.dataset.q));
   });
-  obs.observe(app, { attributes: true, attributeFilter: ['class'] });
+  panel.classList.add('on');
+}
+function openSearchHit(k,id,q){
+  const panel=document.getElementById('global-results');
+  if(panel) panel.classList.remove('on');
+  const meta=MOD_META[k]; if(!meta) return;
+  nav(meta.page);
+  setTimeout(()=>{
+    const input=document.querySelector('#'+meta.page+' .tbl-search');
+    if(input){input.value=q;filt(k,q);}
+  },40);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('global-results')?.classList.remove('on')});
 
-  // Also watch #mod-grid for MEGA13 populating it
-  var mg = document.getElementById('mod-grid');
-  if (mg) {
-    var mgObs = new MutationObserver(function() {
-      console.log('[AQ-V6] mod-grid mutated, injecting...');
-      mg.style.cssText = 'display:none!important;';
-      setTimeout(function() { loadAndRefresh(); }, 100);
-    });
-    mgObs.observe(mg, { childList: true, subtree: true });
+let CP='dash';
+function nav(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')===`nav('${id}')`)n.classList.add('active')});
+  CP=id;
+  // Close sidebar on mobile after nav
+  if(window.innerWidth<=768) closeSidebar();
+  // Re-trigger scroll animations for new page
+  document.querySelectorAll(`#${id} .sa`).forEach((el,i)=>{
+    el.classList.remove('in');
+    setTimeout(()=>el.classList.add('in'),i*80);
+  });
+  refreshAll();
+}
+
+// ─── REFRESH ALL ─────────────────────────────────────────
+let RD={};
+function refreshAll(){
+  RD.contracts =scopedRows(DB.get('contracts'));
+  RD.brand     =scopedRows(DB.get('brand'));
+  RD.tdocs     =scopedRows(DB.get('tdocs'));
+  RD.compliance=scopedRows(DB.get('compliance'));
+  RD.fins      =scopedRows(DB.get('fins'));
+  RD.suppliers =scopedRows(DB.get('suppliers'));
+  renderContracts(RD.contracts);
+  renderBrand(RD.brand);
+  renderTdocs(RD.tdocs);
+  renderCompliance(RD.compliance);
+  renderFins(RD.fins);
+  renderSuppliers(RD.suppliers);
+  renderDash();
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────
+function renderDash(){
+  const {contracts,brand,tdocs,compliance,fins,suppliers}=RD;
+  const red=suppliers.filter(s=>s.rating==='Red').length;
+  countUp('kv0',contracts.length);
+  countUp('kv1',suppliers.length);
+  countUp('kv2',tdocs.length+compliance.length);
+  document.getElementById('ks1').textContent=`${red} Red-rated supplier${red!==1?'s':''} flagged`;
+  document.getElementById('snb').style.display=red?'':'none';
+  setTimeout(()=>{
+    document.getElementById('kb0').style.width=Math.min(contracts.length*10,100)+'%';
+    document.getElementById('kb1').style.width=Math.min(suppliers.length*20,100)+'%';
+    document.getElementById('kb2').style.width=Math.min((tdocs.length+compliance.length)*10,100)+'%';
+  },300);
+  // Module cards
+  const mods=[
+    {id:'m1',num:'01',name:'Contract Registry',desc:'Historical contract execution record',icon:'📋',count:contracts.length,lbl:'contracts',c:'#F85700'},
+    {id:'m2',num:'02',name:'Brand Repository',desc:'Logos, templates, and collateral',icon:'🎨',count:brand.length,lbl:'assets',c:'#8B5CF6'},
+    {id:'m3',num:'03',name:'Technical Docs',desc:'Proposals, SOWs — reusability-rated',icon:'📚',count:tdocs.length,lbl:'documents',c:'#3B82F6'},
+    {id:'m4',num:'04',name:'Compliance',desc:'Safety plans and quality frameworks',icon:'🛡️',count:compliance.length,lbl:'documents',c:'#22C55E'},
+    {id:'m5',num:'05',name:'Financials',desc:'Restricted — audited per entity per year',icon:'💰',count:fins.length,lbl:'records',c:'#EF4444'},
+    {id:'m6',num:'06',name:'Supplier Registry',desc:'Green / Amber / Red risk rated',icon:'🔍',count:suppliers.length,lbl:'suppliers',c:'#F59E0B'},
+  ];
+  document.getElementById('mod-grid').innerHTML=mods.map((m,i)=>`
+    <div class="mod-card sa sa-d${i+1}" onclick="nav('${m.id}')">
+      <div class="mc-stripe" style="background:${m.c}"></div>
+      <div class="mc-body">
+        <div class="mc-num">Module ${m.num}</div>
+        <div class="mc-name">${m.icon} ${m.name}</div>
+        <div class="mc-desc">${m.desc}</div>
+        <div class="mc-foot">
+          <div><div class="mc-count">${m.count}</div><div class="mc-count-l">${m.lbl}</div></div>
+          <div class="mc-arrow">→</div>
+        </div>
+      </div>
+    </div>`).join('');
+  // Alerts
+  const as=[];
+  as.push({c:'r',t:'⚠ FOUNDING ENTRY: AED 50,000 fraud case active — Ram Mohan to verify and complete supplier record in Module 06',m:'June 2026 · Active'});
+  if(red>1) as.push({c:'r',t:`${red} Red-rated suppliers flagged — CEO sign-off required before any engagement`,m:'Pending Vin Nair review'});
+  compliance.filter(c=>c.status==='Expired').forEach(c=>as.push({c:'r',t:`EXPIRED: ${c.title} — immediate renewal required`,m:'Action now'}));
+  if(!contracts.length) as.push({c:'a',t:'Module 01 Contract Registry is empty — entity leads to submit data by Day 15',m:'Deadline: Day 15'});
+  as.push({c:'a',t:'Day 5 milestone: Intake templates to be distributed to all entity leads (Raj Verma)',m:'Day 5'});
+  as.push({c:'g',t:'Command Brain v2.0 is live — all modules open for data intake',m:'Now'});
+  document.getElementById('alerts').innerHTML=as.map(a=>`
+    <div class="alert-row"><div class="adot ${a.c}"></div><div><div class="at">${a.t}</div><div class="atm">${a.m}</div></div></div>`).join('');
+  setTimeout(()=>init3DTilt(),100);
+}
+
+// ─── RENDERERS ───────────────────────────────────────────
+function fmtUSD(v){return v?'$'+parseFloat(v).toLocaleString('en-US',{maximumFractionDigits:0}):'—'}
+function pct(a,b){return a&&b?((parseFloat(a)/parseFloat(b))*100).toFixed(1)+'%':'—'}
+function cpars(r){const m={'Exceptional':5,'Very Good':4,'Satisfactory':3,'Marginal':2,'Unsatisfactory':1};const n=m[r]||0;return n?`<div class="stars">${'x'.repeat(n).split('').map(()=>'<span class="star f">★</span>').join('')}${'x'.repeat(5-n).split('').map(()=>'<span class="star e">★</span>').join('')}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">${r}</div>`:r?`<span style="font-size:11px;color:var(--tx3)">${r}</span>`:'—'}
+function stB(s){const m={Active:'bdg-g',Completed:'bdg-gd','Terminated':'bdg-r','Terminated for Convenience':'bdg-gr','Active — Client Accepted':'bdg-g',Expired:'bdg-r','Under Review':'bdg-a',Approved:'bdg-b',Deprecated:'bdg-r',Probationary:'bdg-a',Blacklisted:'bdg-r',Audited:'bdg-g','Unaudited Draft':'bdg-a','Under Audit':'bdg-a','Management Accounts':'bdg-gr'};return `<span class="bdg ${m[s]||'bdg-gr'}">${s||'—'}</span>`}
+function rtB(r){if(!r) return '<span class="bdg bdg-gr">Unknown</span>';if(r==='Green') return '<span class="bdg bdg-g">🟢 Trusted</span>';if(r==='Amber') return '<span class="bdg bdg-a">🟡 Caution</span>';if(r==='Red') return '<span class="bdg bdg-r">🔴 Do Not Engage</span>';return `<span class="bdg bdg-gr">${r}</span>`}
+function vfB(v){return v==='Yes'?'<span class="bdg bdg-g">✓ Verified</span>':v==='No'?'<span class="bdg bdg-r">✗ Not Verified</span>':'<span class="bdg bdg-a">Pending</span>'}
+function acts(key,id){return `<button class="tbl-act" onclick="editR(${jsArg(key)},${jsArg(id)})">Edit</button> <button class="tbl-act d" onclick="delR(${jsArg(key)},${jsArg(id)})">Del</button>`}
+function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
+
+function renderContracts(d){
+  showEmpty('contracts',d);
+  document.getElementById('tb-contracts').innerHTML=d.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${r.contractNo||'—'}</strong>${r.taskOrder?`<div style="font-size:10px;color:var(--tx3)">${r.taskOrder}</div>`:''}</td>
+    <td style="font-size:12px">${r.entity||'—'}</td>
+    <td><div style="font-size:12px">${r.customer||'—'}</div>${r.prime?`<div style="font-size:10px;color:var(--tx3)">via ${r.prime}</div>`:''}</td>
+    <td><span class="bdg bdg-gd">${r.role||'—'}</span></td>
+    <td style="font-size:12px">${r.region||'—'}</td>
+    <td style="font-size:11px">${r.service||'—'}</td>
+    <td style="font-family:monospace">${fmtUSD(r.totalValue)}</td>
+    <td>${cpars(r.cpars)}</td>
+    <td>${stB(r.status)}</td>
+    <td style="white-space:nowrap">${acts('contracts',r.id)}</td></tr>`).join('');
+}
+function renderBrand(d){
+  showEmpty('brand',d);
+  document.getElementById('tb-brand').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.fileName||'—'}</strong></td>
+    <td style="font-size:12px">${r.category||'—'}</td><td style="font-size:12px">${r.entity||'—'}</td>
+    <td><span class="bdg bdg-gr">${r.format||'—'}</span></td>
+    <td style="font-size:12px">${r.version||'—'}</td>
+    <td>${r.approvalStatus==='Approved'||r.approvalStatus==='Active — Client Accepted'?'<span class="bdg bdg-g">Approved</span>':r.approvalStatus==='Deprecated'?'<span class="bdg bdg-r">Deprecated</span>':stB(r.approvalStatus)}</td>
+    <td style="font-size:12px">${r.owner||'—'}</td>
+    <td>${acts('brand',r.id)}</td></tr>`).join('');
+}
+function renderTdocs(d){
+  showEmpty('tdocs',d);
+  document.getElementById('tb-tdocs').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong></td>
+    <td style="font-size:11px">${r.docType||'—'}</td><td style="font-size:11px">${r.service||'—'}</td><td style="font-size:11px">${r.region||'—'}</td>
+    <td>${r.reuse==='High'?'<span class="bdg bdg-g">🟢 High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">🟡 Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
+    <td style="font-size:11px">${r.version||'—'}</td><td style="font-size:11px">${r.author||'—'}</td>
+    <td>${acts('tdocs',r.id)}</td></tr>`).join('');
+}
+function renderCompliance(d){
+  showEmpty('compliance',d);
+  document.getElementById('tb-compliance').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${r.title||'—'}</strong></td>
+    <td style="font-size:11px">${r.docType||'—'}</td><td style="font-size:11px">${r.standard||'—'}</td><td style="font-size:11px">${r.region||'—'}</td>
+    <td style="font-size:11px">${r.approvalDate||'—'}</td>
+    <td style="font-size:11px;color:${r.status==='Expired'?'var(--red)':'var(--tx)'};font-weight:${r.status==='Expired'?700:400}">${r.expiryDate||'—'}</td>
+    <td>${stB(r.status)}</td>
+    <td>${acts('compliance',r.id)}</td></tr>`).join('');
+}
+function renderFins(d){
+  showEmpty('fins',d);
+  document.getElementById('tb-fins').innerHTML=d.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${r.entity||'—'}</strong></td>
+    <td><span class="bdg bdg-gd">${r.fy||'—'}</span></td>
+    <td style="font-family:monospace">${fmtUSD(r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.grossProfit)}</td>
+    <td style="font-family:monospace">${pct(r.grossProfit,r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.ebitda)}</td>
+    <td style="font-family:monospace;color:${parseFloat(r.netProfit)<0?'var(--red)':'var(--green)'}">${fmtUSD(r.netProfit)}</td>
+    <td>${stB(r.auditStatus)}</td>
+    <td>${acts('fins',r.id)}</td></tr>`).join('');
+}
+function renderSuppliers(d){
+  const hasData=d.length>0;
+  document.getElementById('em-suppliers').style.display=hasData?'none':'';
+  document.getElementById('ct-suppliers').textContent=d.length+' records';
+  document.getElementById('tb-suppliers').innerHTML=d.map(r=>`<tr class="${r.rating==='Red'?'danger':''}">
+    <td>${r.isFounder?'<div class="founding-tag">FOUNDING ENTRY</div>':''}<strong style="font-size:12px;color:var(--tx)">${r.name||'—'}</strong>${r.tradingName&&r.tradingName!==r.name?`<div style="font-size:10px;color:var(--tx3)">${r.tradingName}</div>`:''}</td>
+    <td style="font-size:11px">${r.category||'—'}</td><td style="font-size:11px">${r.region||'—'}</td>
+    <td>${rtB(r.rating)}</td><td>${stB(r.status)}</td><td>${vfB(r.tradeLicenseVerified)}</td>
+    <td style="font-family:monospace;font-size:11px;color:${parseFloat(r.exposure)>0?'var(--red)':'var(--tx)'}">${fmtUSD(r.exposure)}</td>
+    <td style="font-size:11px">${r.contact?r.contact.split(' ').slice(0,2).join(' '):'—'}</td>
+    <td style="white-space:nowrap">${acts('suppliers',r.id)}</td></tr>`).join('');
+}
+
+// ─── FILTER ──────────────────────────────────────────────
+function filt(k,q){const base=RD[k]||[];const d=base.filter(r=>JSON.stringify(r).toLowerCase().includes(String(q||'').toLowerCase()));render(k,d)}
+function filtF(k,f,v){const base=RD[k]||[];const d=v?base.filter(r=>(r[f]||'').toLowerCase().includes(String(v).toLowerCase())):base;render(k,d)}
+function render(k,d){
+  if(k==='contracts')  renderContracts(d);
+  if(k==='brand')      renderBrand(d);
+  if(k==='tdocs')      renderTdocs(d);
+  if(k==='compliance') renderCompliance(d);
+  if(k==='fins')       renderFins(d);
+  if(k==='suppliers')  renderSuppliers(d);
+}
+
+// ─── FORMS DEFINITION ────────────────────────────────────
+const F={
+  contract:{title:'Add Contract',sub:'Module 01 — Contract Registry',fields:[
+    {n:'contractNo',l:'Contract Number ★',p:'e.g. W52P1J-22-C-0001'},
+    {n:'taskOrder',l:'Task / Delivery Order',p:'e.g. TO-0042'},
+    {n:'entity',l:'AQ Entity ★',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Other']},
+    {n:'customer',l:'Buying Entity ★',t:'sel',o:['USG — Navy','USG — Army','USG — Air Force','USG — Marines','USG — State Dept','KBR','V2X','Fluor','Amentum','Leidos','ADF','Italian Air Force','Canadian Forces','NGO','Commercial','Other']},
+    {n:'prime',l:'Prime Contractor (if sub)',p:'e.g. KBR Government Services'},
+    {n:'role',l:'AQ Role ★',t:'sel',o:['Prime','Subcontractor','Teaming Partner','Supplier']},
+    {n:'region',l:'Theater / Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CENTCOM-Other','Europe-Other','Africa-Other','CONUS','Multi-Region']},
+    {n:'service',l:'Service Category ★',t:'sel',o:['BLS / BASOPS','Construction','Logistics','Security','NTV / Transport','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'startDate',l:'Period Start ★',p:'e.g. 01-Mar-2018'},{n:'endDate',l:'Period End (Base) ★',p:'e.g. 28-Feb-2019'},
+    {n:'baseValue',l:'Base Value (USD) ★',p:'e.g. 4200000'},{n:'totalValue',l:'Total Value incl. Options (USD) ★',p:'e.g. 21000000'},
+    {n:'aqRevenue',l:'AQ Revenue (USD)',p:'e.g. 18750000'},{n:'co',l:'Contracting Officer',p:'Full name'},
+    {n:'cpars',l:'CPARS Rating ★',t:'sel',o:['Exceptional','Very Good','Satisfactory','Marginal','Unsatisfactory','N/A — No CPARS','Pending']},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Completed','Terminated','Terminated for Convenience','Option Not Exercised']},
+    {n:'deliverables',l:'Key Deliverables ★',t:'ta',p:'Summarise what was delivered',fw:true},
+    {n:'notes',l:'Lessons Learned',t:'ta',p:'Issues, disputes, lessons — be specific',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Contract Document',t:'link',fw:true}
+  ]},
+  brand:{title:'Add Brand Asset',sub:'Module 02 — Brand Repository',fields:[
+    {n:'fileName',l:'File Name ★',p:'e.g. AQG_Logo_Primary_v3.ai',fw:true},
+    {n:'category',l:'Category ★',t:'sel',o:['Logos','Presentation Templates','Brochures','Capability Statements','Letterheads','Signage','Social Media','Proposal Templates','Other']},
+    {n:'entity',l:'Entity ★',t:'sel',o:['AQ Global Group','Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','Multi-Entity','Other']},
+    {n:'format',l:'Format ★',t:'sel',o:['AI','EPS','PNG','PDF','PPTX','DOCX','JPG','SVG','ZIP','Other']},
+    {n:'version',l:'Version ★',p:'e.g. v3.0'},{n:'versionDate',l:'Version Date ★',p:'DD-MMM-YYYY'},
+    {n:'approvalStatus',l:'Approval Status ★',t:'sel',o:['Approved','Under Revision','Pending Approval','Deprecated — Do Not Use']},
+    {n:'approvedBy',l:'Approved By',p:'Name'},{n:'owner',l:'Owner / Custodian ★',p:'Person or team'},
+    {n:'filePath',l:'SharePoint / File Path',p:'SharePoint > 02 Brand > ...',fw:true},
+    {n:'notes',l:'Notes / Restrictions',t:'ta',p:'Any restrictions or notes',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Brand Asset File',t:'link',fw:true}
+  ]},
+  tdoc:{title:'Add Technical Document',sub:'Module 03 — Technical Doc Library',fields:[
+    {n:'title',l:'Document Title ★',p:'Full title as it appears',fw:true},
+    {n:'docType',l:'Document Type ★',t:'sel',o:['Technical Proposal','Method Statement','SOW / Scope of Work','Work Plan','Manning Chart','Equipment List','Quality Plan','Training Plan','Transition Plan','Project Management Plan','Other']},
+    {n:'service',l:'Service Category ★',t:'sel',o:['BLS / BASOPS','Construction','NTV / Transport','Logistics','Security','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'region',l:'Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+    {n:'contract',l:'Related Contract No.',p:'Contract this was produced under'},
+    {n:'classification',l:'Classification ★',t:'sel',o:['Unclassified','Controlled','Client Sensitive','Proprietary']},
+    {n:'reuse',l:'Reusability Rating ★',t:'sel',o:['High','Medium','Low']},
+    {n:'version',l:'Version ★',p:'e.g. v1.0'},{n:'author',l:'Author ★',p:'Name'},
+    {n:'reviewedBy',l:'Reviewed By',p:'Name'},
+    {n:'keywords',l:'Keywords / Tags',p:'Comma-separated',fw:true},
+    {n:'reuseNotes',l:'Reuse Notes',t:'ta',p:'What sections are reusable vs. what needs updating',fw:true},
+    {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 03 Technical > ...',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Technical Document',t:'link',fw:true}
+  ]},
+  comp:{title:'Add Compliance Document',sub:'Module 04 — Compliance & Safety',fields:[
+    {n:'title',l:'Document Title ★',p:'Full title',fw:true},
+    {n:'docType',l:'Document Type ★',t:'sel',o:['Safety Plan','OSHA Plan','Emergency Response Plan','Quality Management Plan','Environmental Plan','Site-Specific Safety Plan','Food Safety Plan','Health Surveillance Plan','Other']},
+    {n:'standard',l:'Applicable Standard ★',t:'sel',o:['EM 385-1-1','AR 385-10','TB MED 577','TB MED 530','OSHA 29 CFR 1910','OSHA 29 CFR 1926','ISO 9001','ISO 14001','ISO 45001','HACCP','Other']},
+    {n:'region',l:'Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+    {n:'approvingAuth',l:'Approving Authority ★',p:'Client or internal role'},
+    {n:'approvalDate',l:'Approval Date ★',p:'DD-MMM-YYYY'},{n:'expiryDate',l:'Expiry / Review Date ★',p:'DD-MMM-YYYY — mandatory!'},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Under Review','Expired — Renewal Required','Superseded','Withdrawn']},
+    {n:'version',l:'Version ★',p:'e.g. v3.2'},{n:'author',l:'Author',p:'Name'},
+    {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 04 Compliance > ...',fw:true},
+    {n:'notes',l:'Notes',t:'ta',p:'Context, linked contracts, renewal reminders',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Compliance Document',t:'link',fw:true}
+  ]},
+  fin:{title:'Add Financial Record',sub:'Module 05 — RESTRICTED',fields:[
+    {n:'entity',l:'Entity ★',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Group Consolidated']},
+    {n:'fy',l:'Financial Year ★',t:'sel',o:['FY2001','FY2002','FY2003','FY2004','FY2005','FY2006','FY2007','FY2008','FY2009','FY2010','FY2011','FY2012','FY2013','FY2014','FY2015','FY2016','FY2017','FY2018','FY2019','FY2020','FY2021','FY2022','FY2023','FY2024','FY2025']},
+    {n:'reportingCurrency',l:'Reporting Currency ★',t:'sel',o:['AED','USD','GBP','PLN','KWD','SAR','BHD','KES','EUR']},
+    {n:'fxRate',l:'USD FX Rate Used ★',p:'e.g. 3.67 for AED'},
+    {n:'revenue',l:'Revenue (USD equiv.) ★',p:'e.g. 18250000'},{n:'grossProfit',l:'Gross Profit (USD) ★',p:'e.g. 5150000'},
+    {n:'ebitda',l:'EBITDA (USD) ★',p:'e.g. 3800000'},{n:'netProfit',l:'Net Profit / (Loss) (USD) ★',p:'e.g. 2900000'},
+    {n:'auditStatus',l:'Audit Status ★',t:'sel',o:['Audited','Management Accounts','Unaudited Draft','Under Audit']},
+    {n:'auditFirm',l:'Audit Firm',p:'e.g. Ernst & Young UAE'},{n:'signOffDate',l:'Audit Sign-Off Date',p:'DD-MMM-YYYY'},
+    {n:'majorContracts',l:'Major Revenue Contracts',p:'Top revenue-driving contracts this year',fw:true},
+    {n:'notes',l:'Key Events / Notes',t:'ta',p:'Restatements, M&A, large contract starts/ends',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Financial Report (Audited Accounts / P&L / Balance Sheet)',t:'link',fw:true}
+  ]},
+  supplier:{title:'Add Supplier Record',sub:'Module 06 — Supplier Intelligence Registry',fields:[
+    {n:'name',l:'Supplier Legal Name ★',p:'Full registered legal name'},
+    {n:'tradingName',l:'Trading Name',p:'If different from legal name'},
+    {n:'category',l:'Supply Category ★',t:'sel',o:['Labour Supply','Catering / Food','Construction Materials','Transport / Fleet','Security Services','Equipment / Plant','Facilities Services','Professional Services','IT / Comms','Fuel / Utilities','Other']},
+    {n:'region',l:'Country of Registration ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','USA','UK','Germany','Italy','Other-MENA','Other-Europe','Other-Africa','Global']},
+    {n:'territory',l:'Territory of Operation ★',p:'Countries / regions they actually operate in',fw:true},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Approved','Probationary','Blacklisted','Under Review','Inactive']},
+    {n:'rating',l:'Risk Rating ★',t:'rating'},
+    {n:'ratingJustification',l:'Rating Justification ★',t:'ta',p:'Specific reason — required for Amber and Red. Be factual.',fw:true},
+    {n:'exposure',l:'Financial Exposure (USD) ★',p:'Enter 0 if none'},{n:'exposureAED',l:'Financial Exposure (AED)',p:'If applicable'},
+    {n:'disputeDetail',l:'Dispute / Loss Detail',t:'ta',p:'Full description of any financial dispute or loss',fw:true},
+    {n:'tradeLicenseNo',l:'Trade License No.',p:'License number'},{n:'tradeLicenseExpiry',l:'Trade License Expiry',p:'DD-MMM-YYYY'},
+    {n:'tradeLicenseVerified',l:'Trade License Verified ★',t:'sel',o:['Yes','No','Pending','Expired']},
+    {n:'bankVerified',l:'Bank Details Verified ★',t:'sel',o:['Yes','No','Pending']},
+    {n:'referencesChecked',l:'References Checked ★',t:'sel',o:['Yes','No','Partial']},
+    {n:'contact',l:'Key Contact Name ★',p:'Primary contact name'},{n:'phone',l:'Contact Phone ★',p:'+971 XX XXX XXXX'},{n:'email',l:'Contact Email ★',p:'email@supplier.com'},
+    {n:'notes',l:'Performance Notes ★',t:'ta',p:'Specific observations — factual and detailed',fw:true},
+    {n:'redFlags',l:'Red Flags',t:'ta',p:'Late delivery, fraud, misrepresentation, H&S failures',fw:true},
+    {n:'legalAction',l:'Legal Action',p:'Any proceedings — description and status',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Supporting Documents (Trade License, Bank Letter, References)',t:'link',fw:true}
+  ]}
+};
+
+// ─── DRAWER ──────────────────────────────────────────────
+let DT='',DID=null;
+function openDr(type,record){
+  DT=type; DID=record?record.id:null;
+  const cfg=F[type];
+  document.getElementById('dr-title').textContent=record?'Edit Record':cfg.title;
+  document.getElementById('dr-sub').textContent=cfg.sub;
+  document.getElementById('dr-body').innerHTML='<div class="fg">'+cfg.fields.map(f=>renderField(f,record)).join('')+'</div>';
+  if(record?.rating){
+    const map={Green:'g',Amber:'a',Red:'r'};
+    document.querySelector(`.rating-opt[data-v="${record.rating}"]`)?.classList.add('sel-'+map[record.rating]);
   }
+  document.getElementById('ov').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  gsap.from('#drawer',{x:60,duration:.32,ease:'power3.out'});
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', watchForAuth);
-} else {
-  watchForAuth();
+function renderField(f,data){
+  const v=data?(data[f.n]||''):'';
+  const cls='f'+(f.fw?' fw':'');
+  if(f.t==='rating') return `<div class="${cls} fw"><div class="f-lbl">Risk Rating ★</div><div class="rating-wrap">
+    <div class="rating-opt" data-v="Green" onclick="selRating(this,'g')"><div class="ro-ico">🟢</div><div class="ro-lbl">Green</div><div class="ro-sub">Trusted</div></div>
+    <div class="rating-opt" data-v="Amber" onclick="selRating(this,'a')"><div class="ro-ico">🟡</div><div class="ro-lbl">Amber</div><div class="ro-sub">Use With Caution</div></div>
+    <div class="rating-opt" data-v="Red" onclick="selRating(this,'r')"><div class="ro-ico">🔴</div><div class="ro-lbl">Red</div><div class="ro-sub">Do Not Engage</div></div>
+    </div></div>`;
+  if(f.t==='ta') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><textarea class="f-ta" name="${f.n}" placeholder="${f.p||''}">${v}</textarea></div>`;
+  if(f.t==='sel') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><select class="f-sel" name="${f.n}"><option value="">— Select —</option>${f.o.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+  if(f.t==='link'){
+    return `<div class="${cls} fw"><div class="f-lbl">${f.l}</div>
+      <input class="f-inp" type="url" name="${f.n}" placeholder="https://aqglobal.sharepoint.com/..." value="${v}">
+      ${v?`<a href="${v}" target="_blank" class="f-file-link" style="margin-top:6px">🔗 Open in SharePoint →</a>`:''}
+    </div>`;
+  }
+  return `<div class="${cls}"><div class="f-lbl">${f.l}</div><input class="f-inp" type="text" name="${f.n}" placeholder="${f.p||''}" value="${v}"></div>`;
 }
 
-})();
+// ─── FILE UPLOAD ──────────────────────────────────────────
+const _pendingFiles={};
+
+function handleFileSelect(input,field){
+  const file=input.files[0];
+  if(!file) return;
+  _pendingFiles[field]=file;
+  document.getElementById('flbl-'+field).textContent=file.name+' ('+Math.round(file.size/1024)+' KB)';
+  document.getElementById('fup-'+field).classList.add('has-file');
+}
+
+async function uploadPendingFiles(){
+  if(!sb||!Object.keys(_pendingFiles).length) return {};
+  const urls={};
+  for(const [field,file] of Object.entries(_pendingFiles)){
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`${DT}/${Date.now()}_${safeName}`;
+    const bar=document.getElementById('fbar-'+field);
+    if(bar){bar.classList.add('on')}
+    const {data,error}=await sb.storage.from('documents').upload(path,file,{upsert:true,cacheControl:'3600'});
+    if(bar){bar.classList.remove('on')}
+    if(error){toast('Upload failed: '+error.message,'er');continue}
+    const {data:urlData}=sb.storage.from('documents').getPublicUrl(path);
+    urls[field+'_url']=urlData.publicUrl;
+    urls[field+'_name']=file.name;
+  }
+  return urls;
+}
+
+function selRating(el,cls){
+  document.querySelectorAll('.rating-opt').forEach(o=>o.className='rating-opt');
+  el.classList.add('sel-'+cls);
+}
+function closeDr(){
+  document.getElementById('ov').classList.remove('on');
+  document.getElementById('drawer').classList.remove('on');
+}
+async function saveDr(){
+  const body=document.getElementById('dr-body');
+  const obj={};
+  body.querySelectorAll('[name]').forEach(el=>{if(el.type!=='file')obj[el.name]=el.value});
+  const sel=body.querySelector('.rating-opt.sel-g,.rating-opt.sel-a,.rating-opt.sel-r');
+  if(sel) obj.rating=sel.dataset.v;
+  // Upload any attached files
+  if(Object.keys(_pendingFiles).length){
+    if(!sb){toast('File upload requires Supabase — record saved without attachment','er')}
+    else{
+      toast('Uploading attachment…','in');
+      const fileUrls=await uploadPendingFiles();
+      Object.assign(obj,fileUrls);
+    }
+  }
+  // Clear pending
+  Object.keys(_pendingFiles).forEach(k=>delete _pendingFiles[k]);
+  const keyMap={contract:'contracts',brand:'brand',tdoc:'tdocs',comp:'compliance',fin:'fins',supplier:'suppliers'};
+  const k=keyMap[DT];
+  if(DID){await DB.upd(k,DID,obj)}else{await DB.add(k,obj)}
+  closeDr(); refreshAll(); toast('Record saved','ok');
+}
+
+function editR(k,id){const r=DB.get(k).find(r=>String(r.id)===String(id)||String(r._id)===String(id));if(!r)return;const m={contracts:'contract',brand:'brand',tdocs:'tdoc',compliance:'comp',fins:'fin',suppliers:'supplier'};openDr(m[k],r)}
+async function delR(k,id){if(!confirm('Delete this record? Cannot be undone.'))return;await DB.del(k,id);refreshAll();toast('Record deleted','er')}
+
+// ─── CSV EXPORT ───────────────────────────────────────────
+function csvExp(k){
+  const d=RD[k]||[];if(!d.length){toast('No data to export','er');return}
+  const keys=Object.keys(d[0]);
+  const csv=[keys.join(','),...d.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=`AQG_${k}_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV downloaded','ok');
+}
+
+// ─── TOAST ────────────────────────────────────────────────
+let toastTO;
+function toast(msg,type='in'){
+  const t=document.getElementById('toast');
+  t.textContent=(type==='ok'?'✓ ':type==='er'?'✕ ':'')+msg;
+  t.className='on '+type;
+  clearTimeout(toastTO);
+  toastTO=setTimeout(()=>t.className='',3000);
+}
+
+// ─── COUNT UP ────────────────────────────────────────────
+function countUp(id,target){
+  const el=document.getElementById(id);
+  const start=parseInt(el.textContent)||0;
+  if(start===target){el.textContent=target;return}
+  const dur=800,step=16;
+  let cur=start,steps=Math.ceil(dur/step);
+  const inc=(target-start)/steps;
+  const iv=setInterval(()=>{cur+=inc;steps--;if(steps<=0){el.textContent=target;clearInterval(iv)}else{el.textContent=Math.round(cur)}},step);
+}
+
+// ─── SCROLL ANIMATIONS ───────────────────────────────────
+function initScrollAnim(){
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})
+  },{threshold:.12});
+  document.querySelectorAll('.sa').forEach(el=>{io.observe(el);if(el.getBoundingClientRect().top<window.innerHeight)el.classList.add('in')});
+}
+
+// ─── 3D CARD TILT ────────────────────────────────────────
+function init3DTilt(){
+  document.querySelectorAll('.mod-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform=`perspective(900px) rotateY(${x*14}deg) rotateX(${-y*14}deg) translateZ(16px)`;
+      card.style.boxShadow=`${-x*20}px ${-y*20}px 40px rgba(248,87,0,0.12)`;
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+      card.style.boxShadow='';
+    });
+  });
+}
+
+// ─── CANVAS PARTICLES ────────────────────────────────────
+function initParticles(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;pts=[];for(let i=0;i<70;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5})}
+  window.addEventListener('resize',resize);resize();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,168,75,0.4)';ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(200,168,75,${.15*(1-dist/120)})`;ctx.stroke()}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ─── GSAP ENTRANCE ───────────────────────────────────────
+gsap.registerPlugin(window.ScrollTrigger);
+gsap.from('.login-card',{y:60,opacity:0,duration:.9,delay:.2,ease:'power3.out'});
+gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'});
+
+// (session handling is above in initSession)
 </script>
 </body>
 </html>
