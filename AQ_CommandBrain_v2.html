@@ -2270,5 +2270,332 @@ function _modal(mid,key,rec){
     } else if(f.ta){
       h+='<textarea name="'+f.k+'">'+v+'
 </script>
+
+<script>
+// AQ-FIX8-SEARCH
+(function(){
+'use strict';
+var _SB_URL='https://gavwwznxxuhhgtlvxwvu.supabase.co';
+var _SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdhdnd3em54eHVoaGd0bHZ4d3Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODAzMDksImV4cCI6MjA5Nzk1NjMwOX0.FTE6KLHOJrOa5aHIUEnkCeqdU86VaAYb-Ipu2lOY3WY';
+
+var MOD_KEY={m1:'contracts',m2:'brand',m3:'tdocs',m4:'compliance',m5:'fins',m6:'suppliers'};
+var MOD_NAME={m1:'Contracts',m2:'Brand',m3:'Technical Docs',m4:'Compliance',m5:'Financials',m6:'Suppliers'};
+var MOD_COLOR={m1:'#F85700',m2:'#3B82F6',m3:'#22C55E',m4:'#F59E0B',m5:'#A855F7',m6:'#06B6D4'};
+var MOD_LABEL={m1:'title',m2:'title',m3:'title',m4:'title',m5:'title',m6:'name'};
+var MOD_SUB={m1:'client',m2:'type',m3:'docType',m4:'type',m5:'type',m6:'category'};
+var DRMAP={contract:'m1',contracts:'m1',brand:'m2',brands:'m2',tdoc:'m3',tdocs:'m3',doc:'m3',compliance:'m4',fin:'m5',fins:'m5',financial:'m5',supplier:'m6',suppliers:'m6'};
+
+// FIX8's own cache (populated from Supabase independently of V1)
+var _C={};
+
+// ── CSS ────────────────────────────────────────────────────────────────────
+var css=document.createElement('style');
+css.textContent=
+  '.aqx-gsw{position:relative;display:flex;align-items:center;margin-right:8px}'+
+  '.aqx-gsi{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;'+
+    'color:#e2e8f8;padding:7px 12px 7px 34px;font-size:13px;font-family:inherit;outline:none;width:230px;transition:border-color .2s,width .2s,box-shadow .2s}'+
+  '.aqx-gsi:focus{border-color:#F85700;background:rgba(248,87,0,0.06);box-shadow:0 0 0 3px rgba(248,87,0,0.12);width:290px}'+
+  '.aqx-gsi::placeholder{color:rgba(226,232,248,0.28)}'+
+  '.aqx-gsic{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(226,232,248,0.3);font-size:14px;pointer-events:none;line-height:1}'+
+  '.aqx-gsd{position:absolute;top:calc(100% + 6px);left:0;min-width:360px;background:#0b1526;'+
+    'border:1px solid rgba(255,255,255,0.12);border-radius:12px;box-shadow:0 24px 48px rgba(0,0,0,0.8);'+
+    'z-index:99999;max-height:440px;overflow-y:auto;display:none}'+
+  '.aqx-gsd.on{display:block}'+
+  '.aqx-gsh{padding:9px 14px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;'+
+    'color:rgba(226,232,248,0.3);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px}'+
+  '.aqx-gsr{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s;border-bottom:1px solid rgba(255,255,255,0.03)}'+
+  '.aqx-gsr:last-child{border-bottom:none}'+
+  '.aqx-gsr:hover{background:rgba(255,255,255,0.04)}'+
+  '.aqx-gsri{width:26px;height:26px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;margin-top:1px}'+
+  '.aqx-gsrt{font-size:12px;color:#e2e8f8;font-weight:600;line-height:1.4}'+
+  '.aqx-gsrs{font-size:11px;color:rgba(226,232,248,0.38);margin-top:1px}'+
+  '.aqx-gsrm{font-size:9px;color:rgba(226,232,248,0.22);margin-top:2px;text-transform:uppercase;letter-spacing:.05em}'+
+  '.aqx-gsnr{padding:24px;text-align:center;color:rgba(226,232,248,0.28);font-size:13px}'+
+  '.aqx-gsmore{padding:7px 14px;font-size:11px;color:rgba(226,232,248,0.3);border-top:1px solid rgba(255,255,255,0.06)}'+
+  '.aqx-gsk{color:#F85700;font-weight:700}';
+document.head.appendChild(css);
+
+function _eh(s){return String(s==null?'':s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
+function _hl(txt,q){
+  if(!q)return _eh(txt);
+  return _eh(txt).replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="aqx-gsk">$1</span>');
+}
+
+// ── Detect active module ───────────────────────────────────────────────────
+function _activeMid(){
+  var f=null;
+  Object.keys(MOD_KEY).forEach(function(m){
+    var p=document.getElementById(m);
+    if(p&&p.classList.contains('on'))f=m;
+  });
+  return f;
+}
+
+// ── Load all data into FIX8 cache ──────────────────────────────────────────
+function _loadAll(cb){
+  if(!window.sb){setTimeout(function(){_loadAll(cb);},800);return;}
+  window.sb.from('cb_store').select('module,records')
+  .then(function(res){
+    if(!res||res.error||!res.data)return;
+    res.data.forEach(function(row){
+      Object.keys(MOD_KEY).forEach(function(mid){
+        if(MOD_KEY[mid]===row.module){
+          _C[mid]=Array.isArray(row.records)?row.records:[];
+        }
+      });
+    });
+    console.log('[FIX8] cache loaded',Object.keys(_C).map(function(k){return k+':'+(_C[k]||[]).length;}).join(' '));
+    if(typeof cb==='function')cb();
+  })
+  .catch(function(e){console.warn('[FIX8] loadAll error',e);});
+}
+
+// ── Fix openDr ─────────────────────────────────────────────────────────────
+window.openDr=function(type){
+  var mid=type?DRMAP[(type||'').toLowerCase()]:null;
+  if(!mid)mid=_activeMid();
+  if(!mid){console.warn('[FIX8] openDr: cannot detect module');return;}
+  if(typeof window._aqxAdd==='function')window._aqxAdd(mid,MOD_KEY[mid]);
+  else console.warn('[FIX8] _aqxAdd not ready');
+};
+
+// ── Fix csvExp — direct Supabase fetch ────────────────────────────────────
+window.csvExp=function(type){
+  var mid=type?DRMAP[(type||'').toLowerCase()]:null;
+  if(!mid)mid=_activeMid();
+  if(!mid){alert('Could not detect module.');return;}
+  var key=MOD_KEY[mid];
+  // Use FIX8 cache first; fall back to fresh query
+  var recs=_C[mid]||[];
+  function _doExport(r){
+    if(!r||!r.length){alert('No records to export.');return;}
+    var keys=Object.keys(r[0]);
+    var csv=keys.join(',')+'\n'+r.map(function(row){
+      return keys.map(function(k){return'"'+String(row[k]==null?'':row[k]).replace(/"/g,'""')+'"';}).join(',');
+    }).join('\n');
+    var a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+    a.download=key+'_export_'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+  }
+  if(recs.length){_doExport(recs);return;}
+  // Fetch directly
+  if(!window.sb){alert('Not connected to database.');return;}
+  window.sb.from('cb_store').select('records').eq('module',key)
+  .then(function(res){
+    _doExport((res.data&&res.data[0]&&Array.isArray(res.data[0].records))?res.data[0].records:[]);
+    if(res.data&&res.data[0])_C[mid]=res.data[0].records;
+  }).catch(function(e){alert('Export failed: '+e.message);});
+};
+
+// ── Fix filt — DOM-based row filter (no V1 internals needed) ──────────────
+window.filt=function(typeOrVal,val){
+  var mid=null,q='';
+  if(val!==undefined){
+    mid=DRMAP[(typeOrVal||'').toLowerCase()];
+    if(!mid)Object.keys(MOD_KEY).forEach(function(m){if(MOD_KEY[m]===typeOrVal)mid=m;});
+    q=val;
+  } else {mid=_activeMid();q=typeOrVal||'';}
+  if(!mid)return;
+  _domFilter(mid,q);
+};
+
+window.filtF=function(typeOrField,fieldOrVal,val){
+  var mid=null,field='',v='';
+  if(val!==undefined){
+    mid=DRMAP[(typeOrField||'').toLowerCase()];
+    if(!mid)Object.keys(MOD_KEY).forEach(function(m){if(MOD_KEY[m]===typeOrField)mid=m;});
+    field=fieldOrVal;v=val;
+  } else {mid=_activeMid();field=typeOrField;v=fieldOrVal||'';}
+  if(!mid)return;
+  var p=document.getElementById('aqx-'+mid);
+  if(!p)return;
+  p.querySelectorAll('.aqx-tbl tbody tr').forEach(function(tr){
+    var tds=tr.querySelectorAll('td');
+    // Field filter: check column values (rough match)
+    var txt=tr.textContent.toLowerCase();
+    tr.style.display=(!v||txt.indexOf(v.toLowerCase())>=0)?'':'none';
+  });
+};
+
+// DOM row filter — show/hide table rows matching query
+function _domFilter(mid,q){
+  var p=document.getElementById('aqx-'+mid);
+  if(!p)return;
+  var ql=(q||'').toLowerCase();
+  var rows=p.querySelectorAll('.aqx-tbl tbody tr');
+  var vis=0;
+  rows.forEach(function(tr){
+    var match=!ql||tr.textContent.toLowerCase().indexOf(ql)>=0;
+    tr.style.display=match?'':'none';
+    if(match)vis++;
+  });
+  // Update count display
+  var cnt=p.querySelector('.aqx-cnt');
+  if(cnt)cnt.textContent=(ql&&vis!==rows.length?(vis+' of '+rows.length):rows.length)+' record'+(rows.length!==1?'s':'');
+}
+
+// ── Wire toolbar search inputs ────────────────────────────────────────────
+function _wireSearch(){
+  Object.keys(MOD_KEY).forEach(function(mid){
+    var pg=document.getElementById(mid);
+    if(!pg)return;
+    var inp=pg.querySelector('.tbl-search');
+    if(inp&&!inp._f8){
+      inp._f8=true;
+      var t;
+      function _go(){clearTimeout(t);t=setTimeout(function(){_domFilter(mid,inp.value);},200);}
+      inp.addEventListener('input',_go);
+      inp.addEventListener('keyup',_go);
+    }
+  });
+}
+
+// ── Global search bar ─────────────────────────────────────────────────────
+function _buildGS(){
+  if(document.getElementById('aqx-gsw'))return;
+  var topbar=document.querySelector('.topbar');
+  if(!topbar){setTimeout(_buildGS,500);return;}
+  var ref=topbar.querySelector('.tb-space')||topbar.querySelector('.tb-badge')||topbar.querySelector('.tb-avatar');
+  if(!ref){setTimeout(_buildGS,500);return;}
+
+  var wrap=document.createElement('div');
+  wrap.className='aqx-gsw';
+  wrap.id='aqx-gsw';
+  wrap.innerHTML=
+    '<span class="aqx-gsic">⌕</span>'+
+    '<input id="aqx-gsi" class="aqx-gsi" placeholder="Search platform…" autocomplete="off" spellcheck="false"/>'+
+    '<div id="aqx-gsd" class="aqx-gsd"></div>';
+  topbar.insertBefore(wrap,ref);
+
+  var inp=document.getElementById('aqx-gsi');
+  var drop=document.getElementById('aqx-gsd');
+  var t;
+
+  inp.addEventListener('input',function(){clearTimeout(t);t=setTimeout(function(){_gsSearch(inp.value.trim());},220);});
+  inp.addEventListener('focus',function(){if(inp.value.trim().length>=2)_gsSearch(inp.value.trim());});
+  inp.addEventListener('keydown',function(e){if(e.key==='Escape'){inp.value='';drop.classList.remove('on');}});
+  document.addEventListener('click',function(e){if(!wrap.contains(e.target))drop.classList.remove('on');},true);
+  console.log('[FIX8] global search bar injected');
+}
+
+function _gsSearch(q){
+  var drop=document.getElementById('aqx-gsd');
+  if(!drop)return;
+  if(!q||q.length<2){drop.classList.remove('on');return;}
+  var ql=q.toLowerCase();
+  var results=[];
+  Object.keys(MOD_KEY).forEach(function(mid){
+    (_C[mid]||[]).forEach(function(rec,idx){
+      if(Object.values(rec).some(function(v){return String(v||'').toLowerCase().indexOf(ql)>=0;})){
+        results.push({mid:mid,idx:idx,rec:rec});
+      }
+    });
+  });
+
+  if(!results.length){
+    drop.innerHTML='<div class="aqx-gsnr">No results for "<strong>'+_eh(q)+'</strong>"</div>';
+    drop.classList.add('on');
+    return;
+  }
+
+  // Group by module, max 6 per module
+  var grp={};
+  results.forEach(function(r){if(!grp[r.mid])grp[r.mid]=[];grp[r.mid].push(r);});
+  var mids=Object.keys(MOD_KEY).filter(function(m){return grp[m]&&grp[m].length;});
+
+  var h='';
+  mids.forEach(function(mid){
+    var color=MOD_COLOR[mid];
+    var lkey=MOD_LABEL[mid];
+    var skey=MOD_SUB[mid];
+    var group=grp[mid];
+    h+='<div class="aqx-gsh"><span style="width:8px;height:8px;border-radius:50%;background:'+color+';display:inline-block;flex-shrink:0"></span>'+MOD_NAME[mid]+' — '+group.length+' match'+(group.length!==1?'es':'')+'</div>';
+    group.slice(0,6).forEach(function(r){
+      var lbl=String(r.rec[lkey]||r.rec.title||r.rec.name||'—');
+      var sub=String(r.rec[skey]||r.rec.region||r.rec.type||'');
+      h+='<div class="aqx-gsr" onclick="window._aqxGoto8(\''+mid+'\','+r.idx+')" tabindex="0">';
+      h+='<div class="aqx-gsri" style="background:'+color+'">'+MOD_NAME[mid].charAt(0)+'</div>';
+      h+='<div style="min-width:0"><div class="aqx-gsrt">'+_hl(lbl,q)+'</div>';
+      if(sub)h+='<div class="aqx-gsrs">'+_hl(sub,q)+(r.rec.region&&r.rec.region!==sub?' · '+_eh(r.rec.region):'')+'</div>';
+      h+='<div class="aqx-gsrm">'+MOD_NAME[mid]+'</div></div>';
+      h+='</div>';
+    });
+    if(group.length>6)h+='<div class="aqx-gsmore">+' +(group.length-6)+' more in '+MOD_NAME[mid]+'</div>';
+  });
+  drop.innerHTML=h;
+  drop.classList.add('on');
+}
+
+window._aqxGoto8=function(mid,idx){
+  var drop=document.getElementById('aqx-gsd');
+  var inp=document.getElementById('aqx-gsi');
+  if(drop)drop.classList.remove('on');
+  if(inp)inp.value='';
+  if(window.nav)window.nav(mid);
+  setTimeout(function(){
+    var p=document.getElementById('aqx-'+mid);
+    if(!p)return;
+    var rows=p.querySelectorAll('.aqx-tbl tbody tr');
+    var tr=rows[idx];
+    if(tr){
+      tr.scrollIntoView({behavior:'smooth',block:'center'});
+      tr.style.transition='background .15s';
+      tr.style.background='rgba(248,87,0,0.15)';
+      setTimeout(function(){tr.style.background='';},2000);
+    }
+  },700);
+};
+
+// ── Refresh FIX8 cache after V1 saves ─────────────────────────────────────
+// Hook the global _aqxSave so after a save we refresh our own cache
+var _origSave=window._aqxSave;
+if(typeof _origSave==='function'){
+  window._aqxSave=function(mid,key){
+    _origSave.apply(this,arguments);
+    setTimeout(function(){_loadAll();},1500);
+  };
+}
+// Also hook _aqxDel
+var _origDel=window._aqxDel;
+if(typeof _origDel==='function'){
+  window._aqxDel=function(mid,key){
+    _origDel.apply(this,arguments);
+    setTimeout(function(){_loadAll();},1500);
+  };
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+function _init8(){
+  _buildGS();
+  _wireSearch();
+  // Re-wire on each nav
+  var _on=window.nav;
+  if(_on&&!_on._f8){
+    var _f=function(id){_on.apply(this,arguments);setTimeout(_wireSearch,400);};
+    Object.keys(_on).forEach(function(k){_f[k]=_on[k];});
+    _f._f8=true;
+    window.nav=_f;
+    window.navTo=_f;
+  }
+  // Re-hook save/del if they weren't ready yet
+  if(!_origSave&&typeof window._aqxSave==='function'){
+    var _s=window._aqxSave;
+    window._aqxSave=function(mid,key){_s.apply(this,arguments);setTimeout(function(){_loadAll();},1500);};
+  }
+  _loadAll();
+  console.log('[FIX8] init complete');
+}
+
+var _ob=window.bootApp;
+window.bootApp=function(){if(typeof _ob==='function')_ob.apply(this,arguments);setTimeout(_init8,1000);};
+if(_ob&&_ob._m13)window.bootApp._m13=true;
+
+if(document.readyState==='complete'||document.readyState==='interactive'){setTimeout(_init8,600);}
+window.addEventListener('load',function(){setTimeout(_init8,1400);});
+setTimeout(_init8,3000);
+
+})();
+</script>
 </body>
 </html>
