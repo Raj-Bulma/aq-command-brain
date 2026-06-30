@@ -2044,14 +2044,15 @@ eval(atob("KGZ1bmN0aW9uKCl7Cid1c2Ugc3RyaWN0JzsKCi8vIDEuIENsZWFuIGxlYWtlZCB0ZXh0I
 
 
 
+
+
 <script>
-// AQ-V2
+// AQ-V3
 (function(){
 'use strict';
 if(window._aqV2){return;}
 window._aqV2=true;
 
-// ── Config ────────────────────────────────────────────────────────────────
 var MOD_KEY={m1:'contracts',m2:'brand',m3:'tdocs',m4:'compliance',m5:'fins',m6:'suppliers'};
 var DRMAP={contract:'m1',contracts:'m1',brand:'m2',brands:'m2',tdoc:'m3',tdocs:'m3',doc:'m3',compliance:'m4',fin:'m5',fins:'m5',financial:'m5',supplier:'m6',suppliers:'m6'};
 var THEATER_REGIONS={
@@ -2085,16 +2086,12 @@ var FIELDS={
   fins:[{k:'title',l:'Description',req:true},{k:'type',l:'Type',sel:['Revenue','Cost','Budget','Forecast','Actual','Variance','Invoice','Other']},{k:'amount',l:'Amount (AED)'},{k:'date',l:'Date'},{k:'entity',l:'AQ Entity'},{k:'region',l:'Region',sel:['UAE','KSA','Multi-Region','Group']},{k:'category',l:'Category'},{k:'reference',l:'Reference No'},{k:'attachment',l:'Supporting Document Link'},{k:'notes',l:'Notes',ta:true}]
 };
 
-// ── CSS ───────────────────────────────────────────────────────────────────
+// CSS
 var css=document.createElement('style');
 css.id='aqx-css';
 css.textContent=
-  // Reveal scroll-animate elements immediately
-  '.sa,.sa-l,.sa-r,.sa-d{opacity:1!important;transform:none!important;transition:none!important}'+
-  // Glass module cards
-  '.mod-card{overflow:visible!important;position:relative;display:flex!important;flex-direction:column!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;border-radius:14px!important;transform-style:preserve-3d!important;will-change:transform!important;cursor:pointer}'+
-  '.mod-card:hover{border-color:rgba(255,255,255,0.22)!important}'+
-  // mc-* sub-elements (in case MEGA13 doesn't define them)
+  '.sa,.sa-l,.sa-r,.sa-d,.anim{opacity:1!important;transform:none!important;transition:none!important}'+
+  '.mod-card{overflow:visible!important;position:relative!important;display:flex!important;flex-direction:column!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08)!important;border-radius:14px!important;transform-style:preserve-3d!important;will-change:transform!important;cursor:pointer!important;min-height:160px}'+
   '.mc-strip{height:3px;flex-shrink:0;border-radius:14px 14px 0 0}'+
   '.mc-body{flex:1;display:flex;flex-direction:column;padding:20px}'+
   '.mc-num{font-size:10px;font-weight:700;color:rgba(226,232,248,0.3);letter-spacing:.12em;margin-bottom:8px}'+
@@ -2104,14 +2101,13 @@ css.textContent=
   '.mc-count{font-size:22px;font-weight:800;color:#e2e8f8}'+
   '.mc-count-l{font-size:9px;color:rgba(226,232,248,0.35);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}'+
   '.mc-arrow{font-size:18px;color:rgba(248,87,0,0.6)}'+
-  // Our injected grid (used when no .mod-grid found)
-  '#aqx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:24px 0}'+
-  // Theater filter bar
+  // Our injected grid
+  '#aqx-mgrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:20px!important;padding:16px 0 32px!important;width:100%!important}'+
+  // Theater bar
   '.aqx-bar{display:flex;gap:8px;padding:14px 0 10px;flex-wrap:wrap}'+
   '.aqx-tf{background:transparent;color:rgba(226,232,248,0.45);border:1px solid rgba(255,255,255,0.1);padding:4px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}'+
-  '.aqx-tf:hover{color:#e2e8f8;border-color:rgba(255,255,255,0.25)}'+
   '.aqx-tf.on{background:#F85700;color:#000;border-color:#F85700;font-weight:700}'+
-  // Record count + add row
+  // Record top bar
   '.aqx-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}'+
   '.aqx-cnt{font-size:12px;color:rgba(226,232,248,0.4)}'+
   '.aqx-add{background:#F85700;color:#000;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}'+
@@ -2140,12 +2136,8 @@ css.textContent=
   '.aqx-sv:disabled{opacity:.5;cursor:default}'+
   '.aqx-cx{background:transparent;color:rgba(226,232,248,0.5);border:1px solid rgba(255,255,255,0.1);padding:10px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}'+
   '.aqx-dl{background:transparent;color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:10px 14px;border-radius:6px;font-size:13px;cursor:pointer;margin-right:auto;font-family:inherit}'+
-  // Global search
-  '.aqx-gsw{position:relative;flex:1;max-width:360px;margin:0 12px}'+
-  '.aqx-gsi{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#e2e8f8;padding:8px 14px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box}'+
-  '.aqx-gsi:focus{border-color:rgba(248,87,0,0.5);background:rgba(248,87,0,0.04)}'+
-  '.aqx-gsi::placeholder{color:rgba(226,232,248,0.3)}'+
-  '.aqx-gsd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#0b1526;border:1px solid rgba(255,255,255,0.12);border-radius:10px;max-height:400px;overflow-y:auto;z-index:8888;box-shadow:0 20px 40px rgba(0,0,0,0.6)}'+
+  // Global search dropdown
+  '.aqx-gsd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#0b1526;border:1px solid rgba(255,255,255,0.12);border-radius:10px;max-height:380px;overflow-y:auto;z-index:8888;box-shadow:0 20px 40px rgba(0,0,0,0.6)}'+
   '.aqx-gsr{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04)}'+
   '.aqx-gsr:hover{background:rgba(255,255,255,0.04)}'+
   '.aqx-gsri{font-size:9px;color:rgba(248,87,0,0.7);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px}'+
@@ -2155,133 +2147,98 @@ css.textContent=
   '.aqx-hi{background:rgba(248,87,0,0.15)!important;transition:background .6s!important}';
 document.head.appendChild(css);
 
-// ── State ─────────────────────────────────────────────────────────────────
-var _cache={};     // mid → records array
-var _theater={};   // mid → active theater
-var _editIdx=null; // row being edited
-
+var _cache={};var _theater={};var _editIdx=null;
 function _eh(s){return String(s||'').replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
 
-// ── Panel injection ────────────────────────────────────────────────────────
+// Panel
 function _panel(mid){
   var pid='aqx-'+mid;
-  var ex=document.getElementById(pid);
-  if(ex) return ex;
+  var ex=document.getElementById(pid);if(ex)return ex;
   var pg=document.getElementById(mid);
-  if(!pg){console.warn('[AQX] page not found: #'+mid);return null;}
+  if(!pg){console.warn('[AQX] no page #'+mid);return null;}
   var wrap=pg.querySelector('.tbl-wrap');
   if(wrap){wrap.id=pid;wrap.style.overflow='visible';return wrap;}
   var toolbar=pg.querySelector('.tbl-toolbar');
-  var p=document.createElement('div');
-  p.id=pid; p.className='tbl-wrap';
+  var p=document.createElement('div');p.id=pid;p.className='tbl-wrap';
   p.style.cssText='overflow:visible;padding:0;border:none;background:transparent';
-  if(toolbar) toolbar.parentNode.insertBefore(p,toolbar.nextSibling);
-  else pg.appendChild(p);
+  if(toolbar)toolbar.parentNode.insertBefore(p,toolbar.nextSibling);else pg.appendChild(p);
   return p;
 }
 
-// ── Load data ─────────────────────────────────────────────────────────────
+// Load
 function _load(mid){
   if(!window.sb){setTimeout(function(){_load(mid);},600);return;}
   var key=MOD_KEY[mid];
-  var panel=_panel(mid);
-  if(!panel) return;
-  if(panel.getAttribute('data-loading')==='1') return;
+  var panel=_panel(mid);if(!panel)return;
+  if(panel.getAttribute('data-loading'))return;
   panel.setAttribute('data-loading','1');
   panel.innerHTML='<div style="padding:20px;color:rgba(226,232,248,0.3);font-size:12px">Loading…</div>';
   window.sb.from('cb_store').select('module,records').eq('module',key)
   .then(function(res){
     panel.removeAttribute('data-loading');
-    if(res.error) throw res.error;
+    if(res.error)throw res.error;
     var rows=res.data||[];
     var recs=(rows.length&&Array.isArray(rows[0].records))?rows[0].records:[];
-    _cache[mid]=recs;
-    _updKPI(mid,recs.length);
+    _cache[mid]=recs;_updKPI(mid,recs.length);
     _render(mid,key,recs,panel,_theater[mid]||'ALL');
-  })
-  .catch(function(e){
+  }).catch(function(e){
     panel.removeAttribute('data-loading');
     panel.innerHTML='<div style="padding:20px;color:#ef4444;font-size:12px">Error: '+(e.message||e)+'</div>';
   });
 }
 
-// ── Theater filter ─────────────────────────────────────────────────────────
+// Filter
 function _filterTheater(recs,theater){
-  if(!theater||theater==='ALL') return recs;
+  if(!theater||theater==='ALL')return recs;
   var regions=THEATER_REGIONS[theater]||[];
-  return recs.filter(function(r){
-    var rv=String(r.region||r.territory||'').toLowerCase();
-    return regions.some(function(tr){return rv.indexOf(tr)>=0;});
-  });
+  return recs.filter(function(r){var rv=String(r.region||r.territory||'').toLowerCase();return regions.some(function(tr){return rv.indexOf(tr)>=0;});});
 }
 
-// ── Render table ───────────────────────────────────────────────────────────
+// Render table
 function _render(mid,key,allRecs,panel,theater){
   var cols=COLS[key]||[];
-  var cur=theater||_theater[mid]||'ALL';
-  _theater[mid]=cur;
+  var cur=theater||_theater[mid]||'ALL';_theater[mid]=cur;
   var filtered=_filterTheater(allRecs,cur==='ALL'?null:cur);
-  var h='';
-  h+='<div class="aqx-bar">';
+  var h='<div class="aqx-bar">';
   ['ALL','CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'].forEach(function(t){
     h+='<button class="aqx-tf'+(cur===t?' on':'')+'" onclick="window._aqxTheater(\''+mid+'\',\''+key+'\',\''+t+'\')">'+t+'</button>';
   });
-  h+='</div>';
-  h+='<div class="aqx-top">';
-  h+='<span class="aqx-cnt">'+filtered.length+(filtered.length!==allRecs.length?' of '+allRecs.length:'')+' record'+(allRecs.length!==1?'s':'')+'</span>';
-  h+='<button class="aqx-add" onclick="window._aqxAdd(\''+mid+'\',\''+key+'\')">+ Add Record</button>';
-  h+='</div>';
+  h+='</div><div class="aqx-top"><span class="aqx-cnt">'+filtered.length+(filtered.length!==allRecs.length?' of '+allRecs.length:'')+' record'+(allRecs.length!==1?'s':'')+'</span>';
+  h+='<button class="aqx-add" onclick="window._aqxAdd(\''+mid+'\',\''+key+'\')">+ Add Record</button></div>';
   if(!filtered.length){
     h+='<div class="aqx-empty">'+(allRecs.length?'No records match this filter.':'No records yet — click <strong style="color:#F85700">+ Add Record</strong> to begin')+'</div>';
-  } else {
+  }else{
     h+='<div style="overflow-x:auto"><table class="aqx-tbl"><thead><tr>';
     cols.forEach(function(c){h+='<th style="min-width:'+c.w+'">'+c.l+'</th>';});
     h+='<th></th></tr></thead><tbody>';
     filtered.forEach(function(rec){
-      var origIdx=allRecs.indexOf(rec);
-      h+='<tr data-idx="'+origIdx+'">';
+      var origIdx=allRecs.indexOf(rec);h+='<tr data-idx="'+origIdx+'">';
       cols.forEach(function(c){
-        var v=rec[c.k]||'';
-        var cell='';
-        if(c.link&&v) cell='<a class="aqx-lnk" href="'+_eh(v)+'" target="_blank" rel="noopener">Open ↗</a>';
+        var v=rec[c.k]||'';var cell='';
+        if(c.link&&v)cell='<a class="aqx-lnk" href="'+_eh(v)+'" target="_blank" rel="noopener">Open ↗</a>';
         else if(c.badge){var cl='aqx-'+((v+'').toLowerCase().charAt(0)||'a');cell='<span class="'+cl+'">'+_eh(v)+'</span>';}
         else{var d=String(v);if(d.length>46)d=d.slice(0,45)+'…';cell='<span title="'+_eh(String(v))+'">'+_eh(d)+'</span>';}
         h+='<td>'+cell+'</td>';
       });
-      h+='<td><button class="aqx-eb" onclick="window._aqxEdit(\''+mid+'\',\''+key+'\','+origIdx+')">Edit</button></td>';
-      h+='</tr>';
+      h+='<td><button class="aqx-eb" onclick="window._aqxEdit(\''+mid+'\',\''+key+'\','+origIdx+')">Edit</button></td></tr>';
     });
     h+='</tbody></table></div>';
   }
   panel.innerHTML=h;
 }
 
-// ── Theater switch ─────────────────────────────────────────────────────────
-window._aqxTheater=function(mid,key,t){
-  _theater[mid]=t;
-  var recs=_cache[mid]||[];
-  var p=document.getElementById('aqx-'+mid);
-  if(p) _render(mid,key,recs,p,t);
-};
-
-// ── Modal ─────────────────────────────────────────────────────────────────
+window._aqxTheater=function(mid,key,t){_theater[mid]=t;var p=document.getElementById('aqx-'+mid);if(p)_render(mid,key,_cache[mid]||[],p,t);};
 window._aqxAdd=function(mid,key){_editIdx=null;_modal(mid,key,{});};
 window._aqxEdit=function(mid,key,i){_editIdx=i;_modal(mid,key,(_cache[mid]||[])[i]||{});};
 
 function _modal(mid,key,rec){
-  var flds=FIELDS[key]||[];
-  var isE=_editIdx!==null;
-  var h='<div class="aqx-mbg" id="aqx-mbg"><div class="aqx-modal">';
-  h+='<h2>'+(isE?'Edit Record':'New Record')+'</h2><form id="aqx-form">';
+  var flds=FIELDS[key]||[];var isE=_editIdx!==null;
+  var h='<div class="aqx-mbg" id="aqx-mbg"><div class="aqx-modal"><h2>'+(isE?'Edit':'New Record')+'</h2><form id="aqx-form">';
   flds.forEach(function(f){
     h+='<label>'+_eh(f.l)+(f.req?' <span style="color:#F85700">*</span>':'')+'</label>';
     var v=_eh(String(rec[f.k]!=null?rec[f.k]:''));
-    if(f.sel){
-      h+='<select name="'+f.k+'"><option value="">— select —</option>';
-      f.sel.forEach(function(o){h+='<option value="'+_eh(o)+'"'+(rec[f.k]===o?' selected':'')+'>'+_eh(o)+'</option>';});
-      h+='</select>';
-    } else if(f.ta){
-      h+='<textarea name="'+f.k+'">'+v+'
+    if(f.sel){h+='<select name="'+f.k+'"><option value="">— select —</option>';f.sel.forEach(function(o){h+='<option value="'+_eh(o)+'"'+(rec[f.k]===o?' selected':'')+'>'+_eh(o)+'</option>';});h+='</select>';}
+    else if(f.ta)h+='<textarea name="'+f.k+'">'+v+'
 </script>
 </body>
 </html>
