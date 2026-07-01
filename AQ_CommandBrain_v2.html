@@ -1782,114 +1782,160 @@ gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'})
 }
 </style>
 
+
+
+<style id="aqv9-styles">
+/* ── LIQUID GLASS CARDS ── */
+.mod-card {
+  background: linear-gradient(rgba(6,12,28,.88), rgba(4,8,20,.88)) padding-box,
+              linear-gradient(150deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.04) 100%) border-box !important;
+  border: 1px solid transparent !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06) !important;
+  transition: box-shadow .25s, transform .25s !important;
+}
+.mod-card:hover {
+  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(248,87,0,.3), inset 0 1px 0 rgba(255,255,255,.1) !important;
+}
+
+/* ── CUSTOM CURSOR ── */
+html, body, *, *::before, *::after { cursor: none !important; }
+#aqv9-cur {
+  position: fixed; top: 0; left: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #F85700;
+  box-shadow: 0 0 8px rgba(248,87,0,.8), 0 0 20px rgba(248,87,0,.3);
+  pointer-events: none; z-index: 999999;
+  transform: translate(-50%,-50%);
+  transition: width .15s ease, height .15s ease, background .15s ease, box-shadow .15s ease;
+  will-change: transform;
+}
+#aqv9-trail {
+  position: fixed; top: 0; left: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(248,87,0,.45);
+  pointer-events: none; z-index: 999998;
+  transform: translate(-50%,-50%);
+  transition: left .1s ease, top .1s ease, width .2s ease, height .2s ease, opacity .2s ease;
+  will-change: transform;
+}
+#aqv9-cur.on-link {
+  width: 16px; height: 16px;
+  background: rgba(248,87,0,.2);
+  box-shadow: 0 0 12px rgba(248,87,0,.6);
+}
+#aqv9-trail.on-link { width: 44px; height: 44px; border-color: rgba(248,87,0,.7); }
+</style>
+
 <script>
-// AQ-V8
+// AQ-V9
 (function(){
 'use strict';
 
-// ── 1. FIX .sa → .in (carry over from V7) ────────────────────────────────
-function _forceVisible(){
-  document.querySelectorAll('.sa').forEach(function(el,i){
-    setTimeout(function(){ el.classList.add('in'); }, i*60);
-  });
-  setTimeout(function(){
-    document.querySelectorAll('.sa').forEach(function(el){ el.classList.add('in'); });
-  }, 500);
+// ── 1. FIX .sa → .in: wrap initApp (called AFTER renderDash populates DOM) ──
+// initApp() calls refreshAll() first (which runs renderDash), then we add .in
+if(typeof initApp === 'function'){
+  var _origInitApp = initApp;
+  initApp = function(){
+    _origInitApp.apply(this, arguments);
+    // Cards exist in DOM now — stagger .in class
+    var i = 0;
+    document.querySelectorAll('.sa').forEach(function(el){
+      var delay = i * 55;
+      i++;
+      setTimeout(function(){ el.classList.add('in'); }, delay);
+    });
+  };
+  console.log('[AQ-V9] initApp wrapped ✓');
 }
-if(typeof bootApp === 'function'){
-  var _origBoot = bootApp;
-  bootApp = function(){
-    _origBoot.apply(this, arguments);
-    setTimeout(_forceVisible, 400);
-    setTimeout(_forceVisible, 800);
+
+// Also wrap nav() to re-apply .in when navigating back to dash
+if(typeof nav === 'function'){
+  var _origNav = nav;
+  nav = function(id){
+    _origNav.apply(this, arguments);
+    setTimeout(function(){
+      document.querySelectorAll('#'+id+' .sa').forEach(function(el,i){
+        setTimeout(function(){ el.classList.add('in'); }, i*55);
+      });
+    }, 60);
   };
 }
 
-// ── 2. 3D TILT — override init3DTilt completely ───────────────────────────
-window.init3DTilt = function(){
-  document.querySelectorAll('.mod-card').forEach(function(card){
-    // Remove old listeners by cloning
-    var fresh = card.cloneNode(true);
-    card.parentNode.replaceChild(fresh, card);
-    fresh.addEventListener('mousemove', function(e){
-      var r = fresh.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width  - 0.5;
-      var y = (e.clientY - r.top)  / r.height - 0.5;
-      fresh.style.setProperty('transform',
-        'perspective(700px) rotateX('+(-y*12)+'deg) rotateY('+(x*12)+'deg) translateY(-6px) scale(1.025)',
-        'important');
-    });
-    fresh.addEventListener('mouseleave', function(){
-      fresh.style.removeProperty('transform');
-    });
-    fresh.addEventListener('mousedown', function(){
-      fresh.style.setProperty('transform',
-        'perspective(700px) translateY(-2px) scale(0.98)', 'important');
-    });
-    fresh.addEventListener('mouseup', function(){
-      fresh.style.removeProperty('transform');
-    });
-  });
-};
+// ── 2. 3D TILT via event delegation (no cloneNode — avoids breaking .in class) ──
+// Attach ONE listener to .content and delegate to .mod-card targets
+var _tiltActive = null;
+function _setupTilt(){
+  var content = document.querySelector('.content');
+  if(!content || content._aqv9tilt) return;
+  content._aqv9tilt = true;
 
-// Re-run init3DTilt after renderDash populates #mod-grid
-var _origRenderDash = typeof renderDash === 'function' ? renderDash : null;
-if(_origRenderDash){
-  renderDash = function(){
-    _origRenderDash.apply(this, arguments);
-    setTimeout(window.init3DTilt, 120);
-  };
-}
-
-// ── 3. CUSTOM CURSOR ─────────────────────────────────────────────────────
-(function(){
-  var cur = document.getElementById('aqv8-cur');
-  if(!cur){
-    cur = document.createElement('div');
-    cur.id = 'aqv8-cur';
-    cur.innerHTML = '<div id="aqv8-cur-ring"></div><div id="aqv8-cur-dot"></div>';
-    document.body.appendChild(cur);
-  }
-
-  var mx = window.innerWidth/2, my = window.innerHeight/2;
-  var rx = mx, ry = my;
-
-  document.addEventListener('mousemove', function(e){
-    mx = e.clientX; my = e.clientY;
-    cur.style.transform = 'translate('+mx+'px,'+my+'px) translate(-50%,-50%)';
-
-    // Detect hoverable elements
-    var t = e.target;
-    var hoverable = t && (t.closest('button,a,[onclick],.mod-card,.nav-item,.lc-btn,.tbl-act,.btn'));
-    cur.classList.toggle('hovering', !!hoverable);
+  content.addEventListener('mousemove', function(e){
+    var card = e.target.closest ? e.target.closest('.mod-card') : null;
+    if(!card){ return; }
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width  - 0.5;
+    var y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = 'perspective(700px) rotateX('+(-y*11)+'deg) rotateY('+(x*11)+'deg) translateY(-5px) scale(1.02)';
+    card.style.boxShadow = '0 24px 64px rgba(0,0,0,.6), 0 0 0 1px rgba(248,87,0,.35), inset 0 1px 0 rgba(255,255,255,.12)';
+    _tiltActive = card;
   }, {passive: true});
 
-  document.addEventListener('mousedown', function(){ cur.classList.add('clicking'); });
-  document.addEventListener('mouseup',   function(){ cur.classList.remove('clicking'); });
+  content.addEventListener('mouseleave', function(){
+    if(_tiltActive){ _tiltActive.style.transform=''; _tiltActive.style.boxShadow=''; _tiltActive=null; }
+  });
 
-  // Hide cursor when it leaves window
-  document.addEventListener('mouseleave', function(){ cur.style.opacity='0'; });
-  document.addEventListener('mouseenter', function(){ cur.style.opacity='1'; });
-})();
-
-// ── 4. BOOT — run tilt when app first opens ──────────────────────────────
-var _appObs = new MutationObserver(function(){
-  var app = document.getElementById('app');
-  if(app && app.classList.contains('on')){
-    _appObs.disconnect();
-    setTimeout(window.init3DTilt, 600);
-  }
-});
-var _appEl = document.getElementById('app');
-if(_appEl){
-  if(_appEl.classList.contains('on')){
-    setTimeout(window.init3DTilt, 300);
-  } else {
-    _appObs.observe(_appEl, {attributes:true, attributeFilter:['class']});
-  }
+  // Per-card mouseleave via bubbling
+  content.addEventListener('mouseout', function(e){
+    var card = e.target.closest ? e.target.closest('.mod-card') : null;
+    if(card && e.relatedTarget && !card.contains(e.relatedTarget)){
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      if(_tiltActive === card) _tiltActive = null;
+    }
+  });
 }
 
-console.log('[AQ-V8] Liquid glass + tilt + cursor loaded ✓');
+// Override init3DTilt so base file calls also use delegation
+window.init3DTilt = function(){ _setupTilt(); };
+
+// ── 3. CUSTOM CURSOR ─────────────────────────────────────────────────────
+var _cur   = document.getElementById('aqv9-cur');
+var _trail = document.getElementById('aqv9-trail');
+if(!_cur){
+  _cur = document.createElement('div'); _cur.id = 'aqv9-cur';
+  _trail = document.createElement('div'); _trail.id = 'aqv9-trail';
+  document.body.appendChild(_trail);
+  document.body.appendChild(_cur);
+}
+
+var _cx = -100, _cy = -100;
+document.addEventListener('mousemove', function(e){
+  _cx = e.clientX; _cy = e.clientY;
+  _cur.style.left = _cx + 'px';
+  _cur.style.top  = _cy + 'px';
+
+  // Trail with slight delay via CSS transition
+  _trail.style.left = _cx + 'px';
+  _trail.style.top  = _cy + 'px';
+
+  // Detect clickable
+  var t = e.target;
+  var hot = t && (t.tagName==='BUTTON'||t.tagName==='A'||t.closest('button,a,[onclick],.mod-card,.nav-item'));
+  _cur.classList.toggle('on-link', !!hot);
+  _trail.classList.toggle('on-link', !!hot);
+}, {passive: true});
+
+document.addEventListener('mouseleave', function(){ _cur.style.opacity='0'; _trail.style.opacity='0'; });
+document.addEventListener('mouseenter', function(){ _cur.style.opacity='1'; _trail.style.opacity='1'; });
+
+// ── 4. INIT ──────────────────────────────────────────────────────────────
+_setupTilt();
+
+console.log('[AQ-V9] glass + tilt (delegation) + cursor loaded ✓');
 })();
 </script>
 </body>
