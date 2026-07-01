@@ -670,22 +670,6 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
         </button>
       </div>
 
-      <!-- LOCAL MODE (no Supabase) -->
-      <div id="auth-local" style="display:none">
-        <div class="lc-field">
-          <label>Corporate Email</label>
-          <input class="lc-input" id="l-email-local" type="email" placeholder="yourname@aqglobal.net" autocomplete="email">
-          <div class="lc-error" id="l-eerr-local">Must be an @aqglobal.net email address.</div>
-        </div>
-        <div class="lc-info" style="font-size:11px;color:var(--amber);text-align:center;margin:8px 0;padding:8px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;line-height:1.5">
-          ⚠️ Local mode — data saved to this device only.<br>Connect Supabase to enable email verification &amp; team sync.
-        </div>
-        <button class="lc-btn" id="l-btn-local" onclick="doLocalLogin()">
-          <span id="l-btn-local-txt">Access (Local Mode) →</span>
-          <span class="spinner" id="l-spin-local"></span>
-        </button>
-      </div>
-
       <div class="lc-foot">🔒 Encrypted · Authorised Personnel Only · AQ Global © 2026</div>
     </div>
   </div>
@@ -879,7 +863,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 
 // ═══════════════════════════════════════════════════════
 //  CONFIG — paste Supabase credentials to enable shared
-//  multi-user mode. Leave blank to use localStorage.
+//  multi-user mode.
 // ═══════════════════════════════════════════════════════
 const SB_URL = 'https://gavwwznxxuhhgtlvxwvu.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdhdnd3em54eHVoaGd0bHZ4d3Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODAzMDksImV4cCI6MjA5Nzk1NjMwOX0.FTE6KLHOJrOa5aHIUEnkCeqdU86VaAYb-Ipu2lOY3WY';
@@ -907,14 +891,10 @@ const DB = {
     return {...(row||{}), id, _id:String((row && row._id) || id)};
   },
   normRows(rows){ return Array.isArray(rows) ? rows.map(DB.normRow) : [] },
-  loadLocal(){
-    MODULE_KEYS.forEach(k=>{ DB.store[k]=DB.normRows(JSON.parse(localStorage.getItem('cb_'+k)||'[]')); });
-  },
   get(k){ return DB.normRows(DB.store[k]||[]) },
   set(k,v,opts={remote:true}){
     const rows=DB.normRows(v);
     DB.store[k]=rows;
-    localStorage.setItem('cb_'+k,JSON.stringify(rows));
     if(opts.remote) return DB.saveRemote(k,rows);
     return Promise.resolve(rows);
   },
@@ -931,7 +911,6 @@ const DB = {
     if(i>-1){ a[i]=DB.normRow({...a[i],...up,id:a[i].id,_id:a[i]._id}); await DB.set(k,a); }
   },
   async loadAll(){
-    DB.loadLocal();
     if(!sb) return false;
     try{
       const {data,error}=await sb.from('cb_store').select('module,records');
@@ -945,8 +924,8 @@ const DB = {
       DB.loadedRemote=true;
       return true;
     }catch(e){
-      console.warn('[CB] Supabase load failed; using local cache',e);
-      if(document.getElementById('app')?.classList.contains('on')) toast('Using local cache; Supabase load failed','er');
+      console.warn('[CB] Supabase load failed',e);
+      if(document.getElementById('app')?.classList.contains('on')) toast('Supabase load failed','er');
       return false;
     }
   },
@@ -962,11 +941,10 @@ const DB = {
       if(res.error) throw res.error;
     }catch(e){
       console.warn('[CB] Supabase save failed',e);
-      toast('Saved locally; Supabase sync failed','er');
+      toast('Supabase sync failed','er');
     }
   }
 };
-DB.loadLocal();
 
 // ─── AUTH ────────────────────────────────────────────────
 let CU = '';
@@ -975,9 +953,7 @@ let _authEmail = '';
 // Show/hide a specific step
 function goStep(n){
   [1,2,3,4,5].forEach(i=>document.getElementById('auth-step'+i).style.display='none');
-  document.getElementById('auth-local').style.display='none';
-  if(n==='local') document.getElementById('auth-local').style.display='block';
-  else document.getElementById('auth-step'+n).style.display='block';
+  document.getElementById('auth-step'+n).style.display='block';
 }
 
 function setLoading(btnId,spinId,on){
@@ -991,7 +967,7 @@ function authStep1(){
   document.getElementById('l-eerr').style.display='none';
   if(!email.endsWith('@aqglobal.net')){document.getElementById('l-eerr').style.display='block';return}
   _authEmail=email;
-  if(!sb){ goStep('local'); document.getElementById('l-email-local').value=email; return; }
+  if(!sb){ toast('Supabase connection missing. Check configuration.','er'); return; }
   document.getElementById('l-email-disp2').textContent=email;
   document.getElementById('l-email-disp3').textContent=email;
   goStep(2);
@@ -1085,15 +1061,6 @@ async function authStep5(){
   finally{ setLoading('l-btn5-txt','l-spin5',false); }
 }
 
-// LOCAL MODE — no Supabase
-function doLocalLogin(){
-  const email=document.getElementById('l-email-local').value.trim().toLowerCase();
-  document.getElementById('l-eerr-local').style.display='none';
-  if(!email.endsWith('@aqglobal.net')){document.getElementById('l-eerr-local').style.display='block';return}
-  setLoading('l-btn-local-txt','l-spin-local',true);
-  setTimeout(()=>{CU=email;localStorage.setItem('cb_ses',email);setLoading('l-btn-local-txt','l-spin-local',false);bootApp();},600);
-}
-
 function doLogout(){
   localStorage.removeItem('cb_ses');
   if(sb) sb.auth.signOut();
@@ -1126,13 +1093,12 @@ document.addEventListener('keydown',e=>{
 
 // Initialise correct step on load
 (function initAuthUI(){
-  if(!sb) goStep('local');
-  else goStep(1);
+  goStep(1);
 })();
 
 // ─── SESSION RESTORE & AUTH STATE ────────────────────────
 (async function initSession(){
-  if(!sb){ const s=localStorage.getItem('cb_ses'); if(s&&s.endsWith('@aqglobal.net')){CU=s;bootApp();} return; }
+  if(!sb) return;
 
   // Listen for auth events
   sb.auth.onAuthStateChange((event,session)=>{
