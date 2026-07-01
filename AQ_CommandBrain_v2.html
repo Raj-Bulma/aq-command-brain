@@ -1733,5 +1733,73 @@ gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'})
 
 // (session handling is above in initSession)
 </script>
+
+<script>
+// AQ-V7
+(function(){
+'use strict';
+
+// The base file's bootApp() calls initApp() → initScrollAnim() (GSAP ScrollTrigger).
+// ScrollTrigger only fires on scroll — but the dashboard is already in the viewport,
+// so .in is never added to .sa elements (cards stay opacity:0).
+// Fix: wrap bootApp to force .in on all .sa elements after login.
+
+function _forceVisible(){
+  // Add .in to every .sa element across the whole page (staggered)
+  var els = document.querySelectorAll('.sa');
+  els.forEach(function(el, i){
+    setTimeout(function(){ el.classList.add('in'); }, i * 60);
+  });
+  // Repeat after mod-grid is populated by renderDash()
+  setTimeout(function(){
+    document.querySelectorAll('.sa').forEach(function(el){
+      el.classList.add('in');
+    });
+  }, 500);
+}
+
+// Wrap bootApp — it's defined as a regular function in the base script,
+// so by the time this patch runs it's already on window.
+if(typeof bootApp === 'function'){
+  var _origBoot = bootApp;
+  bootApp = function(){
+    _origBoot.apply(this, arguments);
+    // bootApp calls gsap.to('#login', {onComplete: → adds #app.on → initApp})
+    // initApp calls refreshAll → renderDash → populates #mod-grid
+    // We need to run AFTER renderDash, so delay 400ms
+    setTimeout(_forceVisible, 400);
+    setTimeout(_forceVisible, 800); // second pass to catch late-rendered cards
+  };
+  console.log('[AQ-V7] bootApp wrapped ✓');
+} else {
+  // Fallback: watch for #app.on via MutationObserver
+  console.log('[AQ-V7] bootApp not found — using MutationObserver fallback');
+  var _app = document.getElementById('app');
+  if(_app){
+    new MutationObserver(function(_, obs){
+      if(_app.classList.contains('on')){
+        obs.disconnect();
+        setTimeout(_forceVisible, 400);
+        setTimeout(_forceVisible, 800);
+      }
+    }).observe(_app, {attributes: true, attributeFilter: ['class']});
+  }
+}
+
+// Also handle nav() — when navigating to dash, ensure cards are visible
+var _origNav = typeof nav === 'function' ? nav : null;
+if(_origNav){
+  nav = function(id){
+    _origNav.apply(this, arguments);
+    if(id === 'dash'){
+      setTimeout(function(){
+        document.querySelectorAll('#dash .sa').forEach(function(el){ el.classList.add('in'); });
+      }, 200);
+    }
+  };
+}
+
+})();
+</script>
 </body>
 </html>
