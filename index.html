@@ -1,11 +1,1793 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<script>
-  // Relative redirect — works on both localhost and GitHub Pages
-  var dest = 'AQ_CommandBrain_v2.html' + window.location.search + window.location.hash;
-  window.location.replace(dest);
-</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQ Global — Command Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ── TOKENS ──────────────────────────────────────────── */
+:root{
+  --bg:     #020817;
+  --bg2:    #0a1628;
+  --bg3:    #0f1f3d;
+  --glass:  rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.14);
+  --b2:     rgba(255,255,255,0.22);
+  --gold:   #F85700;
+  --gold2:  #FF7A2A;
+  --glow:   rgba(248,87,0,0.18);
+  --glow2:  rgba(248,87,0,0.35);
+  --tx:     #E2E8F8;
+  --tx2:    rgba(226,232,248,0.55);
+  --tx3:    rgba(226,232,248,0.28);
+  --red:    #EF4444;
+  --amber:  #F59E0B;
+  --green:  #22C55E;
+  --blue:   #3B82F6;
+  --navy:   #1B2A4A;
+  --r:      10px;
+  --r2:     16px;
+  --r3:     24px;
+  --trans:  all .22s cubic-bezier(.4,0,.2,1);
+  --sh:     0 8px 32px rgba(0,0,0,.4);
+  --sh2:    0 24px 64px rgba(0,0,0,.6);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.5;overflow:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* ── BACKGROUND ──────────────────────────────────────── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 700px at 15% 15%, rgba(248,87,0,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 700px 900px at 85% 85%, rgba(27,42,74,0.5) 0%,transparent 60%),
+    radial-gradient(ellipse 600px 400px at 50% 50%, rgba(12,24,48,0.4) 0%,transparent 70%);
+}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(248,87,0,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(248,87,0,0.025) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+
+/* ── LOGIN ───────────────────────────────────────────── */
+#login{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.login-bg-text{
+  position:absolute;font-size:28vw;font-weight:900;color:transparent;
+  -webkit-text-stroke:1px rgba(248,87,0,0.04);letter-spacing:-.05em;
+  top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  user-select:none;z-index:0;
+}
+.login-card{
+  position:relative;z-index:1;width:440px;
+  background:rgba(8,16,32,0.85);
+  border:1px solid var(--border);
+  border-radius:var(--r3);
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+  box-shadow:var(--sh2), 0 0 80px rgba(248,87,0,0.08);
+  overflow:hidden;
+}
+.lc-accent{height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.lc-head{padding:36px 36px 24px;text-align:center}
+.lc-mark{
+  width:52px;height:52px;border-radius:12px;margin:0 auto 16px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;color:var(--bg);letter-spacing:-.5px;
+  box-shadow:0 0 32px var(--glow2);
+}
+.lc-tag{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.lc-title{font-size:26px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
+.lc-sub{font-size:12px;color:var(--tx3);margin-top:6px}
+.lc-body{padding:0 36px 36px;display:flex;flex-direction:column;gap:16px}
+.lc-field label{display:block;font-size:11px;font-weight:700;color:var(--tx3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.lc-input{
+  width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);
+  border:1.5px solid var(--border);border-radius:var(--r);color:var(--tx);
+  font-size:14px;font-family:inherit;outline:none;transition:var(--trans);
+}
+.lc-input:focus{border-color:var(--gold);background:rgba(248,87,0,0.06);box-shadow:0 0 0 4px var(--glow)}
+.lc-input::placeholder{color:var(--tx3)}
+.lc-error{font-size:11px;color:var(--red);margin-top:5px;display:none}
+.lc-btn{
+  width:100%;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  color:var(--bg);border:none;border-radius:var(--r);font-size:14px;font-weight:800;
+  font-family:inherit;cursor:pointer;letter-spacing:.3px;transition:var(--trans);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 4px 20px var(--glow2);
+}
+.lc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--glow2)}
+.lc-btn:active{transform:translateY(0)}
+.lc-btn .spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--bg);border-radius:50%;animation:spin .6s linear infinite;display:none}
+.lc-foot{font-size:10px;color:var(--tx3);text-align:center;letter-spacing:.3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── APP SHELL ───────────────────────────────────────── */
+#app{display:none;height:100vh;flex-direction:column;position:relative;z-index:1}
+#app.on{display:flex}
+
+/* TOPBAR */
+.topbar{
+  height:58px;padding:0 24px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  background:#0a1628;border-bottom:1px solid rgba(248,87,0,0.2);
+  z-index:100;
+}
+.tb-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.tb-mark{
+  width:30px;height:30px;border-radius:7px;
+  background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:var(--bg);box-shadow:0 0 16px var(--glow)
+}
+.tb-brand{font-size:13px;font-weight:700;color:var(--tx)}
+.tb-pipe{width:1px;height:24px;background:var(--border)}
+.tb-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase}
+.gsearch{position:relative;width:min(380px,34vw);min-width:220px}
+.gsearch-input{
+  width:100%;height:34px;padding:0 12px 0 34px;border-radius:var(--r);
+  background:rgba(255,255,255,0.045);border:1px solid var(--border);
+  color:var(--tx);font:inherit;font-size:12px;outline:none;transition:var(--trans)
+}
+.gsearch-input:focus{border-color:rgba(248,87,0,0.45);box-shadow:0 0 0 3px var(--glow)}
+.gsearch-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--tx3);pointer-events:none}
+.gsearch-results{
+  position:absolute;left:0;right:0;top:42px;display:none;max-height:360px;overflow:auto;
+  background:rgba(6,12,28,0.98);border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--r);box-shadow:var(--sh2);z-index:300
+}
+.gsearch-results.on{display:block}
+.gsearch-hit{display:block;width:100%;padding:11px 12px;border:0;border-bottom:1px solid rgba(255,255,255,0.06);background:transparent;text-align:left;color:var(--tx);font:inherit;cursor:pointer}
+.gsearch-hit:hover{background:rgba(248,87,0,0.08)}
+.gsearch-hit:last-child{border-bottom:0}
+.gsearch-meta{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.gsearch-title{font-size:12px;font-weight:700;margin-top:2px}
+.gsearch-sub{font-size:10px;color:var(--tx3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-space{flex:1}
+.tb-badge{
+  padding:4px 12px;background:rgba(248,87,0,0.1);border:1px solid rgba(248,87,0,0.3);
+  border-radius:99px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.5px
+}
+.tb-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:var(--bg);cursor:pointer;
+  box-shadow:0 0 12px var(--glow);
+}
+.tb-name{font-size:12px;color:var(--tx2)}
+.tb-logout{
+  padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:var(--r);
+  background:rgba(255,255,255,0.06);color:#cdd6f4;font-size:11px;font-weight:600;font-family:inherit;
+  cursor:pointer;transition:var(--trans)
+}
+.tb-logout:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444}
+
+/* MAIN LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:rgba(20,35,65,0.98);
+  border-right:1px solid rgba(248,87,0,0.2);
+  display:flex;flex-direction:column;padding:16px 0;overflow-y:auto;
+}
+.sb-label{
+  padding:8px 16px 4px;font-size:9px;font-weight:700;
+  color:rgba(248,87,0,0.7);letter-spacing:1.5px;text-transform:uppercase
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:11px 16px;
+  cursor:pointer;transition:var(--trans);color:#cdd6f4;font-size:13px;font-weight:500;
+  border-left:3px solid transparent;position:relative;
+}
+.nav-item:hover{background:rgba(248,87,0,0.08);color:#fff;border-left-color:rgba(248,87,0,0.5)}
+.nav-item.active{background:rgba(248,87,0,0.12);color:var(--gold);border-left-color:var(--gold);font-weight:600}
+.nav-item.active .ni{opacity:1}
+.ni{width:16px;height:16px;opacity:.9;flex-shrink:0}
+.nb{margin-left:auto;padding:2px 7px;border-radius:99px;background:var(--red);color:#fff;font-size:9px;font-weight:800}
+.sb-foot{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.08)}
+.sb-ver{font-size:9px;color:rgba(205,214,244,0.4);letter-spacing:.3px;text-align:center}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
+
+/* ── PAGES ───────────────────────────────────────────── */
+.page{display:none;flex-direction:column;gap:24px}
+.page.on{display:flex}
+
+/* ── PAGE HEADER ─────────────────────────────────────── */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.ph-title{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--tx)}
+.ph-sub{font-size:13px;color:var(--tx3);margin-top:3px}
+
+/* ── DASHBOARD ───────────────────────────────────────── */
+.dash-hero{
+  background:linear-gradient(135deg,rgba(8,16,32,.9) 0%,rgba(12,24,48,.9) 100%);
+  border:1px solid var(--border);border-radius:var(--r2);padding:32px;
+  position:relative;overflow:hidden;
+}
+.dash-hero::before{
+  content:'COMMAND BRAIN';position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+  font-size:96px;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(248,87,0,0.05);
+  white-space:nowrap;pointer-events:none;letter-spacing:-.03em
+}
+.dh-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
+.dh-title{font-size:32px;font-weight:900;letter-spacing:-.8px;color:var(--tx);line-height:1.1}
+.dh-sub{font-size:13px;color:var(--tx3);margin-top:8px}
+.dh-pills{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.pill{
+  padding:6px 14px;border-radius:99px;font-size:11px;font-weight:600;
+  background:var(--glass);border:1px solid var(--border);color:var(--tx2);
+  font-family:inherit;cursor:pointer;transition:var(--trans)
+}
+.pill:hover{border-color:rgba(248,87,0,0.35);color:var(--tx)}
+.pill.gold{background:rgba(248,87,0,0.1);border-color:rgba(248,87,0,0.3);color:var(--gold)}
+.pill.active{background:rgba(248,87,0,0.16);border-color:rgba(248,87,0,0.55);color:var(--gold);box-shadow:0 0 0 3px rgba(248,87,0,0.08)}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kpi{
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);
+  padding:22px;transition:var(--trans);cursor:default;position:relative;overflow:hidden;
+}
+.kpi::before{
+  content:'';position:absolute;inset:0;border-radius:var(--r2);
+  background:radial-gradient(ellipse 80% 80% at 0% 0%,var(--glow) 0%,transparent 60%);
+  opacity:0;transition:var(--trans)
+}
+.kpi:hover::before{opacity:1}
+.kpi:hover{border-color:rgba(248,87,0,0.25);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--tx3)}
+.kpi-val{font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--tx);margin-top:8px;font-variant-numeric:tabular-nums}
+.kpi-sub{font-size:11px;color:var(--tx3);margin-top:4px}
+.kpi-bar{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-top:16px;overflow:hidden}
+.kpi-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* MODULE GRID */
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mod-card{
+  background:rgba(255, 255, 255, 0.03);
+  border:1px solid rgba(255, 255, 255, 0.1);
+  border-radius:var(--r2);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.1s ease-out, box-shadow 0.1s ease-out, border-color 0.3s ease;
+  transform-style:preserve-3d;
+  will-change:transform;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+}
+.mod-card:hover{
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+.mc-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mod-card:hover .mc-shine {
+  opacity: 1;
+}
+.mc-stripe{height:3px}
+.mc-body{padding:20px}
+.mc-num{font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase;transform: translateZ(20px);}
+.mc-name{font-size:15px;font-weight:700;color:var(--tx);margin-top:4px;transform: translateZ(30px);}
+.mc-desc{font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5;transform: translateZ(25px);}
+.mc-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.mc-count{font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--tx)}
+.mc-count-l{font-size:10px;color:var(--tx3)}
+.mc-arrow{font-size:18px;color:var(--tx3);transition:var(--trans)}
+.mod-card:hover .mc-arrow{color:var(--gold);transform:translateX(4px)}
+
+/* ALERTS PANEL */
+.panel{background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.panel-title{font-size:13px;font-weight:700;color:var(--tx)}
+.alert-row{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.03);transition:var(--trans)}
+.alert-row:last-child{border-bottom:none}
+.alert-row:hover{background:var(--glass)}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.adot.r{background:var(--red);box-shadow:0 0 8px rgba(239,68,68,0.5)}
+.adot.a{background:var(--amber);box-shadow:0 0 8px rgba(245,158,11,0.5)}
+.adot.g{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.5)}
+.at{font-size:12px;color:var(--tx)}
+.atm{font-size:10px;color:var(--tx3);margin-top:2px}
+
+/* ── MODULE PAGES ────────────────────────────────────── */
+.mod-banner{
+  border-radius:var(--r2);padding:28px 32px;display:flex;align-items:center;gap:20px;
+  background:linear-gradient(135deg,var(--bg3) 0%,rgba(12,24,48,.95) 100%);
+  border:1px solid var(--border);position:relative;overflow:hidden;
+}
+.mod-banner::after{
+  content:'';position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,var(--glow) 0%,transparent 70%);pointer-events:none
+}
+.mb-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--glass);border:1px solid var(--border);flex-shrink:0}
+.mb-num{font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--gold);text-transform:uppercase}
+.mb-name{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--tx);margin-top:2px}
+.mb-desc{font-size:12px;color:var(--tx3);margin-top:4px}
+.mb-space{flex:1}
+
+/* BUTTONS */
+.btn{
+  padding:10px 18px;border-radius:var(--r);font-size:13px;font-weight:700;
+  font-family:inherit;cursor:pointer;transition:var(--trans);
+  display:inline-flex;align-items:center;gap:8px;border:none;
+}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);box-shadow:0 4px 16px var(--glow)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--glow2)}
+.btn-ghost{background:var(--glass);border:1px solid var(--border);color:var(--tx2)}
+.btn-ghost:hover{border-color:var(--b2);color:var(--tx)}
+.btn-sm{padding:7px 14px;font-size:11px}
+
+/* RESTRICTED BANNER */
+.restricted{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);
+  border-radius:var(--r);font-size:12px;color:rgba(239,68,68,0.9);font-weight:600
+}
+
+/* TABLE */
+.tbl-toolbar{
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);
+  padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap
+}
+.tbl-search-wrap{position:relative;flex:1;min-width:200px}
+.tbl-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:14px}
+.tbl-search{
+  width:100%;padding:9px 12px 9px 36px;background:#0a1628;border:1.5px solid rgba(255,255,255,0.18);
+  border-radius:var(--r);color:#e2e8f8;font-size:13px;font-family:inherit;outline:none;transition:var(--trans)
+}
+.tbl-search:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow)}
+.tbl-search::placeholder{color:rgba(226,232,248,0.35)}
+.tbl-sel{
+  padding:9px 12px;background:#0a1628;border:1.5px solid rgba(255,255,255,0.18);
+  border-radius:var(--r);color:#e2e8f8;font-size:12px;font-family:inherit;
+  outline:none;cursor:pointer;transition:var(--trans)
+}
+.tbl-sel option{background:#0f1f3d;color:#e2e8f8}
+.tbl-sel:focus{border-color:var(--gold)}
+.tbl-ct{font-size:11px;color:var(--tx3);margin-left:auto;white-space:nowrap}
+
+.tbl-wrap{background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.dtbl{width:100%;border-collapse:collapse;font-size:12px}
+.dtbl thead th{
+  background:rgba(255,255,255,0.06);padding:11px 14px;text-align:left;
+  font-size:9px;font-weight:700;color:rgba(226,232,248,0.7);letter-spacing:.8px;text-transform:uppercase;
+  border-bottom:1px solid rgba(255,255,255,0.12);white-space:nowrap
+}
+.dtbl tbody td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.06);color:#e2e8f8;vertical-align:middle}
+.dtbl tbody tr:last-child td{border-bottom:none}
+.dtbl tbody tr{transition:var(--trans)}
+.dtbl tbody tr:hover td{background:rgba(255,255,255,0.05)}
+.dtbl tbody tr.danger td{background:rgba(239,68,68,0.08)}
+
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap}
+.bdg::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.bdg-g{background:rgba(34,197,94,0.12);color:#22C55E}.bdg-g::before{background:#22C55E}
+.bdg-a{background:rgba(245,158,11,0.12);color:#F59E0B}.bdg-a::before{background:#F59E0B}
+.bdg-r{background:rgba(239,68,68,0.12);color:#EF4444}.bdg-r::before{background:#EF4444}
+.bdg-b{background:rgba(59,130,246,0.12);color:#3B82F6}.bdg-b::before{background:#3B82F6}
+.bdg-gr{background:rgba(255,255,255,0.06);color:var(--tx3)}.bdg-gr::before{background:var(--tx3)}
+.bdg-gd{background:rgba(248,87,0,0.12);color:var(--gold)}.bdg-gd::before{background:var(--gold)}
+
+.founding-tag{display:inline-block;padding:1px 7px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:4px;letter-spacing:.3px;margin-bottom:2px}
+.tbl-act{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;font-size:10px;font-weight:700;cursor:pointer;color:var(--tx3);transition:var(--trans);font-family:inherit}
+.tbl-act:hover{background:var(--glass);color:var(--tx)}
+.tbl-act.d:hover{background:rgba(239,68,68,0.1);color:var(--red);border-color:rgba(239,68,68,0.3)}
+
+.empty-st{padding:64px 20px;text-align:center}
+.empty-st .ico{font-size:40px;opacity:.2;margin-bottom:12px}
+.empty-st .t{font-size:14px;font-weight:600;color:var(--tx3)}
+.empty-st .s{font-size:12px;color:var(--tx3);opacity:.6;margin-top:4px}
+
+/* ── DRAWER ──────────────────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(4px)}
+.overlay.on{display:block}
+.drawer{
+  position:fixed;right:-720px;top:0;bottom:0;width:min(720px,95vw);
+  background:#0a1628;border-left:1px solid rgba(255,255,255,0.15);z-index:201;
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:right .32s cubic-bezier(.4,0,.2,1);
+  box-shadow:-20px 0 80px rgba(0,0,0,.8);
+}
+.drawer.on{right:0}
+.dr-head{
+  padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0;
+  background:rgba(8,16,32,.9);display:flex;align-items:center;gap:14px
+}
+.dr-title{font-size:16px;font-weight:800;color:var(--tx)}
+.dr-sub{font-size:11px;color:var(--tx3);margin-top:2px}
+.dr-close{
+  margin-left:auto;width:32px;height:32px;border-radius:8px;
+  background:var(--glass);border:1px solid var(--border);color:var(--tx2);
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:var(--trans)
+}
+.dr-close:hover{background:rgba(239,68,68,0.1);color:var(--red);border-color:rgba(239,68,68,0.2)}
+.dr-body{flex:1;overflow-y:auto;padding:24px}
+.dr-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;background:rgba(8,16,32,.6)}
+
+/* FORMS */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.fw{grid-column:1/-1}
+.f-sec{grid-column:1/-1;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--gold);text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--border);margin-top:8px}
+.f-lbl{font-size:11px;font-weight:600;color:rgba(226,232,248,0.7);letter-spacing:.3px}
+.f-req{color:var(--red)}
+.f-inp,.f-sel,.f-ta{
+  padding:10px 14px;background:#0a1628;
+  border:1.5px solid rgba(255,255,255,0.18);border-radius:var(--r);
+  color:#e2e8f8;font-size:13px;font-family:inherit;outline:none;transition:var(--trans)
+}
+.f-sel option{background:#0f1f3d;color:#e2e8f8}
+.f-inp:focus,.f-sel:focus,.f-ta:focus{border-color:var(--gold);background:#0d1c38;box-shadow:0 0 0 3px var(--glow)}
+.f-inp::placeholder,.f-ta::placeholder{color:rgba(226,232,248,0.35)}
+.f-ta{resize:vertical;min-height:80px}
+
+/* FILE UPLOAD */
+.f-upload{position:relative;display:flex;flex-direction:column;gap:6px}
+.f-file-inp{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.f-upload-label{
+  display:flex;align-items:center;gap:10px;padding:11px 14px;
+  background:#0a1628;border:1.5px dashed rgba(255,255,255,0.25);
+  border-radius:var(--r);color:rgba(226,232,248,0.6);font-size:13px;cursor:pointer;
+  transition:var(--trans);
+}
+.f-upload-label:hover{border-color:var(--gold);background:#0d1c38;color:#e2e8f8}
+.f-upload-label .f-upload-icon{font-size:18px;flex-shrink:0}
+.f-upload.has-file .f-upload-label{border-color:var(--gold);border-style:solid;background:rgba(248,87,0,0.06);color:#e2e8f8}
+.f-file-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;
+  padding:4px 10px;background:rgba(248,87,0,0.1);border:1px solid rgba(248,87,0,0.25);
+  border-radius:6px;width:fit-content;transition:var(--trans)
+}
+.f-file-link:hover{background:rgba(248,87,0,0.2)}
+.f-upload-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;margin-top:2px;display:none}
+.f-upload-bar.on{display:block;animation:bar-pulse 1s infinite alternate}
+@keyframes bar-pulse{from{opacity:0.5}to{opacity:1}}
+.attach-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--gold);text-decoration:none;font-weight:600}
+.attach-link:hover{text-decoration:underline}
+
+/* RATING SELECTOR */
+.rating-wrap{display:flex;gap:10px}
+.rating-opt{
+  flex:1;padding:12px 10px;border:2px solid var(--border);border-radius:var(--r);
+  cursor:pointer;text-align:center;transition:var(--trans);background:var(--glass)
+}
+.rating-opt:hover{border-color:var(--b2)}
+.rating-opt .ro-ico{font-size:22px;margin-bottom:4px}
+.rating-opt .ro-lbl{font-size:11px;font-weight:700;color:rgba(226,232,248,0.8)}
+.rating-opt .ro-sub{font-size:9px;color:rgba(226,232,248,0.5);margin-top:2px}
+.rating-opt.sel-g{background:rgba(34,197,94,0.08);border-color:#22C55E}
+.rating-opt.sel-g .ro-lbl{color:#22C55E}
+.rating-opt.sel-a{background:rgba(245,158,11,0.08);border-color:#F59E0B}
+.rating-opt.sel-a .ro-lbl{color:#F59E0B}
+.rating-opt.sel-r{background:rgba(239,68,68,0.08);border-color:#EF4444}
+.rating-opt.sel-r .ro-lbl{color:#EF4444}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:28px;right:28px;
+  padding:13px 20px;border-radius:var(--r);font-size:13px;font-weight:600;
+  box-shadow:var(--sh2);z-index:999;display:flex;align-items:center;gap:10px;
+  transform:translateY(80px);opacity:0;transition:all .28s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(20px);max-width:360px;
+}
+#toast.on{transform:translateY(0);opacity:1}
+#toast.ok{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22C55E}
+#toast.er{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#EF4444}
+#toast.in{background:rgba(8,16,32,0.9);border:1px solid var(--border);color:var(--tx)}
+
+/* CPARS STARS */
+.stars{display:flex;gap:2px}
+.star{font-size:11px}.star.f{color:var(--gold)}.star.e{color:rgba(255,255,255,.1)}
+
+/* SCROLL ANIMATE */
+.sa{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.sa.in{opacity:1;transform:translateY(0)}
+.sa-d1{transition-delay:.1s}.sa-d2{transition-delay:.2s}.sa-d3{transition-delay:.3s}
+.sa-d4{transition-delay:.4s}.sa-d5{transition-delay:.5s}
+
+/* RESPONSIVE */
+/* ── HAMBURGER BUTTON ───────────────────────────────── */
+.tb-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  background:transparent;border:none;cursor:pointer;padding:6px;margin-right:4px;
+}
+.tb-hamburger span{display:block;width:20px;height:2px;background:#cdd6f4;border-radius:2px;transition:var(--trans)}
+
+/* ── SIDEBAR OVERLAY (mobile) ────────────────────────── */
+.sb-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;
+  backdrop-filter:blur(2px);
+}
+.sb-overlay.on{display:block}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:1100px){
+  .kpi-grid,.mod-grid{grid-template-columns:repeat(2,1fr)}
+  .content{padding:20px 16px}
+  .gsearch{width:min(300px,30vw);min-width:180px}
+}
+
+@media(max-width:768px){
+  /* Hamburger visible */
+  .tb-hamburger{display:flex}
+  /* Hide topbar clutter */
+  .tb-pipe,.tb-title,.tb-space,.tb-badge,.tb-name,.tb-avatar,.tb-logout{display:none}
+  .tb-brand{display:none}
+  .gsearch{flex:1;width:auto;min-width:0}
+  .gsearch-input{height:32px;font-size:11px}
+  .gsearch-results{position:fixed;left:12px;right:12px;top:56px}
+  /* Sidebar becomes full-height overlay */
+  .sidebar{
+    position:fixed;top:0;left:0;height:100vh;z-index:200;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    width:240px !important;
+  }
+  .sidebar.open{transform:translateX(0)}
+  /* Content full width */
+  .kpi-grid,.mod-grid{grid-template-columns:1fr}
+  .content{padding:16px 12px}
+  /* Forms single column on mobile */
+  .form-grid{grid-template-columns:1fr !important}
+  .fw{grid-column:span 1 !important}
+  /* Page header stack */
+  .ph{flex-direction:column;gap:8px}
+  .ph-title{font-size:18px}
+  /* Table scroll */
+  .rec-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Dash hero compact */
+  .dh-title{font-size:22px}
+  .dash-hero::before{display:none}
+  /* Modal full-screen */
+  .modal-box{width:95vw;max-height:90vh;overflow-y:auto}
+}
+</style>
 </head>
-<body></body>
+<body>
+
+<!-- BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!--  LOGIN                                              -->
+<!-- ════════════════════════════════════════════════════ -->
+<div id="login">
+  <div class="login-bg-text">AQ</div>
+  <div class="login-card" id="lcard">
+    <div class="lc-accent"></div>
+    <div class="lc-head">
+      <div class="lc-mark"><svg viewBox="0 0 62 46" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <!-- A: forward-leaning angular letterform -->
+  <polygon points="0,44 13,2 18.5,2 5.5,44" fill="#F85700"/>
+  <polygon points="5.5,44 18.5,2 24,2 11,44" fill="#F85700"/>
+  <polygon points="6.5,28 21.5,28 19.5,34 8.5,34" fill="#F85700"/>
+  <!-- Q: circle with inner cutout overlapping A right side -->
+  <circle cx="42" cy="23" r="18" fill="#F85700"/>
+  <circle cx="42" cy="23" r="11" fill="#020817"/>
+  <!-- Q tail -->
+  <polygon points="49.5,31 61,44 55.5,44 44,31" fill="#F85700"/>
+</svg></div>
+      <div class="lc-tag">AQ Global Group</div>
+      <div class="lc-title">Command Brain</div>
+      <div class="lc-sub">Central Intelligence Repository — Restricted Access</div>
+    </div>
+    <div class="lc-body">
+
+      <!-- STEP 1: Email -->
+      <div id="auth-step1">
+        <div class="lc-field">
+          <label>Corporate Email</label>
+          <input class="lc-input" id="l-email" type="email" placeholder="yourname@aqglobal.net" autocomplete="email">
+          <div class="lc-error" id="l-eerr">Must be an @aqglobal.net email address.</div>
+        </div>
+        <button class="lc-btn" id="l-btn1" onclick="authStep1()">
+          <span id="l-btn1-txt">Continue →</span>
+          <span class="spinner" id="l-spin1"></span>
+        </button>
+      </div>
+
+      <!-- STEP 2: Password login (returning user) -->
+      <div id="auth-step2" style="display:none">
+        <div class="lc-field">
+          <div id="l-email-disp2" style="font-size:11px;color:var(--tx2);margin-bottom:12px"></div>
+          <label>Password</label>
+          <input class="lc-input" id="l-pass" type="password" placeholder="••••••••••" autocomplete="current-password">
+          <div class="lc-error" id="l-perr">Incorrect password.</div>
+        </div>
+        <button class="lc-btn" id="l-btn2" onclick="authStep2()">
+          <span id="l-btn2-txt">Sign In →</span>
+          <span class="spinner" id="l-spin2"></span>
+        </button>
+        <div style="text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:8px">
+          <a href="#" onclick="sendPasswordReset();return false" style="font-size:11px;color:var(--gold);text-decoration:none">Forgot password? →</a>
+          <a href="#" onclick="goStep(3);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">New here? Create your account →</a>
+          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">← Different email</a>
+        </div>
+      </div>
+
+      <!-- STEP 3: Create account (new user) -->
+      <div id="auth-step3" style="display:none">
+        <div class="lc-field">
+          <div id="l-email-disp3" style="font-size:11px;color:var(--tx2);margin-bottom:12px"></div>
+          <label>Create Password</label>
+          <input class="lc-input" id="l-newpass" type="password" placeholder="Min 8 characters" autocomplete="new-password">
+        </div>
+        <div class="lc-field">
+          <label>Confirm Password</label>
+          <input class="lc-input" id="l-confpass" type="password" placeholder="Repeat password" autocomplete="new-password">
+          <div class="lc-error" id="l-cperr">Passwords do not match.</div>
+        </div>
+        <button class="lc-btn" id="l-btn3" onclick="authStep3()">
+          <span id="l-btn3-txt">Create Account & Access →</span>
+          <span class="spinner" id="l-spin3"></span>
+        </button>
+        <div style="text-align:center;margin-top:10px">
+          <a href="#" onclick="goStep(2);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">← Already have a password? Sign in</a>
+        </div>
+      </div>
+
+      <!-- STEP 4: Check email (reset link sent) -->
+      <div id="auth-step4" style="display:none">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="font-size:36px;margin-bottom:12px">📧</div>
+          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:8px">Check your email</div>
+          <div id="auth-reset-msg" style="font-size:12px;color:var(--tx2);line-height:1.7"></div>
+        </div>
+        <div style="background:rgba(248,87,0,0.06);border:1px solid rgba(248,87,0,0.2);border-radius:10px;padding:12px 14px;font-size:11px;color:var(--tx2);line-height:1.6;text-align:center;margin-bottom:16px">
+          Click the link in your email — you'll be taken back here to set your password.
+        </div>
+        <div style="text-align:center;margin-top:10px">
+          <a href="#" onclick="goStep(1);return false" style="font-size:11px;color:var(--tx3);text-decoration:none">← Back to login</a>
+        </div>
+      </div>
+
+      <!-- STEP 5: Set new password (after reset link click) -->
+      <div id="auth-step5" style="display:none">
+        <div style="font-size:12px;color:var(--tx2);text-align:center;margin-bottom:14px;line-height:1.6">
+          🔐 Set your new password below.
+        </div>
+        <div class="lc-field">
+          <label>New Password</label>
+          <input class="lc-input" id="l-resetpass" type="password" placeholder="Min 8 characters" autocomplete="new-password">
+        </div>
+        <div class="lc-field">
+          <label>Confirm Password</label>
+          <input class="lc-input" id="l-resetconfpass" type="password" placeholder="Repeat password" autocomplete="new-password">
+          <div class="lc-error" id="l-rperr">Passwords do not match.</div>
+        </div>
+        <button class="lc-btn" id="l-btn5" onclick="authStep5()">
+          <span id="l-btn5-txt">Set Password & Access →</span>
+          <span class="spinner" id="l-spin5"></span>
+        </button>
+      </div>
+
+      <div class="lc-foot">🔒 Encrypted · Authorised Personnel Only · AQ Global © 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!--  APP                                                -->
+<!-- ════════════════════════════════════════════════════ -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="tb-hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="tb-logo">
+      <div class="tb-mark"><svg viewBox="0 0 62 46" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <polygon points="0,44 13,2 18.5,2 5.5,44" fill="#F85700"/>
+  <polygon points="5.5,44 18.5,2 24,2 11,44" fill="#F85700"/>
+  <polygon points="6.5,28 21.5,28 19.5,34 8.5,34" fill="#F85700"/>
+  <circle cx="42" cy="23" r="18" fill="#F85700"/>
+  <circle cx="42" cy="23" r="11" fill="#020817"/>
+  <polygon points="49.5,31 61,44 55.5,44 44,31" fill="#F85700"/>
+</svg></div>
+      <div class="tb-brand">AQ Global Group</div>
+    </div>
+    <div class="tb-pipe"></div>
+    <div class="tb-title">Command Brain</div>
+    <div class="gsearch">
+      <span class="gsearch-ico">🔍</span>
+      <input class="gsearch-input" id="global-search" type="search" placeholder="Search Command Brain" oninput="globalSearch(this.value)" autocomplete="off">
+      <div class="gsearch-results" id="global-results"></div>
+    </div>
+    <div class="tb-space"></div>
+    <div class="tb-badge">INTERNAL — RESTRICTED</div>
+    <div class="tb-name" id="tb-name"></div>
+    <div class="tb-avatar" id="tb-av"></div>
+    <button class="tb-logout" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <!-- SIDEBAR OVERLAY (mobile tap-outside to close) -->
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
+  <!-- MAIN -->
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sb-label">Overview</div>
+      <div class="nav-item active" onclick="nav('dash')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </div>
+      <div class="sb-label" style="margin-top:12px">Modules</div>
+      <div class="nav-item" onclick="nav('m1')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+        <span>01 Contract Registry</span>
+      </div>
+      <div class="nav-item" onclick="nav('m2')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        <span>02 Brand Repository</span>
+      </div>
+      <div class="nav-item" onclick="nav('m3')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>03 Technical Docs</span>
+      </div>
+      <div class="nav-item" onclick="nav('m4')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>04 Compliance</span>
+      </div>
+      <div class="nav-item" onclick="nav('m5')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>05 Financials</span>
+      </div>
+      <div class="nav-item" onclick="nav('m6')">
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        <span>06 Suppliers</span>
+        <span class="nb" id="snb" style="display:none">!</span>
+      </div>
+      <div class="sb-foot">
+        <div class="sb-ver">Command Brain v2.0 · June 2026</div>
+        <button onclick="doLogout()" style="margin-top:10px;width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:8px;color:#ef4444;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.3px">⏻ Sign Out</button>
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="content" id="content">
+
+      <!-- DASHBOARD -->
+      <div class="page on" id="dash">
+        <div class="dash-hero sa">
+          <div class="dh-tag">AQ Global Group · GovCon Intelligence</div>
+          <div class="dh-title" id="dh-greet">Command Brain</div>
+          <div class="dh-sub" id="dh-sub">25 years of institutional knowledge. Centralised. Secured. Live.</div>
+          <div class="dh-pills">
+            <button class="pill active" type="button" data-theater="ALL" onclick="setTheater('ALL')">ALL</button>
+            <button class="pill" type="button" data-theater="CENTCOM" onclick="setTheater('CENTCOM')">CENTCOM</button>
+            <button class="pill" type="button" data-theater="EUROPE" onclick="setTheater('EUROPE')">EUROPE</button>
+            <button class="pill" type="button" data-theater="AFRICA" onclick="setTheater('AFRICA')">AFRICA</button>
+            <button class="pill" type="button" data-theater="MULTI-ENTITY" onclick="setTheater('MULTI-ENTITY')">MULTI-ENTITY</button>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi sa sa-d1"><div class="kpi-label">Total Contracts</div><div class="kpi-val" id="kv0">0</div><div class="kpi-sub">Across all entities</div><div class="kpi-bar"><div class="kpi-fill" id="kb0" style="width:0%"></div></div></div>
+          <div class="kpi sa sa-d2"><div class="kpi-label">Suppliers Registered</div><div class="kpi-val" id="kv1">0</div><div class="kpi-sub" id="ks1">Including flagged</div><div class="kpi-bar"><div class="kpi-fill" id="kb1" style="width:0%;background:var(--red)"></div></div></div>
+          <div class="kpi sa sa-d3"><div class="kpi-label">Documents Filed</div><div class="kpi-val" id="kv2">0</div><div class="kpi-sub">Across all modules</div><div class="kpi-bar"><div class="kpi-fill" id="kb2" style="width:0%;background:var(--green)"></div></div></div>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:var(--tx3);letter-spacing:.8px;text-transform:uppercase">All Modules</div>
+        <div class="mod-grid" id="mod-grid"></div>
+        <div class="panel sa">
+          <div class="panel-head"><div class="panel-title">⚡ Active Alerts</div></div>
+          <div id="alerts"></div>
+        </div>
+      </div>
+
+      <!-- MODULE PAGES -->
+      <div class="page" id="m1">
+        <div class="mod-banner sa"><div class="mb-icon">📋</div><div><div class="mb-num">Module 01</div><div class="mb-name">Contract &amp; Task Order Registry</div><div class="mb-desc">Historical and active record of every contract the Group has executed over 25+ years</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('contracts')">↓ Export</button><button class="btn btn-gold btn-sm" onclick="openDr('contract')">+ Add Contract</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search contracts, entities, regions…" oninput="filt('contracts',this.value)"></div><select class="tbl-sel" onchange="filtF('contracts','region',this.value)"><option value="">All Regions</option><option>Kuwait</option><option>UAE</option><option>KSA</option><option>Bahrain</option><option>Poland</option><option>Kenya</option></select><select class="tbl-sel" onchange="filtF('contracts','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Completed</option><option>Terminated</option></select><div class="tbl-ct" id="ct-contracts">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Contract No.</th><th>AQ Entity</th><th>Customer</th><th>Role</th><th>Region</th><th>Service</th><th>Total Value</th><th>CPARS</th><th>Status</th><th></th></tr></thead><tbody id="tb-contracts"></tbody></table><div class="empty-st" id="em-contracts"><div class="ico">📋</div><div class="t">No contracts yet</div><div class="s">Click "Add Contract" to begin building the registry</div></div></div>
+      </div>
+
+      <div class="page" id="m2">
+        <div class="mod-banner sa"><div class="mb-icon">🎨</div><div><div class="mb-num">Module 02</div><div class="mb-name">Brand &amp; Creative Repository</div><div class="mb-desc">All approved logos, templates, and collateral — single source of truth for all proposal teams</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('brand')">+ Add Asset</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search assets…" oninput="filt('brand',this.value)"></div><select class="tbl-sel" onchange="filtF('brand','category',this.value)"><option value="">All Categories</option><option>Logos</option><option>Presentation Templates</option><option>Capability Statements</option><option>Letterheads</option></select><div class="tbl-ct" id="ct-brand">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>File Name</th><th>Category</th><th>Entity</th><th>Format</th><th>Version</th><th>Status</th><th>Owner</th><th></th></tr></thead><tbody id="tb-brand"></tbody></table><div class="empty-st" id="em-brand"><div class="ico">🎨</div><div class="t">No brand assets yet</div><div class="s">Add assets to build the Group brand library</div></div></div>
+      </div>
+
+      <div class="page" id="m3">
+        <div class="mod-banner sa"><div class="mb-icon">📚</div><div><div class="mb-num">Module 03</div><div class="mb-name">Technical Document Library</div><div class="mb-desc">Proposals, SOWs, method statements — rated for reusability on future bids</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('tdoc')">+ Add Document</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search documents…" oninput="filt('tdocs',this.value)"></div><select class="tbl-sel" onchange="filtF('tdocs','reuse',this.value)"><option value="">All Reusability</option><option>High</option><option>Medium</option><option>Low</option></select><div class="tbl-ct" id="ct-tdocs">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Service</th><th>Region</th><th>Reusability</th><th>Version</th><th>Author</th><th></th></tr></thead><tbody id="tb-tdocs"></tbody></table><div class="empty-st" id="em-tdocs"><div class="ico">📚</div><div class="t">No documents yet</div><div class="s">File technical documents to power future proposals</div></div></div>
+      </div>
+
+      <div class="page" id="m4">
+        <div class="mod-banner sa"><div class="mb-icon">🛡️</div><div><div class="mb-num">Module 04</div><div class="mb-name">Compliance &amp; Safety Library</div><div class="mb-desc">Safety plans, OSHA documents, and quality frameworks — with expiry monitoring</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('comp')">+ Add Document</button></div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search compliance docs…" oninput="filt('compliance',this.value)"></div><select class="tbl-sel" onchange="filtF('compliance','status',this.value)"><option value="">All Statuses</option><option>Active</option><option>Under Review</option><option>Expired</option></select><div class="tbl-ct" id="ct-compliance">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Title</th><th>Type</th><th>Standard</th><th>Region</th><th>Approved</th><th>Expiry</th><th>Status</th><th></th></tr></thead><tbody id="tb-compliance"></tbody></table><div class="empty-st" id="em-compliance"><div class="ico">🛡️</div><div class="t">No compliance docs yet</div></div></div>
+      </div>
+
+      <div class="page" id="m5">
+        <div class="mod-banner sa" style="background:linear-gradient(135deg,rgba(60,8,8,.9) 0%,rgba(120,20,20,.7) 100%)"><div class="mb-icon">💰</div><div><div class="mb-num">Module 05 — RESTRICTED</div><div class="mb-name">Group Financial Repository</div><div class="mb-desc">Audited results for all entities · Chairman, Vin Nair, CFO and named Finance leads only</div></div><div class="mb-space"></div><button class="btn btn-gold btn-sm" onclick="openDr('fin')">+ Add Record</button></div>
+        <div class="restricted sa">🔒 RESTRICTED — Do not share, screenshot, or print without CFO written approval. Authorised: Chairman · Vin Nair (CEO D&amp;G) · Group CFO · Named Finance Leads.</div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search entity, year…" oninput="filt('fins',this.value)"></div><div class="tbl-ct" id="ct-fins">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Entity</th><th>FY</th><th>Revenue (USD)</th><th>Gross Profit</th><th>GM %</th><th>EBITDA</th><th>Net Profit</th><th>Audit Status</th><th></th></tr></thead><tbody id="tb-fins"></tbody></table><div class="empty-st" id="em-fins"><div class="ico">💰</div><div class="t">No financial records yet</div><div class="s">Add audited financials per entity per year</div></div></div>
+      </div>
+
+      <div class="page" id="m6">
+        <div class="mod-banner sa"><div class="mb-icon">🔍</div><div><div class="mb-num">Module 06</div><div class="mb-name">Supplier Intelligence Registry</div><div class="mb-desc">Every supplier rated Green / Amber / Red. Red = Do Not Engage without Vin Nair written clearance.</div></div><div class="mb-space"></div><button class="btn btn-ghost btn-sm" onclick="csvExp('suppliers')">↓ Export</button><button class="btn btn-gold btn-sm" onclick="openDr('supplier')">+ Add Supplier</button></div>
+        <div class="restricted sa" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2)">⚠ FOUNDING PURPOSE: AQ Global lost AED 50,000 to an unvetted supplier. Every supplier must be registered here. Red-rated entries require CEO sign-off before engagement. Ram Mohan independently verifies all records.</div>
+        <div class="tbl-toolbar sa"><div class="tbl-search-wrap"><span class="tbl-search-icon">🔍</span><input class="tbl-search" placeholder="Search suppliers, categories…" oninput="filt('suppliers',this.value)"></div><select class="tbl-sel" onchange="filtF('suppliers','rating',this.value)"><option value="">All Ratings</option><option value="Green">🟢 Green</option><option value="Amber">🟡 Amber</option><option value="Red">🔴 Red</option></select><select class="tbl-sel" onchange="filtF('suppliers','category',this.value)"><option value="">All Categories</option><option>Labour Supply</option><option>Catering</option><option>Construction</option><option>Transport</option><option>Security</option></select><div class="tbl-ct" id="ct-suppliers">0 records</div></div>
+        <div class="tbl-wrap sa"><table class="dtbl"><thead><tr><th>Supplier</th><th>Category</th><th>Region</th><th>Rating</th><th>Status</th><th>Verified</th><th>Exposure</th><th>Contact</th><th></th></tr></thead><tbody id="tb-suppliers"></tbody></table><div class="empty-st" id="em-suppliers" style="display:none"><div class="ico">🔍</div><div class="t">No suppliers yet</div></div></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="overlay" id="ov" onclick="closeDr()"></div>
+<div class="drawer" id="drawer">
+  <div class="dr-head">
+    <div><div class="dr-title" id="dr-title">Add Record</div><div class="dr-sub" id="dr-sub">Fill all required fields (★)</div></div>
+    <button class="dr-close" onclick="closeDr()">✕</button>
+  </div>
+  <div class="dr-body" id="dr-body"></div>
+  <div class="dr-foot">
+    <button class="btn btn-ghost btn-sm" onclick="closeDr()">Cancel</button>
+    <button class="btn btn-gold btn-sm" onclick="saveDr()">Save Record →</button>
+  </div>
+</div>
+
+<script>
+/**
+ * ═══════════════════════════════════════════════════════
+ *  SUPABASE SETUP REQUIREMENTS
+ * ═══════════════════════════════════════════════════════
+ * To use the shared multi-user mode, ensure your Supabase
+ * project has the following:
+ *
+ * 1. Table: "cb_store"
+ *    - module (text, primary key)
+ *    - records (jsonb)
+ *
+ * 2. Storage Bucket: "documents" (Public)
+ *    - Required for file uploads/attachments.
+ *
+ * 3. Authentication:
+ *    - Enable Email auth provider.
+ *    - Add your domain to allowed redirect URLs if needed.
+ * ═══════════════════════════════════════════════════════
+ */
+
+// ═══════════════════════════════════════════════════════
+//  CONFIG — paste Supabase credentials to enable shared
+//  multi-user mode.
+// ═══════════════════════════════════════════════════════
+const SB_URL = 'https://gavwwznxxuhhgtlvxwvu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdhdnd3em54eHVoaGd0bHZ4d3Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzODAzMDksImV4cCI6MjA5Nzk1NjMwOX0.FTE6KLHOJrOa5aHIUEnkCeqdU86VaAYb-Ipu2lOY3WY';
+
+// ─── DATA LAYER ─────────────────────────────────────────
+let sb = null;
+if (SB_URL && SB_KEY && window.supabase) sb = window.supabase.createClient(SB_URL, SB_KEY);
+window.sb = sb;
+if(!window.gsap){
+  window.gsap={
+    to(_target,opts={}){ if(typeof opts.onComplete==='function') setTimeout(opts.onComplete,0); },
+    from(){},
+    registerPlugin(){}
+  };
+}
+if(!window.ScrollTrigger) window.ScrollTrigger={};
+
+const MODULE_KEYS = ['contracts','brand','tdocs','compliance','fins','suppliers'];
+const DB = {
+  store: {},
+  loadedRemote: false,
+  uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8) },
+  normRow(row){
+    const id = row && row.id != null ? row.id : (row && row._id) || DB.uid();
+    return {...(row||{}), id, _id:String((row && row._id) || id)};
+  },
+  normRows(rows){ return Array.isArray(rows) ? rows.map(DB.normRow) : [] },
+  get(k){ return DB.normRows(DB.store[k]||[]) },
+  set(k,v,opts={remote:true}){
+    const rows=DB.normRows(v);
+    DB.store[k]=rows;
+    if(opts.remote) return DB.saveRemote(k,rows);
+    return Promise.resolve(rows);
+  },
+  async add(k,obj){
+    const id=obj.id||obj._id||DB.uid();
+    const row=DB.normRow({...obj,id,_id:String(obj._id||id),by:obj.by||CU,at:obj.at||new Date().toLocaleDateString('en-GB')});
+    const a=DB.get(k); a.unshift(row);
+    await DB.set(k,a);
+  },
+  async del(k,id){ await DB.set(k,DB.get(k).filter(r=>String(r.id)!==String(id)&&String(r._id)!==String(id))) },
+  async upd(k,id,up){
+    const a=DB.get(k);
+    const i=a.findIndex(r=>String(r.id)===String(id)||String(r._id)===String(id));
+    if(i>-1){ a[i]=DB.normRow({...a[i],...up,id:a[i].id,_id:a[i]._id}); await DB.set(k,a); }
+  },
+  async loadAll(){
+    if(!sb) return false;
+    try{
+      const {data,error}=await sb.from('cb_store').select('module,records');
+      if(error) throw error;
+      const byModule={};
+      (data||[]).forEach(row=>{ if(row&&MODULE_KEYS.includes(row.module)) byModule[row.module]=DB.normRows(row.records); });
+      MODULE_KEYS.forEach(k=>{
+        if(byModule[k]) DB.set(k,byModule[k],{remote:false});
+        else if(!DB.store[k]) DB.store[k]=[];
+      });
+      DB.loadedRemote=true;
+      return true;
+    }catch(e){
+      console.warn('[CB] Supabase load failed',e);
+      if(document.getElementById('app')?.classList.contains('on')) toast('Supabase load failed','er');
+      return false;
+    }
+  },
+  async saveRemote(k,rows){
+    if(!sb) return;
+    try{
+      const payload={module:k,records:DB.normRows(rows).map(r=>({...r,_id:String(r._id||r.id)}))};
+      const found=await sb.from('cb_store').select('module').eq('module',k).limit(1);
+      if(found.error) throw found.error;
+      const res=(found.data&&found.data.length)
+        ? await sb.from('cb_store').update({records:payload.records}).eq('module',k)
+        : await sb.from('cb_store').insert(payload);
+      if(res.error) throw res.error;
+    }catch(e){
+      console.warn('[CB] Supabase save failed',e);
+      toast('Supabase sync failed','er');
+    }
+  }
+};
+
+// ─── AUTH ────────────────────────────────────────────────
+let CU = '';
+let _authEmail = '';
+
+// Show/hide a specific step
+function goStep(n){
+  [1,2,3,4,5].forEach(i=>document.getElementById('auth-step'+i).style.display='none');
+  document.getElementById('auth-step'+n).style.display='block';
+}
+
+function setLoading(btnId,spinId,on){
+  document.getElementById(btnId).style.display=on?'none':'inline';
+  document.getElementById(spinId).style.display=on?'block':'none';
+}
+
+// STEP 1 — Email submitted
+function authStep1(){
+  const email=document.getElementById('l-email').value.trim().toLowerCase();
+  document.getElementById('l-eerr').style.display='none';
+  if(!email.endsWith('@aqglobal.net')){document.getElementById('l-eerr').style.display='block';return}
+  _authEmail=email;
+  if(!sb){ toast('Supabase connection missing. Check configuration.','er'); return; }
+  document.getElementById('l-email-disp2').textContent=email;
+  document.getElementById('l-email-disp3').textContent=email;
+  goStep(2);
+  setTimeout(()=>document.getElementById('l-pass').focus(),50);
+}
+
+// STEP 2 — Password login
+async function authStep2(){
+  const pass=document.getElementById('l-pass').value;
+  const errEl=document.getElementById('l-perr');
+  errEl.style.display='none';
+  if(!pass){errEl.textContent='Password is required.';errEl.style.display='block';return}
+  setLoading('l-btn2-txt','l-spin2',true);
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email:_authEmail,password:pass});
+    if(error){
+      errEl.textContent='Incorrect password. Try again or use "Forgot password?" below.';
+      errEl.style.display='block';
+      return;
+    }
+    CU=data.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn2-txt','l-spin2',false); }
+}
+
+// STEP 3 — Create account (new user sets password)
+async function authStep3(){
+  const p1=document.getElementById('l-newpass').value;
+  const p2=document.getElementById('l-confpass').value;
+  const errEl=document.getElementById('l-cperr');
+  errEl.style.display='none';
+  if(p1.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.style.display='block';return}
+  if(p1!==p2){errEl.textContent='Passwords do not match.';errEl.style.display='block';return}
+  setLoading('l-btn3-txt','l-spin3',true);
+  try{
+    const {data,error}=await sb.auth.signUp({email:_authEmail,password:p1,options:{emailRedirectTo:window.location.href}});
+    if(error){
+      // User already exists — send them to reset flow to set their password
+      if(error.message.toLowerCase().includes('already')){
+        toast('Account exists. Use "Forgot password?" on the previous screen to set your password.','er');
+        goStep(2);
+        return;
+      }
+      toast(error.message,'er');
+      return;
+    }
+    if(data.session){
+      // Email confirmation not required — log straight in
+      CU=data.user.email;
+      localStorage.setItem('cb_ses',CU);
+      bootApp();
+    } else {
+      // Email confirmation required
+      document.getElementById('auth-reset-msg').innerHTML='A confirmation link has been sent to <strong>'+_authEmail+'</strong>.<br>Click it to activate your account and you\'ll be logged in automatically.';
+      goStep(4);
+    }
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn3-txt','l-spin3',false); }
+}
+
+// Forgot password — send reset email
+async function sendPasswordReset(){
+  if(!_authEmail){goStep(1);return}
+  if(!sb){toast('Requires Supabase connection.','er');return}
+  toast('Sending reset link to '+_authEmail+'…','in');
+  const {error}=await sb.auth.resetPasswordForEmail(_authEmail,{redirectTo:window.location.href});
+  if(error){ toast('Error: '+error.message,'er'); return; }
+  document.getElementById('auth-reset-msg').innerHTML='A password reset link has been sent to <strong>'+_authEmail+'</strong>.<br>Check your inbox.';
+  goStep(4);
+  toast('Reset link sent — check your email','ok');
+}
+
+// STEP 5 — Set new password (arrived via reset link)
+async function authStep5(){
+  const p1=document.getElementById('l-resetpass').value;
+  const p2=document.getElementById('l-resetconfpass').value;
+  const errEl=document.getElementById('l-rperr');
+  errEl.style.display='none';
+  if(p1.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.style.display='block';return}
+  if(p1!==p2){errEl.textContent='Passwords do not match.';errEl.style.display='block';return}
+  setLoading('l-btn5-txt','l-spin5',true);
+  try{
+    const {data,error}=await sb.auth.updateUser({password:p1});
+    if(error){toast(error.message,'er');return}
+    CU=data.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }catch(e){ toast(e.message,'er'); }
+  finally{ setLoading('l-btn5-txt','l-spin5',false); }
+}
+
+function doLogout(){
+  localStorage.removeItem('cb_ses');
+  if(sb) sb.auth.signOut();
+  location.reload();
+}
+
+// ── MOBILE SIDEBAR TOGGLE ──────────────────────────────
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sb-overlay');
+  if(s.classList.contains('open')){closeSidebar();}
+  else{s.classList.add('open');o.classList.add('on');}
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('on');
+}
+
+document.getElementById('l-email').addEventListener('keydown',e=>{if(e.key==='Enter')authStep1()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const s2=document.getElementById('auth-step2');
+    const s3=document.getElementById('auth-step3');
+    const s5=document.getElementById('auth-step5');
+    if(s2&&s2.style.display!=='none') authStep2();
+    else if(s3&&s3.style.display!=='none') authStep3();
+    else if(s5&&s5.style.display!=='none') authStep5();
+  }
+});
+
+// Initialise correct step on load
+(function initAuthUI(){
+  goStep(1);
+})();
+
+// ─── SESSION RESTORE & AUTH STATE ────────────────────────
+(async function initSession(){
+  if(!sb) return;
+
+  // Listen for auth events
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      // User arrived via password reset link — show set-password form
+      window.history.replaceState(null,'',window.location.pathname+window.location.search);
+      goStep(5);
+      setTimeout(()=>document.getElementById('l-resetpass').focus(),50);
+      return;
+    }
+    if(event==='SIGNED_IN'&&session&&session.user&&session.user.email.endsWith('@aqglobal.net')&&!CU){
+      CU=session.user.email;
+      localStorage.setItem('cb_ses',CU);
+      bootApp();
+    }
+  });
+
+  // Check for existing session
+  const {data:{session}}=await sb.auth.getSession();
+  if(session&&session.user&&session.user.email.endsWith('@aqglobal.net')){
+    CU=session.user.email;
+    localStorage.setItem('cb_ses',CU);
+    bootApp();
+  }
+})();
+
+// ─── BOOT ────────────────────────────────────────────────
+function bootApp(){
+  const name=CU.split('@')[0].split('.').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+  const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  document.getElementById('tb-name').textContent=name;
+  document.getElementById('tb-av').textContent=initials;
+  const h=new Date().getHours();
+  const greet=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  document.getElementById('dh-greet').textContent=greet+', '+name.split(' ')[0];
+  document.getElementById('dh-sub').textContent='25 years of AQ Global institutional knowledge — now centralised.';
+  gsap.to('#login',{opacity:0,duration:.5,ease:'power2.in',onComplete:()=>{
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('on');
+    initApp();
+  }});
+}
+
+async function initApp(){
+  refreshAll();
+  await DB.loadAll();
+  seedSupplier();
+  refreshAll();
+  updateTheaterButtons();
+  if(!window._cbFxStarted){
+    window._cbFxStarted=true;
+    initParticles();
+    initScrollAnim();
+  }
+  init3DTilt();
+  // topbar and sidebar appear instantly — no clip/overflow issues
+}
+
+// ─── SEED FOUNDING ENTRY ─────────────────────────────────
+function seedSupplier(){
+  if(DB.get('suppliers').length>0) return;
+  const f={
+    id:1000000001,name:'UNCONFIRMED — Pending Ram Mohan Verification',tradingName:'Confirm trading name',
+    category:'Labour Supply',region:'UAE',status:'Blacklisted',rating:'Red',
+    exposure:'13600',exposureAED:'50000',
+    disputeDetail:'AED 50,000 financial loss — supplier engaged without prior vetting. Active fraud case as at June 2026. Ram Mohan to confirm all details and complete this record.',
+    tradeLicenseVerified:'No',bankVerified:'No',referencesChecked:'No',
+    contact:'Unknown — not verified at time of engagement',phone:'Unknown',email:'Unknown',
+    notes:'FOUNDING ENTRY: This registry was created because AQ Global lost AED 50,000 to this unvetted supplier. No documentation was obtained before engagement. Ram Mohan to investigate.',
+    redFlags:'No trade license. No bank verification. No references. AED 50,000 exposure.',
+    legalAction:'Active — as at June 2026',ratingJustification:'AED 50,000 fraud/financial loss. Zero pre-engagement vetting.',
+    by:'Raj Verma',at:'25-Jun-2026',isFounder:true
+  };
+  DB.set('suppliers',[f]);
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────
+let THEATER='ALL';
+const MOD_META={
+  contracts:{page:'m1',label:'Contracts'},
+  brand:{page:'m2',label:'Brand'},
+  tdocs:{page:'m3',label:'Tech Docs'},
+  compliance:{page:'m4',label:'Compliance'},
+  fins:{page:'m5',label:'Financials'},
+  suppliers:{page:'m6',label:'Suppliers'}
+};
+
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jsArg(v){return JSON.stringify(String(v??'')).replace(/</g,'\\u003c')}
+function regionTheater(v){
+  const s=String(v||'').toUpperCase();
+  if(!s) return '';
+  if(s.includes('MULTI')||s.includes('GROUP')||s.includes('GLOBAL')) return 'MULTI-ENTITY';
+  if(s.includes('EUROPE')||s.includes('POLAND')||s.includes('GERMANY')||s.includes('ITALY')||s.includes('UK')) return 'EUROPE';
+  if(s.includes('AFRICA')||s.includes('KENYA')) return 'AFRICA';
+  if(s.includes('CENTCOM')||s.includes('KUWAIT')||s.includes('UAE')||s.includes('KSA')||s.includes('SAUDI')||s.includes('BAHRAIN')||s.includes('QATAR')||s.includes('OMAN')) return 'CENTCOM';
+  return '';
+}
+function rowTheater(row){
+  const direct=regionTheater(row.region||row.territory||row.entity||row.country);
+  if(direct) return direct;
+  const all=JSON.stringify(row||{}).toUpperCase();
+  return ['CENTCOM','EUROPE','AFRICA','MULTI-ENTITY'].find(t=>all.includes(t))||'';
+}
+function scopedRows(rows){return THEATER==='ALL'?rows:rows.filter(r=>rowTheater(r)===THEATER)}
+function updateTheaterButtons(){
+  document.querySelectorAll('[data-theater]').forEach(btn=>btn.classList.toggle('active',btn.dataset.theater===THEATER));
+}
+function setTheater(t){
+  THEATER=t||'ALL';
+  updateTheaterButtons();
+  refreshAll();
+  const q=document.getElementById('global-search')?.value||'';
+  if(q) globalSearch(q);
+}
+function bestTitle(k,r){
+  return r.contractNo||r.title||r.name||r.fileName||r.entity||r.customer||r.client||r.docType||r.category||MOD_META[k]?.label||k;
+}
+function bestSub(r){
+  return [r.region||r.territory||r.status||'',r.customer||r.client||r.category||r.service||'',r.owner||r.author||r.contact||''].filter(Boolean).join(' · ');
+}
+function globalSearch(q){
+  const panel=document.getElementById('global-results');
+  if(!panel) return;
+  q=String(q||'').trim();
+  if(!q){panel.classList.remove('on');panel.innerHTML='';return;}
+  const needle=q.toLowerCase();
+  const hits=[];
+  MODULE_KEYS.forEach(k=>{
+    scopedRows(DB.get(k)).forEach(r=>{
+      if(JSON.stringify(r).toLowerCase().includes(needle)){
+        hits.push({k,r,id:r.id||r._id,title:bestTitle(k,r),sub:bestSub(r)});
+      }
+    });
+  });
+  if(!hits.length){
+    panel.innerHTML='<div class="gsearch-hit"><div class="gsearch-title">No matches</div></div>';
+    panel.classList.add('on');
+    return;
+  }
+  panel.innerHTML=hits.slice(0,14).map(h=>`
+    <button class="gsearch-hit" data-k="${esc(h.k)}" data-id="${esc(h.id)}" data-q="${esc(q)}">
+      <div class="gsearch-meta">${esc(MOD_META[h.k]?.label||h.k)}</div>
+      <div class="gsearch-title">${esc(h.title)}</div>
+      <div class="gsearch-sub">${esc(h.sub)}</div>
+    </button>`).join('');
+  panel.querySelectorAll('.gsearch-hit[data-k]').forEach(btn=>{
+    btn.addEventListener('click',()=>openSearchHit(btn.dataset.k,btn.dataset.id,btn.dataset.q));
+  });
+  panel.classList.add('on');
+}
+function openSearchHit(k,id,q){
+  const panel=document.getElementById('global-results');
+  if(panel) panel.classList.remove('on');
+  const meta=MOD_META[k]; if(!meta) return;
+  nav(meta.page);
+  setTimeout(()=>{
+    const input=document.querySelector('#'+meta.page+' .tbl-search');
+    if(input){input.value=q;filt(k,q);}
+  },40);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('global-results')?.classList.remove('on')});
+
+let CP='dash';
+function nav(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')===`nav('${id}')`)n.classList.add('active')});
+  CP=id;
+  // Close sidebar on mobile after nav
+  if(window.innerWidth<=768) closeSidebar();
+
+  // Clear 'in' class before refresh to ensure re-animation
+  document.querySelectorAll('.sa').forEach(el=>el.classList.remove('in'));
+
+  refreshAll();
+
+  // Re-trigger scroll animations for new page
+  if(id === 'dash') {
+    // Let renderDash handle it via initScrollAnim()
+  } else {
+    document.querySelectorAll(`#${id} .sa`).forEach((el,i)=>{
+      el.classList.remove('in');
+      setTimeout(()=>el.classList.add('in'),i*80);
+    });
+  }
+}
+
+// ─── REFRESH ALL ─────────────────────────────────────────
+let RD={};
+function refreshAll(){
+  RD.contracts =scopedRows(DB.get('contracts'));
+  RD.brand     =scopedRows(DB.get('brand'));
+  RD.tdocs     =scopedRows(DB.get('tdocs'));
+  RD.compliance=scopedRows(DB.get('compliance'));
+  RD.fins      =scopedRows(DB.get('fins'));
+  RD.suppliers =scopedRows(DB.get('suppliers'));
+  renderContracts(RD.contracts);
+  renderBrand(RD.brand);
+  renderTdocs(RD.tdocs);
+  renderCompliance(RD.compliance);
+  renderFins(RD.fins);
+  renderSuppliers(RD.suppliers);
+  renderDash();
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────
+function renderDash(){
+  const {contracts,brand,tdocs,compliance,fins,suppliers}=RD;
+  const red=suppliers.filter(s=>s.rating==='Red').length;
+  countUp('kv0',contracts.length);
+  countUp('kv1',suppliers.length);
+  countUp('kv2',tdocs.length+compliance.length);
+  document.getElementById('ks1').textContent=`${red} Red-rated supplier${red!==1?'s':''} flagged`;
+  document.getElementById('snb').style.display=red?'':'none';
+  setTimeout(()=>{
+    document.getElementById('kb0').style.width=Math.min(contracts.length*10,100)+'%';
+    document.getElementById('kb1').style.width=Math.min(suppliers.length*20,100)+'%';
+    document.getElementById('kb2').style.width=Math.min((tdocs.length+compliance.length)*10,100)+'%';
+  },300);
+  // Module cards
+  const mods=[
+    {id:'m1',num:'01',name:'Contract Registry',desc:'Historical contract execution record',icon:'📋',count:contracts.length,lbl:'contracts',c:'#F85700'},
+    {id:'m2',num:'02',name:'Brand Repository',desc:'Logos, templates, and collateral',icon:'🎨',count:brand.length,lbl:'assets',c:'#8B5CF6'},
+    {id:'m3',num:'03',name:'Technical Docs',desc:'Proposals, SOWs — reusability-rated',icon:'📚',count:tdocs.length,lbl:'documents',c:'#3B82F6'},
+    {id:'m4',num:'04',name:'Compliance',desc:'Safety plans and quality frameworks',icon:'🛡️',count:compliance.length,lbl:'documents',c:'#22C55E'},
+    {id:'m5',num:'05',name:'Financials',desc:'Restricted — audited per entity per year',icon:'💰',count:fins.length,lbl:'records',c:'#EF4444'},
+    {id:'m6',num:'06',name:'Supplier Registry',desc:'Green / Amber / Red risk rated',icon:'🔍',count:suppliers.length,lbl:'suppliers',c:'#F59E0B'},
+  ];
+  document.getElementById('mod-grid').innerHTML=mods.map((m,i)=>`
+    <div class="mod-card sa sa-d${i+1}" onclick="nav('${m.id}')">
+      <div class="mc-shine"></div>
+      <div class="mc-stripe" style="background:${m.c}"></div>
+      <div class="mc-body">
+        <div class="mc-num">Module ${m.num}</div>
+        <div class="mc-name">${m.icon} ${m.name}</div>
+        <div class="mc-desc">${m.desc}</div>
+        <div class="mc-foot">
+          <div><div class="mc-count">${m.count}</div><div class="mc-count-l">${m.lbl}</div></div>
+          <div class="mc-arrow">→</div>
+        </div>
+      </div>
+    </div>`).join('');
+  // Alerts
+  const as=[];
+  as.push({c:'r',t:'⚠ FOUNDING ENTRY: AED 50,000 fraud case active — Ram Mohan to verify and complete supplier record in Module 06',m:'June 2026 · Active'});
+  if(red>1) as.push({c:'r',t:`${red} Red-rated suppliers flagged — CEO sign-off required before any engagement`,m:'Pending Vin Nair review'});
+  compliance.filter(c=>c.status==='Expired').forEach(c=>as.push({c:'r',t:`EXPIRED: ${esc(c.title)} — immediate renewal required`,m:'Action now'}));
+  if(!contracts.length) as.push({c:'a',t:'Module 01 Contract Registry is empty — entity leads to submit data by Day 15',m:'Deadline: Day 15'});
+  as.push({c:'a',t:'Day 5 milestone: Intake templates to be distributed to all entity leads (Raj Verma)',m:'Day 5'});
+  as.push({c:'g',t:'Command Brain v2.0 is live — all modules open for data intake',m:'Now'});
+  document.getElementById('alerts').innerHTML=as.map(a=>`
+    <div class="alert-row"><div class="adot ${a.c}"></div><div><div class="at">${a.t}</div><div class="atm">${esc(a.m)}</div></div></div>`).join('');
+  setTimeout(()=>{
+    init3DTilt();
+    initScrollAnim();
+  },50);
+}
+
+// ─── RENDERERS ───────────────────────────────────────────
+function fmtUSD(v){
+  if (!v) return '—';
+  const cleanV = String(v).replace(/,/g, '');
+  const num = parseFloat(cleanV);
+  return isNaN(num) ? '—' : '$' + num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+function pct(a,b){return a&&b?((parseFloat(a)/parseFloat(b))*100).toFixed(1)+'%':'—'}
+function cpars(r){const m={'Exceptional':5,'Very Good':4,'Satisfactory':3,'Marginal':2,'Unsatisfactory':1};const n=m[r]||0;return n?`<div class="stars">${'x'.repeat(n).split('').map(()=>'<span class="star f">★</span>').join('')}${'x'.repeat(5-n).split('').map(()=>'<span class="star e">★</span>').join('')}</div><div style="font-size:9px;color:var(--tx3);margin-top:1px">${r}</div>`:r?`<span style="font-size:11px;color:var(--tx3)">${r}</span>`:'—'}
+function stB(s){const m={Active:'bdg-g',Completed:'bdg-gd','Terminated':'bdg-r','Terminated for Convenience':'bdg-gr','Active — Client Accepted':'bdg-g',Expired:'bdg-r','Under Review':'bdg-a',Approved:'bdg-b',Deprecated:'bdg-r',Probationary:'bdg-a',Blacklisted:'bdg-r',Audited:'bdg-g','Unaudited Draft':'bdg-a','Under Audit':'bdg-a','Management Accounts':'bdg-gr'};return `<span class="bdg ${m[s]||'bdg-gr'}">${s||'—'}</span>`}
+function rtB(r){if(!r) return '<span class="bdg bdg-gr">Unknown</span>';if(r==='Green') return '<span class="bdg bdg-g">🟢 Trusted</span>';if(r==='Amber') return '<span class="bdg bdg-a">🟡 Caution</span>';if(r==='Red') return '<span class="bdg bdg-r">🔴 Do Not Engage</span>';return `<span class="bdg bdg-gr">${r}</span>`}
+function vfB(v){return v==='Yes'?'<span class="bdg bdg-g">✓ Verified</span>':v==='No'?'<span class="bdg bdg-r">✗ Not Verified</span>':'<span class="bdg bdg-a">Pending</span>'}
+function acts(key,id){return `<button class="tbl-act" onclick="editR(${esc(jsArg(key))},${esc(jsArg(id))})">Edit</button> <button class="tbl-act d" onclick="delR(${esc(jsArg(key))},${esc(jsArg(id))})">Del</button>`}
+function showEmpty(key,data){ document.getElementById('em-'+key).style.display=data.length?'none':''; document.getElementById('ct-'+key).textContent=data.length+' record'+(data.length!==1?'s':''); }
+
+function renderContracts(d){
+  showEmpty('contracts',d);
+  document.getElementById('tb-contracts').innerHTML=d.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${esc(r.contractNo)}</strong>${r.taskOrder?`<div style="font-size:10px;color:var(--tx3)">${esc(r.taskOrder)}</div>`:''}</td>
+    <td style="font-size:12px">${esc(r.entity)}</td>
+    <td><div style="font-size:12px">${esc(r.customer)}</div>${r.prime?`<div style="font-size:10px;color:var(--tx3)">via ${esc(r.prime)}</div>`:''}</td>
+    <td><span class="bdg bdg-gd">${esc(r.role)}</span></td>
+    <td style="font-size:12px">${esc(r.region)}</td>
+    <td style="font-size:11px">${esc(r.service)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.totalValue)}</td>
+    <td>${cpars(r.cpars)}</td>
+    <td>${stB(r.status)}</td>
+    <td style="white-space:nowrap">${acts('contracts',r.id)}</td></tr>`).join('');
+}
+function renderBrand(d){
+  showEmpty('brand',d);
+  document.getElementById('tb-brand').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${esc(r.fileName)}</strong></td>
+    <td style="font-size:12px">${esc(r.category)}</td><td style="font-size:12px">${esc(r.entity)}</td>
+    <td><span class="bdg bdg-gr">${esc(r.format)}</span></td>
+    <td style="font-size:12px">${esc(r.version)}</td>
+    <td>${r.approvalStatus==='Approved'||r.approvalStatus==='Active — Client Accepted'?'<span class="bdg bdg-g">Approved</span>':r.approvalStatus==='Deprecated'?'<span class="bdg bdg-r">Deprecated</span>':stB(r.approvalStatus)}</td>
+    <td style="font-size:12px">${esc(r.owner)}</td>
+    <td>${acts('brand',r.id)}</td></tr>`).join('');
+}
+function renderTdocs(d){
+  showEmpty('tdocs',d);
+  document.getElementById('tb-tdocs').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${esc(r.title)}</strong></td>
+    <td style="font-size:11px">${esc(r.docType)}</td><td style="font-size:11px">${esc(r.service)}</td><td style="font-size:11px">${esc(r.region)}</td>
+    <td>${r.reuse==='High'?'<span class="bdg bdg-g">🟢 High</span>':r.reuse==='Medium'?'<span class="bdg bdg-a">🟡 Medium</span>':'<span class="bdg bdg-gr">Low</span>'}</td>
+    <td style="font-size:11px">${esc(r.version)}</td><td style="font-size:11px">${esc(r.author)}</td>
+    <td>${acts('tdocs',r.id)}</td></tr>`).join('');
+}
+function renderCompliance(d){
+  showEmpty('compliance',d);
+  document.getElementById('tb-compliance').innerHTML=d.map(r=>`<tr>
+    <td><strong style="font-size:12px;color:var(--tx)">${esc(r.title)}</strong></td>
+    <td style="font-size:11px">${esc(r.docType)}</td><td style="font-size:11px">${esc(r.standard)}</td><td style="font-size:11px">${esc(r.region)}</td>
+    <td style="font-size:11px">${esc(r.approvalDate)}</td>
+    <td style="font-size:11px;color:${r.status==='Expired'?'var(--red)':'var(--tx)'};font-weight:${r.status==='Expired'?700:400}">${esc(r.expiryDate)}</td>
+    <td>${stB(r.status)}</td>
+    <td>${acts('compliance',r.id)}</td></tr>`).join('');
+}
+function renderFins(d){
+  showEmpty('fins',d);
+  document.getElementById('tb-fins').innerHTML=d.map(r=>`<tr>
+    <td><strong style="color:var(--tx)">${esc(r.entity)}</strong></td>
+    <td><span class="bdg bdg-gd">${esc(r.fy)}</span></td>
+    <td style="font-family:monospace">${fmtUSD(r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.grossProfit)}</td>
+    <td style="font-family:monospace">${pct(r.grossProfit,r.revenue)}</td>
+    <td style="font-family:monospace">${fmtUSD(r.ebitda)}</td>
+    <td style="font-family:monospace;color:${parseFloat(r.netProfit)<0?'var(--red)':'var(--green)'}">${fmtUSD(r.netProfit)}</td>
+    <td>${stB(r.auditStatus)}</td>
+    <td>${acts('fins',r.id)}</td></tr>`).join('');
+}
+function renderSuppliers(d){
+  const hasData=d.length>0;
+  document.getElementById('em-suppliers').style.display=hasData?'none':'';
+  document.getElementById('ct-suppliers').textContent=d.length+' records';
+  document.getElementById('tb-suppliers').innerHTML=d.map(r=>`<tr class="${r.rating==='Red'?'danger':''}">
+    <td>${r.isFounder?'<div class="founding-tag">FOUNDING ENTRY</div>':''}<strong style="font-size:12px;color:var(--tx)">${esc(r.name)}</strong>${r.tradingName&&r.tradingName!==r.name?`<div style="font-size:10px;color:var(--tx3)">${esc(r.tradingName)}</div>`:''}</td>
+    <td style="font-size:11px">${esc(r.category)}</td><td style="font-size:11px">${esc(r.region)}</td>
+    <td>${rtB(r.rating)}</td><td>${stB(r.status)}</td><td>${vfB(r.tradeLicenseVerified)}</td>
+    <td style="font-family:monospace;font-size:11px;color:${parseFloat(r.exposure)>0?'var(--red)':'var(--tx)'}">${fmtUSD(r.exposure)}</td>
+    <td style="font-size:11px">${r.contact?esc(r.contact.split(' ').slice(0,2).join(' ')):'—'}</td>
+    <td style="white-space:nowrap">${acts('suppliers',r.id)}</td></tr>`).join('');
+}
+
+// ─── FILTER ──────────────────────────────────────────────
+function filt(k,q){const base=RD[k]||[];const d=base.filter(r=>JSON.stringify(r).toLowerCase().includes(String(q||'').toLowerCase()));render(k,d)}
+function filtF(k,f,v){const base=RD[k]||[];const d=v?base.filter(r=>(r[f]||'').toLowerCase().includes(String(v).toLowerCase())):base;render(k,d)}
+function render(k,d){
+  if(k==='contracts')  renderContracts(d);
+  if(k==='brand')      renderBrand(d);
+  if(k==='tdocs')      renderTdocs(d);
+  if(k==='compliance') renderCompliance(d);
+  if(k==='fins')       renderFins(d);
+  if(k==='suppliers')  renderSuppliers(d);
+}
+
+// ─── FORMS DEFINITION ────────────────────────────────────
+const F={
+  contract:{title:'Add Contract',sub:'Module 01 — Contract Registry',fields:[
+    {n:'contractNo',l:'Contract Number ★',p:'e.g. W52P1J-22-C-0001'},
+    {n:'taskOrder',l:'Task / Delivery Order',p:'e.g. TO-0042'},
+    {n:'entity',l:'AQ Entity ★',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Other']},
+    {n:'customer',l:'Buying Entity ★',t:'sel',o:['USG — Navy','USG — Army','USG — Air Force','USG — Marines','USG — State Dept','KBR','V2X','Fluor','Amentum','Leidos','ADF','Italian Air Force','Canadian Forces','NGO','Commercial','Other']},
+    {n:'prime',l:'Prime Contractor (if sub)',p:'e.g. KBR Government Services'},
+    {n:'role',l:'AQ Role ★',t:'sel',o:['Prime','Subcontractor','Teaming Partner','Supplier']},
+    {n:'region',l:'Theater / Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CENTCOM-Other','Europe-Other','Africa-Other','CONUS','Multi-Region']},
+    {n:'service',l:'Service Category ★',t:'sel',o:['BLS / BASOPS','Construction','Logistics','Security','NTV / Transport','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'startDate',l:'Period Start ★',p:'e.g. 01-Mar-2018'},{n:'endDate',l:'Period End (Base) ★',p:'e.g. 28-Feb-2019'},
+    {n:'baseValue',l:'Base Value (USD) ★',p:'e.g. 4200000'},{n:'totalValue',l:'Total Value incl. Options (USD) ★',p:'e.g. 21000000'},
+    {n:'aqRevenue',l:'AQ Revenue (USD)',p:'e.g. 18750000'},{n:'co',l:'Contracting Officer',p:'Full name'},
+    {n:'cpars',l:'CPARS Rating ★',t:'sel',o:['Exceptional','Very Good','Satisfactory','Marginal','Unsatisfactory','N/A — No CPARS','Pending']},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Completed','Terminated','Terminated for Convenience','Option Not Exercised']},
+    {n:'deliverables',l:'Key Deliverables ★',t:'ta',p:'Summarise what was delivered',fw:true},
+    {n:'notes',l:'Lessons Learned',t:'ta',p:'Issues, disputes, lessons — be specific',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Contract Document',t:'link',fw:true}
+  ]},
+  brand:{title:'Add Brand Asset',sub:'Module 02 — Brand Repository',fields:[
+    {n:'fileName',l:'File Name ★',p:'e.g. AQG_Logo_Primary_v3.ai',fw:true},
+    {n:'category',l:'Category ★',t:'sel',o:['Logos','Presentation Templates','Brochures','Capability Statements','Letterheads','Signage','Social Media','Proposal Templates','Other']},
+    {n:'entity',l:'Entity ★',t:'sel',o:['AQ Global Group','Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','Multi-Entity','Other']},
+    {n:'format',l:'Format ★',t:'sel',o:['AI','EPS','PNG','PDF','PPTX','DOCX','JPG','SVG','ZIP','Other']},
+    {n:'version',l:'Version ★',p:'e.g. v3.0'},{n:'versionDate',l:'Version Date ★',p:'DD-MMM-YYYY'},
+    {n:'approvalStatus',l:'Approval Status ★',t:'sel',o:['Approved','Under Revision','Pending Approval','Deprecated — Do Not Use']},
+    {n:'approvedBy',l:'Approved By',p:'Name'},{n:'owner',l:'Owner / Custodian ★',p:'Person or team'},
+    {n:'filePath',l:'SharePoint / File Path',p:'SharePoint > 02 Brand > ...',fw:true},
+    {n:'notes',l:'Notes / Restrictions',t:'ta',p:'Any restrictions or notes',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Brand Asset File',t:'link',fw:true}
+  ]},
+  tdoc:{title:'Add Technical Document',sub:'Module 03 — Technical Doc Library',fields:[
+    {n:'title',l:'Document Title ★',p:'Full title as it appears',fw:true},
+    {n:'docType',l:'Document Type ★',t:'sel',o:['Technical Proposal','Method Statement','SOW / Scope of Work','Work Plan','Manning Chart','Equipment List','Quality Plan','Training Plan','Transition Plan','Project Management Plan','Other']},
+    {n:'service',l:'Service Category ★',t:'sel',o:['BLS / BASOPS','Construction','NTV / Transport','Logistics','Security','Food Service','Aviation Support','Professional Services','IT / Comms','Other']},
+    {n:'region',l:'Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+    {n:'contract',l:'Related Contract No.',p:'Contract this was produced under'},
+    {n:'classification',l:'Classification ★',t:'sel',o:['Unclassified','Controlled','Client Sensitive','Proprietary']},
+    {n:'reuse',l:'Reusability Rating ★',t:'sel',o:['High','Medium','Low']},
+    {n:'version',l:'Version ★',p:'e.g. v1.0'},{n:'author',l:'Author ★',p:'Name'},
+    {n:'reviewedBy',l:'Reviewed By',p:'Name'},
+    {n:'keywords',l:'Keywords / Tags',p:'Comma-separated',fw:true},
+    {n:'reuseNotes',l:'Reuse Notes',t:'ta',p:'What sections are reusable vs. what needs updating',fw:true},
+    {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 03 Technical > ...',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Technical Document',t:'link',fw:true}
+  ]},
+  comp:{title:'Add Compliance Document',sub:'Module 04 — Compliance & Safety',fields:[
+    {n:'title',l:'Document Title ★',p:'Full title',fw:true},
+    {n:'docType',l:'Document Type ★',t:'sel',o:['Safety Plan','OSHA Plan','Emergency Response Plan','Quality Management Plan','Environmental Plan','Site-Specific Safety Plan','Food Safety Plan','Health Surveillance Plan','Other']},
+    {n:'standard',l:'Applicable Standard ★',t:'sel',o:['EM 385-1-1','AR 385-10','TB MED 577','TB MED 530','OSHA 29 CFR 1910','OSHA 29 CFR 1926','ISO 9001','ISO 14001','ISO 45001','HACCP','Other']},
+    {n:'region',l:'Region ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','CONUS','Multi-Region','Other']},
+    {n:'approvingAuth',l:'Approving Authority ★',p:'Client or internal role'},
+    {n:'approvalDate',l:'Approval Date ★',p:'DD-MMM-YYYY'},{n:'expiryDate',l:'Expiry / Review Date ★',p:'DD-MMM-YYYY — mandatory!'},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Under Review','Expired — Renewal Required','Superseded','Withdrawn']},
+    {n:'version',l:'Version ★',p:'e.g. v3.2'},{n:'author',l:'Author',p:'Name'},
+    {n:'filePath',l:'File Location (SharePoint)',p:'SharePoint > 04 Compliance > ...',fw:true},
+    {n:'notes',l:'Notes',t:'ta',p:'Context, linked contracts, renewal reminders',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Compliance Document',t:'link',fw:true}
+  ]},
+  fin:{title:'Add Financial Record',sub:'Module 05 — RESTRICTED',fields:[
+    {n:'entity',l:'Entity ★',t:'sel',o:['Gulf Master','AQ Global Kuwait','AQ Global Inc.','Defender Tek','Class Worldwide','KSA Entity','Bahrain Entity','Group Consolidated']},
+    {n:'fy',l:'Financial Year ★',t:'sel',o:['FY2001','FY2002','FY2003','FY2004','FY2005','FY2006','FY2007','FY2008','FY2009','FY2010','FY2011','FY2012','FY2013','FY2014','FY2015','FY2016','FY2017','FY2018','FY2019','FY2020','FY2021','FY2022','FY2023','FY2024','FY2025']},
+    {n:'reportingCurrency',l:'Reporting Currency ★',t:'sel',o:['AED','USD','GBP','PLN','KWD','SAR','BHD','KES','EUR']},
+    {n:'fxRate',l:'USD FX Rate Used ★',p:'e.g. 3.67 for AED'},
+    {n:'revenue',l:'Revenue (USD equiv.) ★',p:'e.g. 18250000'},{n:'grossProfit',l:'Gross Profit (USD) ★',p:'e.g. 5150000'},
+    {n:'ebitda',l:'EBITDA (USD) ★',p:'e.g. 3800000'},{n:'netProfit',l:'Net Profit / (Loss) (USD) ★',p:'e.g. 2900000'},
+    {n:'auditStatus',l:'Audit Status ★',t:'sel',o:['Audited','Management Accounts','Unaudited Draft','Under Audit']},
+    {n:'auditFirm',l:'Audit Firm',p:'e.g. Ernst & Young UAE'},{n:'signOffDate',l:'Audit Sign-Off Date',p:'DD-MMM-YYYY'},
+    {n:'majorContracts',l:'Major Revenue Contracts',p:'Top revenue-driving contracts this year',fw:true},
+    {n:'notes',l:'Key Events / Notes',t:'ta',p:'Restatements, M&A, large contract starts/ends',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Financial Report (Audited Accounts / P&L / Balance Sheet)',t:'link',fw:true}
+  ]},
+  supplier:{title:'Add Supplier Record',sub:'Module 06 — Supplier Intelligence Registry',fields:[
+    {n:'name',l:'Supplier Legal Name ★',p:'Full registered legal name'},
+    {n:'tradingName',l:'Trading Name',p:'If different from legal name'},
+    {n:'category',l:'Supply Category ★',t:'sel',o:['Labour Supply','Catering / Food','Construction Materials','Transport / Fleet','Security Services','Equipment / Plant','Facilities Services','Professional Services','IT / Comms','Fuel / Utilities','Other']},
+    {n:'region',l:'Country of Registration ★',t:'sel',o:['Kuwait','UAE','KSA','Bahrain','Poland','Kenya','USA','UK','Germany','Italy','Other-MENA','Other-Europe','Other-Africa','Global']},
+    {n:'territory',l:'Territory of Operation ★',p:'Countries / regions they actually operate in',fw:true},
+    {n:'status',l:'Status ★',t:'sel',o:['Active','Approved','Probationary','Blacklisted','Under Review','Inactive']},
+    {n:'rating',l:'Risk Rating ★',t:'rating'},
+    {n:'ratingJustification',l:'Rating Justification ★',t:'ta',p:'Specific reason — required for Amber and Red. Be factual.',fw:true},
+    {n:'exposure',l:'Financial Exposure (USD) ★',p:'Enter 0 if none'},{n:'exposureAED',l:'Financial Exposure (AED)',p:'If applicable'},
+    {n:'disputeDetail',l:'Dispute / Loss Detail',t:'ta',p:'Full description of any financial dispute or loss',fw:true},
+    {n:'tradeLicenseNo',l:'Trade License No.',p:'License number'},{n:'tradeLicenseExpiry',l:'Trade License Expiry',p:'DD-MMM-YYYY'},
+    {n:'tradeLicenseVerified',l:'Trade License Verified ★',t:'sel',o:['Yes','No','Pending','Expired']},
+    {n:'bankVerified',l:'Bank Details Verified ★',t:'sel',o:['Yes','No','Pending']},
+    {n:'referencesChecked',l:'References Checked ★',t:'sel',o:['Yes','No','Partial']},
+    {n:'contact',l:'Key Contact Name ★',p:'Primary contact name'},{n:'phone',l:'Contact Phone ★',p:'+971 XX XXX XXXX'},{n:'email',l:'Contact Email ★',p:'email@supplier.com'},
+    {n:'notes',l:'Performance Notes ★',t:'ta',p:'Specific observations — factual and detailed',fw:true},
+    {n:'redFlags',l:'Red Flags',t:'ta',p:'Late delivery, fraud, misrepresentation, H&S failures',fw:true},
+    {n:'legalAction',l:'Legal Action',p:'Any proceedings — description and status',fw:true},
+    {n:'attachment',l:'📎 SharePoint Link — Supporting Documents (Trade License, Bank Letter, References)',t:'link',fw:true}
+  ]}
+};
+
+// ─── DRAWER ──────────────────────────────────────────────
+let DT='',DID=null;
+function openDr(type,record){
+  DT=type; DID=record?record.id:null;
+  const cfg=F[type];
+  document.getElementById('dr-title').textContent=record?'Edit Record':cfg.title;
+  document.getElementById('dr-sub').textContent=cfg.sub;
+  document.getElementById('dr-body').innerHTML='<div class="fg">'+cfg.fields.map(f=>renderField(f,record)).join('')+'</div>';
+  if(record?.rating){
+    const map={Green:'g',Amber:'a',Red:'r'};
+    document.querySelector(`.rating-opt[data-v="${record.rating}"]`)?.classList.add('sel-'+map[record.rating]);
+  }
+  document.getElementById('ov').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  gsap.from('#drawer',{x:60,duration:.32,ease:'power3.out'});
+}
+
+function renderField(f,data){
+  const v=data?(data[f.n]||''):'';
+  const cls='f'+(f.fw?' fw':'');
+  if(f.t==='rating') return `<div class="${cls} fw"><div class="f-lbl">Risk Rating ★</div><div class="rating-wrap">
+    <div class="rating-opt" data-v="Green" onclick="selRating(this,'g')"><div class="ro-ico">🟢</div><div class="ro-lbl">Green</div><div class="ro-sub">Trusted</div></div>
+    <div class="rating-opt" data-v="Amber" onclick="selRating(this,'a')"><div class="ro-ico">🟡</div><div class="ro-lbl">Amber</div><div class="ro-sub">Use With Caution</div></div>
+    <div class="rating-opt" data-v="Red" onclick="selRating(this,'r')"><div class="ro-ico">🔴</div><div class="ro-lbl">Red</div><div class="ro-sub">Do Not Engage</div></div>
+    </div></div>`;
+  if(f.t==='ta') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><textarea class="f-ta" name="${f.n}" placeholder="${f.p||''}">${v}</textarea></div>`;
+  if(f.t==='sel') return `<div class="${cls}"><div class="f-lbl">${f.l}</div><select class="f-sel" name="${f.n}"><option value="">— Select —</option>${f.o.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+  if(f.t==='link'){
+    return `<div class="${cls} fw"><div class="f-lbl">${f.l}</div>
+      <input class="f-inp" type="url" name="${f.n}" placeholder="https://aqglobal.sharepoint.com/..." value="${v}">
+      ${v?`<a href="${v}" target="_blank" class="f-file-link" style="margin-top:6px">🔗 Open in SharePoint →</a>`:''}
+    </div>`;
+  }
+  return `<div class="${cls}"><div class="f-lbl">${f.l}</div><input class="f-inp" type="text" name="${f.n}" placeholder="${f.p||''}" value="${v}"></div>`;
+}
+
+// ─── FILE UPLOAD ──────────────────────────────────────────
+const _pendingFiles={};
+
+function handleFileSelect(input,field){
+  const file=input.files[0];
+  if(!file) return;
+  _pendingFiles[field]=file;
+  document.getElementById('flbl-'+field).textContent=file.name+' ('+Math.round(file.size/1024)+' KB)';
+  document.getElementById('fup-'+field).classList.add('has-file');
+}
+
+async function uploadPendingFiles(){
+  if(!sb||!Object.keys(_pendingFiles).length) return {};
+  const urls={};
+  for(const [field,file] of Object.entries(_pendingFiles)){
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`${DT}/${Date.now()}_${safeName}`;
+    const bar=document.getElementById('fbar-'+field);
+    if(bar){bar.classList.add('on')}
+    const {data,error}=await sb.storage.from('documents').upload(path,file,{upsert:true,cacheControl:'3600'});
+    if(bar){bar.classList.remove('on')}
+    if(error){toast('Upload failed: '+error.message,'er');continue}
+    const {data:urlData}=sb.storage.from('documents').getPublicUrl(path);
+    urls[field+'_url']=urlData.publicUrl;
+    urls[field+'_name']=file.name;
+  }
+  return urls;
+}
+
+function selRating(el,cls){
+  document.querySelectorAll('.rating-opt').forEach(o=>o.className='rating-opt');
+  el.classList.add('sel-'+cls);
+}
+function closeDr(){
+  document.getElementById('ov').classList.remove('on');
+  document.getElementById('drawer').classList.remove('on');
+}
+async function saveDr(){
+  const body=document.getElementById('dr-body');
+  const obj={};
+  body.querySelectorAll('[name]').forEach(el=>{if(el.type!=='file')obj[el.name]=el.value});
+  const sel=body.querySelector('.rating-opt.sel-g,.rating-opt.sel-a,.rating-opt.sel-r');
+  if(sel) obj.rating=sel.dataset.v;
+  // Upload any attached files
+  if(Object.keys(_pendingFiles).length){
+    if(!sb){toast('File upload requires Supabase — record saved without attachment','er')}
+    else{
+      toast('Uploading attachment…','in');
+      const fileUrls=await uploadPendingFiles();
+      Object.assign(obj,fileUrls);
+    }
+  }
+  // Clear pending
+  Object.keys(_pendingFiles).forEach(k=>delete _pendingFiles[k]);
+  const keyMap={contract:'contracts',brand:'brand',tdoc:'tdocs',comp:'compliance',fin:'fins',supplier:'suppliers'};
+  const k=keyMap[DT];
+  if(DID){await DB.upd(k,DID,obj)}else{await DB.add(k,obj)}
+  closeDr(); refreshAll(); toast('Record saved','ok');
+}
+
+function editR(k,id){const r=DB.get(k).find(r=>String(r.id)===String(id)||String(r._id)===String(id));if(!r)return;const m={contracts:'contract',brand:'brand',tdocs:'tdoc',compliance:'comp',fins:'fin',suppliers:'supplier'};openDr(m[k],r)}
+async function delR(k,id){if(!confirm('Delete this record? Cannot be undone.'))return;await DB.del(k,id);refreshAll();toast('Record deleted','er')}
+
+// ─── CSV EXPORT ───────────────────────────────────────────
+function csvExp(k){
+  const d=RD[k]||[];if(!d.length){toast('No data to export','er');return}
+  const keys=Object.keys(d[0]);
+  const csv=[keys.join(','),...d.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=`AQG_${k}_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV downloaded','ok');
+}
+
+// ─── TOAST ────────────────────────────────────────────────
+let toastTO;
+function toast(msg,type='in'){
+  const t=document.getElementById('toast');
+  t.textContent=(type==='ok'?'✓ ':type==='er'?'✕ ':'')+msg;
+  t.className='on '+type;
+  clearTimeout(toastTO);
+  toastTO=setTimeout(()=>t.className='',3000);
+}
+
+// ─── COUNT UP ────────────────────────────────────────────
+function countUp(id,target){
+  const el=document.getElementById(id);
+  const start=parseInt(el.textContent)||0;
+  if(start===target){el.textContent=target;return}
+  const dur=800,step=16;
+  let cur=start,steps=Math.ceil(dur/step);
+  const inc=(target-start)/steps;
+  const iv=setInterval(()=>{cur+=inc;steps--;if(steps<=0){el.textContent=target;clearInterval(iv)}else{el.textContent=Math.round(cur)}},step);
+}
+
+// ─── SCROLL ANIMATIONS ───────────────────────────────────
+let _scrollIO = null;
+function initScrollAnim(){
+  if(!_scrollIO){
+    _scrollIO = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          _scrollIO.unobserve(e.target);
+        }
+      })
+    },{threshold:.05});
+  }
+  document.querySelectorAll('.sa:not(.in)').forEach(el=>{
+    _scrollIO.observe(el);
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+  });
+}
+
+// ─── 3D CARD TILT ────────────────────────────────────────
+function init3DTilt(){
+  document.querySelectorAll('.mod-card').forEach(card=>{
+    const shine = card.querySelector('.mc-shine');
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+
+      // Calculate tilt
+      const tiltX = -y * 20; // Max 20 degree tilt
+      const tiltY = x * 20;
+
+      card.style.transform=`perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+      // Update shine position
+      if(shine) {
+        const shineX = (e.clientX - r.left) / r.width * 100;
+        const shineY = (e.clientY - r.top) / r.height * 100;
+        shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.15) 0%, transparent 80%)`;
+      }
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      if(shine) {
+        shine.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 80%)`;
+      }
+    });
+  });
+}
+
+// ─── CANVAS PARTICLES ────────────────────────────────────
+function initParticles(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;pts=[];for(let i=0;i<70;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5})}
+  window.addEventListener('resize',resize);resize();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,168,75,0.4)';ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(200,168,75,${.15*(1-dist/120)})`;ctx.stroke()}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ─── GSAP ENTRANCE ───────────────────────────────────────
+gsap.registerPlugin(window.ScrollTrigger);
+gsap.from('.login-card',{y:60,opacity:0,duration:.9,delay:.2,ease:'power3.out'});
+gsap.from('.login-bg-text',{scale:1.3,opacity:0,duration:1.5,ease:'power3.out'});
+
+// (session handling is above in initSession)
+</script>
+</body>
 </html>
