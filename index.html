@@ -260,16 +260,42 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 /* MODULE GRID */
 .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .mod-card{
-  background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);
-  overflow:hidden;cursor:pointer;transition:var(--trans);
-  transform-style:preserve-3d;will-change:transform;
+  background:rgba(255, 255, 255, 0.03);
+  border:1px solid rgba(255, 255, 255, 0.1);
+  border-radius:var(--r2);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.1s ease-out, box-shadow 0.1s ease-out, border-color 0.3s ease;
+  transform-style:preserve-3d;
+  will-change:transform;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
 }
-.mod-card:hover{border-color:var(--b2);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.mod-card:hover{
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+.mc-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mod-card:hover .mc-shine {
+  opacity: 1;
+}
 .mc-stripe{height:3px}
 .mc-body{padding:20px}
-.mc-num{font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase}
-.mc-name{font-size:15px;font-weight:700;color:var(--tx);margin-top:4px}
-.mc-desc{font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5}
+.mc-num{font-size:9px;font-weight:700;letter-spacing:1.2px;color:var(--tx3);text-transform:uppercase;transform: translateZ(20px);}
+.mc-name{font-size:15px;font-weight:700;color:var(--tx);margin-top:4px;transform: translateZ(30px);}
+.mc-desc{font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.5;transform: translateZ(25px);}
 .mc-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 .mc-count{font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--tx)}
 .mc-count-l{font-size:10px;color:var(--tx3)}
@@ -1322,6 +1348,7 @@ function renderDash(){
   ];
   document.getElementById('mod-grid').innerHTML=mods.map((m,i)=>`
     <div class="mod-card sa sa-d${i+1}" onclick="nav('${m.id}')">
+      <div class="mc-shine"></div>
       <div class="mc-stripe" style="background:${m.c}"></div>
       <div class="mc-body">
         <div class="mc-num">Module ${m.num}</div>
@@ -1679,16 +1706,30 @@ function initScrollAnim(){
 // ─── 3D CARD TILT ────────────────────────────────────────
 function init3DTilt(){
   document.querySelectorAll('.mod-card').forEach(card=>{
+    const shine = card.querySelector('.mc-shine');
     card.addEventListener('mousemove',e=>{
       const r=card.getBoundingClientRect();
       const x=(e.clientX-r.left)/r.width-.5;
       const y=(e.clientY-r.top)/r.height-.5;
-      card.style.transform=`perspective(900px) rotateY(${x*14}deg) rotateX(${-y*14}deg) translateZ(16px)`;
-      card.style.boxShadow=`${-x*20}px ${-y*20}px 40px rgba(248,87,0,0.12)`;
+
+      // Calculate tilt
+      const tiltX = -y * 20; // Max 20 degree tilt
+      const tiltY = x * 20;
+
+      card.style.transform=`perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+      // Update shine position
+      if(shine) {
+        const shineX = (e.clientX - r.left) / r.width * 100;
+        const shineY = (e.clientY - r.top) / r.height * 100;
+        shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.15) 0%, transparent 80%)`;
+      }
     });
     card.addEventListener('mouseleave',()=>{
-      card.style.transform='';
-      card.style.boxShadow='';
+      card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      if(shine) {
+        shine.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 80%)`;
+      }
     });
   });
 }
